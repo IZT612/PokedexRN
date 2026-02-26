@@ -93,3 +93,113 @@ To make sure the app is well separated and easy to test, the application is divi
                                     |
                     [ Data Layer (Implementations) ]
 ```
+
+---
+
+## 6. Data Model & TypeScript Interfaces
+
+This section defines the data structure following Clean Architecture principles, making sure there is complete separation between the external data source (PokéAPI) and application logic. A strong typing system is used to prevent runtime errors and make maintenance easier.
+
+### 6.1 Domain Entities
+Pure and simplified data models used by the business logic and the user interface.
+
+```typescript
+// src/domain/entities/Pokemon.ts
+
+export type PokemonType = 
+  | 'grass' | 'fire' | 'water' | 'bug' | 'normal' | 'poison' 
+  | 'electric' | 'ground' | 'fairy' | 'fighting' | 'psychic' 
+  | 'rock' | 'ghost' | 'ice' | 'dragon' | 'dark' | 'steel' | 'flying';
+
+export interface PokemonStat {
+  name: string;
+  value: number;
+}
+
+export interface Pokemon {
+  id: number;
+  name: string;
+  image: string;
+  types: PokemonType[];
+  stats: PokemonStat[];
+  abilities: string[];
+}
+
+export interface PokemonPageResponse {
+  count: number;
+  next: string | null;
+  results: PokemonShort[];
+}
+
+export interface PokemonShort {
+  name: string;
+  url: string; 
+}
+```
+
+### 6.2 Data Transfer Objects
+Exact representation of the PokéAPI schema. Used in the Data layer for typing HTTP responses before mapping them to domain entities.
+
+```typescript
+// src/data/models/PokeApiDto.ts
+
+export interface PokeApiPokemonDto {
+  id: number;
+  name: string;
+  sprites: {
+    other: {
+      'official-artwork': {
+        front_default: string;
+      };
+    };
+  };
+  types: Array<{
+    type: { name: string };
+  }>;
+  stats: Array<{
+    base_stat: number;
+    stat: { name: string };
+  }>;
+  abilities: Array<{
+    ability: { name: string };
+  }>;
+}
+```
+
+### 6.3 State Management Model (Zustand)
+Interface for the global Store in the Presentation layer. It centralizes the list state, pagination, and reactive filtering logic.
+
+```typescript
+// src/presentation/state/usePokemonStore.ts
+
+import { Pokemon, PokemonType } from '../../domain/entities/Pokemon';
+
+interface PokemonState {
+  // State
+  // Master list (If the list was only obtained via API, we wouldn't be able to use the name filter effectively, this way we can filter by similarities in the name too)
+  pokemons: Pokemon[];
+  filteredPokemons: Pokemon[]; // Processed list to be rendered on screen
+  loading: boolean;
+  error: string | null;
+  offset: number;              // Current pointer (batches of 30)
+  hasMore: boolean;            // Flag to stop the observer
+  
+  // Filters State
+  searchQuery: string;
+  selectedType: PokemonType | 'all';
+
+  // Actions (Call the Use Cases)
+  fetchNextPage: () => Promise<void>;
+  setSearchQuery: (query: string) => void;
+  setSelectedType: (type: PokemonType | 'all') => void;
+}
+```
+
+### 6.4 Data Mapping Rules
+The **Data** layer is responsible for transforming DTOs into domain entities using *Mappers*. This ensures the UI does not depend on accidental changes in the PokéAPI.
+
+**Transformation rules applied:**
+1. **Name Normalization:** `toUpperCase()` or capitalization is applied to the first letter of `name` so the UI receives data ready to display.
+2. **Stats Structure:** The original API array is mapped to the `PokemonStat[]` interface, renaming raw fields like `base_stat` to a simple `value`.
+3. **Asset Selection:** The entity's `image` property is mapped exclusively from `sprites.other['official-artwork'].front_default`, ignoring other low-quality sprites.
+4. **Type Simplification:** Only the type name (`type.name`) is extracted to avoid handling nested objects in UI components.
