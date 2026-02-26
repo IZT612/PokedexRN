@@ -70,3 +70,26 @@ Provide users with a fast and lightweight search tool without the unnecessary in
 ### 4.3 Maintainability and Technical Quality
 * **Error Handling:** The application must handle error states (e.g., "*Pokémon* not found" or "API connection error") by showing notifications.
 * **Data Consistency:** If the user filters by type and then scrolls, the *Infinite Scroll* must respect the active filter and load the next 30 Pokémon of that specific type, or apply the filter to the local data set.
+
+
+---
+
+## 5. Technical Architecture
+
+To make sure the app is well separated and easy to test, the application is divided into four main layers, following the principles of Robert C. Martin. We will also apply the MVVM pattern.
+
+### 5.1 System Layers
+
+1. **Domain Layer:** Contains the business entities, interfaces and the use cases.
+2. **Data Layer:** This is where the API connection and repositories are located.
+3. **UI Layer:** React components, Hooks, ViewModels, and the **Zustand** state. Its only responsibility is to display data and react to user events.
+4. **Core Layer (Support):** Principally **Dependency Injection**.
+
+### 5.2 Flow and Dependency Diagram
+
+```
+  [ UI Layer ] --> [ Domain Layer (Interfaces / Use Cases) ]
+                                    ^
+                                    |
+                    [ Data Layer (Implementations) ]
+```
