@@ -53,3 +53,20 @@ Provide users with a fast and lightweight search tool without the unnecessary in
     * Elemental types.
     * Base stats (HP, Attack, Defense, Special Attack, Special Defense, Speed).
     * Abilities.
+
+---
+
+## 4. Non-Functional Requirements
+
+### 4.1 Performance
+* **Initial Loading Time:** The application must load and display the first 30 *Pokémon* at a satisfactory speed.
+* **Image Optimization:** The official sprites from the *PokéAPI* must be used, preferably in `.webp` or `.png` format.
+
+### 4.2 Design
+* **Responsive Design:** The interface must adapt correctly to mobile devices, tablets, and desktop screens.
+* **Visual Feedback:** Loading *Skeletons* must be shown while the next 30 Pokémon are being fetched through Infinite Scroll.
+* Proper color contrast must be used (especially for the "Type" labels).
+
+### 4.3 Maintainability and Technical Quality
+* **Error Handling:** The application must handle error states (e.g., "*Pokémon* not found" or "API connection error") by showing notifications.
+* **Data Consistency:** If the user filters by type and then scrolls, the *Infinite Scroll* must respect the active filter and load the next 30 Pokémon of that specific type, or apply the filter to the local data set.
