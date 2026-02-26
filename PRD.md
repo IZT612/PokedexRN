@@ -1,20 +1,20 @@
-# PRD: React Native Pokedex
+# PRD: React Native Pokédex
 
 ## 1. Executive Summary
 
-**Project Description:** A web and Android application for querying *Pokemon* data. The application will function as a *Pokedex* that uses the **PokeAPI** to display detailed information about each *Pokemon*.
+**Project Description:** A web and Android application for querying *Pokémon* data. The application will function as a *Pokédex* that uses the **PokéAPI** to display detailed information about each *Pokémon*.
 
-**Main Objective:** Create a user interface that allows listing, filtering, and detailed viewing of each *Pokemon*, using lazy loading techniques *(Infinite Scroll)*.
+**Main Objective:** Create a user interface that allows listing, filtering, and detailed viewing of each *Pokémon*, using lazy loading techniques *(Infinite Scroll)*.
 
 ---
 
 ## 2. Product Vision & Strategy
 
 ### Product Vision
-Provide users with a fast and lightweight search tool without the unnecessary information of traditional *Pokedexes*, offering smooth navigation and immediate access to detailed information for each *Pokemon*.
+Provide users with a fast and lightweight search tool without the unnecessary information of traditional *Pokédex*, offering smooth navigation and immediate access to detailed information for each *Pokémon*.
 
 ### Development Strategy
-1. **Performance:** Implementation of an *Infinite Scroll* that loads *Pokemons* in batches of 30.
+1. **Performance:** Implementation of an *Infinite Scroll* that loads *Pokémon* in batches of 30.
 2. **Efficient State Management:** Using **Zustand** for search logic and type-based filtering results.
 3. **Hybrid Filtering:** Ability to combine name search and type filtering simultaneously to improve accuracy.
 4. **Technical Scalability:** Use of clean architecture that allows adding features such as stat comparisons or favorite systems in later phases without changing the core codebase.
@@ -36,13 +36,13 @@ Provide users with a fast and lightweight search tool without the unnecessary in
 ### 3.2 Technical Functional Specifications
 
 #### RF-01: Dynamic List and Infinite Scroll
-* **Initial Load:** When the main component is mounted, the app must make a request to the **PokeAPI**, limiting the results to the **first 30 records**.
+* **Initial Load:** When the main component is mounted, the app must make a request to the **PokéAPI**, limiting the results to the **first 30 records**.
 * **Scroll Trigger:** An observer must be implemented at the end of the list to trigger a new request.
 * **Cumulative Pagination:** Each new load must bring exactly **30 additional items**, keeping the previous ones stored in the global **Zustand** state.
 
 #### RF-02: Search and Filter System
 * **Search by Name:** The search input must filter the results. When the user types, the list must update to show partial or exact matches.
-* **Filter by Type:** A selector must be provided with the official *Pokemon* types. When one is selected, the list will be cleared and updated to show only the *Pokemon* that have that type.
+* **Filter by Type:** A selector must be provided with the official *Pokémon* types. When one is selected, the list will be cleared and updated to show only the *Pokémon* that have that type.
 * **Combined State:** Filters must work together (e.g., searching "Char" while filtering only by type "Fire").
 
 #### RF-03: Detail View
@@ -64,12 +64,12 @@ Provide users with a fast and lightweight search tool without the unnecessary in
 
 ### 4.2 Design
 * **Responsive Design:** The interface must adapt correctly to mobile devices, tablets, and desktop screens (In web).
-* **Visual Feedback:** Loading *Skeletons* must be shown while the next 30 Pokémon are being fetched through Infinite Scroll.
+* **Visual Feedback:** Loading *Skeletons* must be shown while the next 30 *Pokémon* are being fetched through Infinite Scroll.
 * Proper color contrast must be used (especially for the "Type" labels).
 
 ### 4.3 Maintainability and Technical Quality
 * **Error Handling:** The application must handle error states (e.g., "*Pokémon* not found" or "API connection error") by showing notifications.
-* **Data Consistency:** If the user filters by type and then scrolls, the *Infinite Scroll* must respect the active filter and load the next 30 Pokémon of that specific type, or apply the filter to the local data set.
+* **Data Consistency:** If the user filters by type and then scrolls, the *Infinite Scroll* must respect the active filter and load the next 30 *Pokémon* of that specific type, or apply the filter to the local data set.
 
 
 ---
