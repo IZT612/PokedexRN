@@ -2,7 +2,7 @@
 
 ## 1. Executive Summary
 
-**Project Description:** A web application for querying *Pokemon* data. The application will function as a *Pokedex* that uses the **PokeAPI** to display detailed information about each *Pokemon*.
+**Project Description:** A web and Android application for querying *Pokemon* data. The application will function as a *Pokedex* that uses the **PokeAPI** to display detailed information about each *Pokemon*.
 
 **Main Objective:** Create a user interface that allows listing, filtering, and detailed viewing of each *Pokemon*, using lazy loading techniques *(Infinite Scroll)*.
 
@@ -63,7 +63,7 @@ Provide users with a fast and lightweight search tool without the unnecessary in
 * **Image Optimization:** The official sprites from the *PokéAPI* must be used, preferably in `.webp` or `.png` format.
 
 ### 4.2 Design
-* **Responsive Design:** The interface must adapt correctly to mobile devices, tablets, and desktop screens.
+* **Responsive Design:** The interface must adapt correctly to mobile devices, tablets, and desktop screens (In web).
 * **Visual Feedback:** Loading *Skeletons* must be shown while the next 30 Pokémon are being fetched through Infinite Scroll.
 * Proper color contrast must be used (especially for the "Type" labels).
 
