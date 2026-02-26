@@ -60,7 +60,7 @@ Provide users with a fast and lightweight search tool without the unnecessary in
 
 ### 4.1 Performance
 * **Initial Loading Time:** The application must load and display the first 30 *Pokémon* at a satisfactory speed.
-* **Image Optimization:** The official sprites from the *PokéAPI* must be used, preferably in `.webp` or `.png` format.
+* **Image Optimization:** The official sprites from the *PokéAPI* must be used, preferably in `.png` format.
 
 ### 4.2 Design
 * **Responsive Design:** The interface must adapt correctly to mobile devices, tablets, and desktop screens (In web).
