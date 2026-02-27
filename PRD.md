@@ -203,3 +203,44 @@ The **Data** layer is responsible for transforming DTOs into domain entities usi
 2. **Stats Structure:** The original API array is mapped to the `PokemonStat[]` interface, renaming raw fields like `base_stat` to a simple `value`.
 3. **Asset Selection:** The entity's `image` property is mapped exclusively from `sprites.other['official-artwork'].front_default`, ignoring other low-quality sprites.
 4. **Type Simplification:** Only the type name (`type.name`) is extracted to avoid handling nested objects in UI components.
+
+--- 
+
+## 7. Design System Specification
+
+To ensure a professional and consistent visual experience, we define a design system based on **tokens**. This allows any change in colors or typography to update automatically across the entire application.
+
+### 7.1 Core Brand Tokens
+These are the base values for the interface on both desktop and mobile versions.
+
+| Token | Value | Description |
+| :--- | :--- | :--- |
+| **Primary Red** | `#EF5350` | Main brand color (Classic Pokedex style). |
+| **Secondary Blue**| `#3761A8` | Accent color for buttons and links. |
+| **Background** | `#F5F5F5` | Neutral background to make Pokemon cards stand out. |
+| **Surface** | `#FFFFFF` | Background color for cards and modals. |
+| **Font Family** | `'Inter', system-ui` | Modern typography for better readability of stats. |
+
+### 7.2 Pokemon Type Tokens
+Semantic colors associated with each elemental type to improve visual recognition in cards and filters.
+
+| Type | Color (Hex) | UI Application |
+| :--- | :--- | :--- |
+| **Normal** | `#A8A77A` | Type labels and card borders. |
+| **Fire** | `#EE8130` | Type labels and card borders. |
+| **Water** | `#6390F0` | Type labels and card borders. |
+| **Electric**| `#F7D02C` | Type labels and card borders. |
+| **Grass** | `#7AC74C` | Type labels and card borders. |
+| **Ice** | `#96D9D6` | Type labels and card borders. |
+| **Fighting**| `#C22E28` | Type labels and card borders. |
+| **Poison** | `#A33EA1` | Type labels and card borders. |
+| **Ground** | `#E2BF65` | Type labels and card borders. |
+| **Flying** | `#A98FF3` | Type labels and card borders. |
+| **Psychic** | `#F95587` | Type labels and card borders. |
+| **Bug** | `#A6B91A` | Type labels and card borders. |
+| **Rock** | `#B6A136` | Type labels and card borders. |
+| **Ghost** | `#735797` | Type labels and card borders. |
+| **Dragon** | `#6F35FC` | Type labels and card borders. |
+| **Dark** | `#736C75` | Type labels and card borders. |
+| **Steel** | `#B7B7CE` | Type labels and card borders. |
+| **Fairy** | `#D685AD` | Type labels and card borders. |
