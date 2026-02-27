@@ -332,3 +332,31 @@ The app will consume three main endpoints:
 ### 9.2 Request Strategy
 * **Parallel Requests:** When fetching a list of 30 Pokemon, the app will use `Promise.all()` to fetch their individual details in parallel. This makes the loading much faster.
 * **Pagination Logic:** The `offset` will increase by 30 every time the user reaches the bottom of the screen.
+
+---
+
+## 10. Development Phases
+
+This project is divided into four main stages to ensure a stable and high-quality application.
+
+### Phase 1: Foundation & Core Architecture
+* Set up React project with TypeScript.
+* Create the folder structure (Data, Domain, UI, Core).
+* Define Domain Entities and API DTOs.
+
+### Phase 2: Data Layer & State Management
+* Implement the Repository to fetch data from PokéAPI.
+* Create the "Mappers" to transform API data into Domain Entities.
+* Set up the **Zustand** store for global state.
+
+### Phase 3: UI & User Experience
+* Build the `PokemonCard` and `PokemonGrid` components.
+* Implement the **Infinite Scroll**.
+* Create the Search Bar and Type Filter logic.
+* Apply the Design System (colors and typography).
+
+### Phase 4: Details & Polish
+* Create the Detail View to show stats and abilities.
+* Add loading states (Skeletons) and error messages.
+* Perform final tests for responsiveness on mobile devices.
+* Deploy the application.
