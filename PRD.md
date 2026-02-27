@@ -360,3 +360,33 @@ This project is divided into four main stages to ensure a stable and high-qualit
 * Add loading states (Skeletons) and error messages.
 * Perform final tests for responsiveness on mobile devices.
 * Deploy the application.
+
+---
+
+## 11. Success Criteria (Definition of Done)
+
+The project will be considered complete and successful when the following criteria are met:
+
+### 11.1 Functional Completion
+* [ ] The app loads the first 30 Pokemon correctly on start.
+* [ ] Infinite Scroll works smoothly, loading 30 new Pokemon when the user reaches the bottom.
+* [ ] The Search Bar filters the list by name in real time.
+* [ ] Filtering by "Type" displays the correct Pokemon and updates the list.
+* [ ] Clicking a Pokemon card opens a view with accurate Stats and Abilities.
+
+### 11.2 Technical Quality
+* [ ] Code follows **Clean Architecture** (Separation of Data, Domain, and UI).
+* [ ] All data structures are correctly typed with **TypeScript**.
+* [ ] State management is handled entirely by **Zustand**.
+* [ ] There are no console errors or memory leaks during navigation.
+
+### 11.3 Performance & UI
+* [ ] Images use lazy loading and do not slow down the scroll.
+* [ ] The layout is responsive and looks good on both mobile and desktop.
+* [ ] Loading states (Skeletons) are visible during API calls.
+
+### 11.4 Documentation
+* [ ] The `README.md` includes instructions on how to install and run the project.
+* [ ] The final `PRD.md` is complete and reflects the actual implementation.
+
+---
