@@ -244,3 +244,66 @@ Semantic colors associated with each elemental type to improve visual recognitio
 | **Dark** | `#736C75` | Type labels and card borders. |
 | **Steel** | `#B7B7CE` | Type labels and card borders. |
 | **Fairy** | `#D685AD` | Type labels and card borders. |
+
+---
+
+## 8. User Flows & Wireframes
+
+(Visual images of the screens are not ready yet. The wireframe is made with ASCII Art thanks to AI for now.)
+
+This section shows how a user interacts with the Pokedex and how the screens are organized.
+
+### 8.1 User Navigation Flow
+1. **Entry:** User opens the app and sees the first 30 Pokemon.
+2. **Browsing:** User scrolls down; the app loads 30 more Pokemon automatically.
+3. **Searching:** User types a name in the search bar; the list updates instantly.
+4. **Filtering:** User selects a "Type" (e.g., Water); the list shows only Water Pokemon.
+5. **Detail:** User clicks a card; a detailed view opens with stats and abilities.
+
+### 8.2 Main Screen Wireframe (ASCII Art)
+This is the simple layout for the main page.
+
+```
+_______________________________________________________
+|  [ Pokedex App ]                  [ Search... ] [V] | <-- Header & Filters
+|_____________________________________________________|
+|                                                     |
+|  [ Card #1 ]    [ Card #2 ]    [ Card #3 ]          |
+|  | Image   |    | Image   |    | Image   |          |
+|  | Name    |    | Name    |    | Name    |          |
+|  | Types   |    | Types   |    | Types   |          |
+|  [_________]    [_________]    [_________]          |
+|                                                     |
+|  [ Card #4 ]    [ Card #5 ]    [ Card #6 ]          |
+|  | Image   |    | Image   |    | Image   |          |
+|  | Name    |    | Name    |    | Name    |          |
+|  | Types   |    | Types   |    | Types   |          |
+|  [_________]    [_________]    [_________]          |
+|                                                     |
+|                [ Loading more... ]                  | <-- Scroll Trigger
+|_____________________________________________________|
+```
+
+### 8.3 Detail View Wireframe (ASCII Art)
+
+This is what the user sees after clicking a Pokemon card.
+
+```
+_________________________________________
+| [ < Back ]                            |
+|_______________________________________|
+|           #006 - CHARIZARD            |
+|                                       |
+|            [ IMAGE HERE ]             |
+|                                       |
+|   Type: [ FIRE ] [ FLYING ]           |
+|_______________________________________|
+|  STATS:                               |
+|  HP:      |||||||| 78                 |
+|  ATK:     |||||||||| 84               |
+|  DEF:     |||||||| 78                 |
+|_______________________________________|
+|  ABILITIES:                           |
+|  * Blaze   * Solar Power              |
+|_______________________________________|
+```
