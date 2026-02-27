@@ -307,3 +307,28 @@ _________________________________________
 |  * Blaze   * Solar Power              |
 |_______________________________________|
 ```
+
+---
+
+## 9. API Integration Specs
+
+This section describes how the application communicates with the external PokéAPI (https://pokeapi.co/).
+
+### 9.1 Endpoints Used
+The app will consume three main endpoints:
+
+1. **List Endpoint:** `GET /pokemon?limit=30&offset={offset}`
+   * Used for: Initial load and Infinite Scroll.
+   * Returns: A list of names and URLs for each Pokemon.
+
+2. **Detail Endpoint:** `GET /pokemon/{id_or_name}`
+   * Used for: Getting images, types, stats, and abilities.
+   * Note: This is called for each Pokemon in the list to complete the "Domain Entity."
+
+3. **Type Endpoint:** `GET /type/{type_id}`
+   * Used for: Filtering by type.
+   * Returns: A full list of all Pokemon belonging to that specific type.
+
+### 9.2 Request Strategy
+* **Parallel Requests:** When fetching a list of 30 Pokemon, the app will use `Promise.all()` to fetch their individual details in parallel. This makes the loading much faster.
+* **Pagination Logic:** The `offset` will increase by 30 every time the user reaches the bottom of the screen.
