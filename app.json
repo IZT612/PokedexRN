@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "temp-folder",
-    "slug": "temp-folder",
+    "name": "pokedex-rn",
+    "slug": "pokedex-rn",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "tempfolder",
+    "scheme": "pokedexrn",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {

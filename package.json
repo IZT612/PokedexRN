@@ -1,5 +1,5 @@
 {
-  "name": "temp-folder",
+  "name": "pokedex-rn",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
