@@ -19,3 +19,12 @@ This project uses the local version of Expo to avoid system conflicts and permis
 * **Troubleshooting:** If you have an old global version and receive a "WARNING", you should uninstall it using "npm uninstall -g expo-cli".
 
 If you need more information about the modern Expo CLI, you can visit: https://docs.expo.dev/more/expo-cli/
+
+
+#### 1.3 Android Studio & Emulator
+
+To run the application on a virtual device, you need to set up the Android development environment.
+
+* **Android Studio:** Download and install it from the official site: https://developer.android.com/studio
+* **SDK Manager:** Ensure you have the "Android SDK" and "Build-Tools" installed (found in Settings > Languages & Frameworks > Android SDK).
+* **Virtual Device:** Open the "Device Manager" in Android Studio and create a new virtual device.
