@@ -1,27 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, Text, YStack } from 'tamagui';
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Hello World!</Text>
-    </View>
+    <YStack f={1} ai="center" jc="center" bg="$background">
+      <Text fontSize={24} fontWeight="bold">
+        Hello Tamagui!
+      </Text>
+      <Button mt="$4">Botón de Prueba</Button>
+    </YStack>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#fff',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    fontSize: 18,
-    color: '#666',
-    marginTop: 10,
-  },
-});
