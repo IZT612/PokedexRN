@@ -1,0 +1,31 @@
+export const colors = {
+  colors: {
+    primaryRed: '#EF5350',
+    secondaryBlue: '#3761A8',
+    background: '#F5F5F5',
+    surface: '#FFFFFF',
+
+    typeNormal: '#A8A77A',
+    typeFire: '#EE8130',
+    typeWater: '#6390F0',
+    typeElectric: '#F7D02C',
+    typeGrass: '#7AC74C',
+    typeIce: '#96D9D6',
+    typeFighting: '#C22E28',
+    typePoison: '#A33EA1',
+    typeGround: '#E2BF65',
+    typeFlying: '#A98FF3',
+    typePsychic: '#F95587',
+    typeBug: '#A6B91A',
+    typeRock: '#B6A136',
+    typeGhost: '#735797',
+    typeDragon: '#6F35FC',
+    typeDark: '#736C75',
+    typeSteel: '#B7B7CE',
+    typeFairy: '#D685AD',
+
+    success: '#4CAF50',
+    error: '#D32F2F',
+    warning: '#FFA000',
+  },
+};
