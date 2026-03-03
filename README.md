@@ -37,3 +37,29 @@ To ensure the best development experience and maintain code quality, we recommen
 - **React Native Tools** Provides specialized support for debugging and running React Native commands directly from VS Code.
 
 > **Note:** These extensions are highly recommended for developers but are not required to simply run the application.
+
+### 2. Project Structure
+
+The project follows a **Clean Architecture** pattern to ensure scalability and maintainability:
+
+```text
+src/
+├── core/                 # Shared configurations and Dependency Injection
+│   ├── config/
+│   └── di/
+├── data/                 # Implementation of data sources
+│   ├── api/              # API clients and network calls
+│   ├── mappers/          # Data transformation
+│   └── repositories/     # Implementation of repository interfaces
+├── domain/               # Business logic
+│   ├── entities/         # Business models
+│   ├── interfaces/       # Abstract definitions
+│   │   ├── repositories/
+│   │   └── useCases/
+│   └── useCases/         # Application specific business rules
+└── ui/                   # Presentation layer
+    ├── components/       # Reusable UI components
+    ├── hooks/            # Custom React hooks
+    ├── viewModels/       # Logic for views
+    └── views/            # Screen components
+```
