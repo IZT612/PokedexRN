@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    StyleSheet,
-    Text,
-    TouchableOpacity
-} from 'react-native';
+import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 import {
     BorderRadius,
     Colors,
@@ -18,7 +14,7 @@ interface Props {
   variant?: 'primary' | 'secondary';
 }
 
-export const button = ({ title, onPress, variant = 'primary' }: Props) => {
+export const Button = ({ title, onPress, variant = 'primary' }: Props) => {
   const isPrimary = variant === 'primary';
 
   return (
