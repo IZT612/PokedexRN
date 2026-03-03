@@ -6,6 +6,61 @@
 import { Platform } from 'react-native';
 import { brandColors, pokemonTypeColors } from './colors';
 
+export const Spacing = {
+  xs: 4,
+  sm: 8,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+};
+
+export const BorderRadius = {
+  xs: 4,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  full: 9999,
+};
+
+export const Typography = {
+  fontSize: {
+    xs: 12,
+    sm: 14,
+    md: 16,
+    lg: 18,
+    xl: 20,
+    xxl: 24,
+    huge: 32,
+  },
+  fontWeight: {
+    light: '300' as const,
+    regular: '400' as const,
+    medium: '500' as const,
+    semibold: '600' as const,
+    bold: '700' as const,
+  },
+};
+
+export const Sizes = {
+  buttonHeight: {
+    sm: 32,
+    md: 48,
+    lg: 56,
+  },
+  icon: {
+    xs: 16,
+    sm: 24,
+    md: 32,
+    lg: 48,
+  },
+  borderWidth: {
+    thin: 1,
+    medium: 2,
+    thick: 4,
+  },
+};
+
 export const Colors = {
   light: {
     text: '#11181C',
