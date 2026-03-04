@@ -74,11 +74,11 @@ src/
 
 Main button of the application.
 
-| Prop    | Type       |  Required   | Description                                          |
-| :------ | :--------- | :---------: | :--------------------------------------------------- | --------------------------------------------------------------------------------- |
-| title   | string     |     Yes     | The text that is shown inside the button.            |
-| onPress | () => void |     Yes     | Function that runs when the user presses the button. |
-| variant | 'primary'  | 'secondary' | No                                                   | Defines the main color of the button (Red or Blue). The default value is primary. |
+| Prop    | Type                     | Required | Description                                                                       |
+| :------ | :----------------------- | :------: | :-------------------------------------------------------------------------------- |
+| title   | string                   |   Yes    | The text that is shown inside the button.                                         |
+| onPress | () => void               |   Yes    | Function that runs when the user presses the button.                              |
+| variant | 'primary' \| 'secondary' |    No    | Defines the main color of the button (Red or Blue). The default value is primary. |
 
 #### 3.2 Card
 
