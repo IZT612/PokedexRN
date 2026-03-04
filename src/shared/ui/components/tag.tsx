@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { BorderRadius, Spacing, Typography } from '../../../constants/theme';
+import { BorderRadius, Spacing, Typography } from '../../../../constants/theme';
 
 export const Tag = ({ label, color }: { label: string; color: string }) => (
   <View style={[styles.tag, { backgroundColor: color }]}>

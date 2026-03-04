@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, View } from 'react-native';
-import { Colors, Spacing, Typography } from '../../../constants/theme';
+import { Colors, Spacing, Typography } from '../../../../constants/theme';
 
 export const ErrorMessage = ({ message }: { message: string }) => (
   <View

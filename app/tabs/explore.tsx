@@ -2,12 +2,12 @@ import { Image } from 'expo-image';
 import { Platform, StyleSheet } from 'react-native';
 
 import { Fonts } from '@/constants/theme';
-import { ExternalLink } from '@/src/ui/components/external-link';
-import ParallaxScrollView from '@/src/ui/components/parallax-scroll-view';
-import { ThemedText } from '@/src/ui/components/themed-text';
-import { ThemedView } from '@/src/ui/components/themed-view';
-import { Collapsible } from '@/src/ui/components/ui/collapsible';
-import { IconSymbol } from '@/src/ui/components/ui/icon-symbol';
+import { ExternalLink } from '@/src/shared/ui/components/external-link';
+import ParallaxScrollView from '@/src/shared/ui/components/parallax-scroll-view';
+import { ThemedText } from '@/src/shared/ui/components/themed-text';
+import { ThemedView } from '@/src/shared/ui/components/themed-view';
+import { Collapsible } from '@/src/shared/ui/components/ui/collapsible';
+import { IconSymbol } from '@/src/shared/ui/components/ui/icon-symbol';
 
 export default function TabTwoScreen() {
   return (
@@ -88,7 +88,7 @@ export default function TabTwoScreen() {
         <ThemedText>
           This template includes an example of an animated component. The{' '}
           <ThemedText type="defaultSemiBold">
-            src/ui/components/HelloWave.tsx
+            src/shared/ui/components/HelloWave.tsx
           </ThemedText>{' '}
           component uses the powerful{' '}
           <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
@@ -101,7 +101,7 @@ export default function TabTwoScreen() {
             <ThemedText>
               The{' '}
               <ThemedText type="defaultSemiBold">
-                src/ui/components/ParallaxScrollView.tsx
+                src/shared/ui/components/ParallaxScrollView.tsx
               </ThemedText>{' '}
               component provides a parallax effect for the header image.
             </ThemedText>

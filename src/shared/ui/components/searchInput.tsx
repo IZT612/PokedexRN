@@ -1,6 +1,11 @@
 import React from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
-import { BorderRadius, Colors, Sizes, Spacing } from '../../../constants/theme';
+import {
+    BorderRadius,
+    Colors,
+    Sizes,
+    Spacing,
+} from '../../../../constants/theme';
 
 type Props = {
   placeholder: string;

@@ -42,28 +42,44 @@ To ensure the best development experience and maintain code quality, we recommen
 
 ### 2. Project Structure
 
-The project follows a **Clean Architecture** pattern to ensure scalability and maintainability:
+The project follows a **Clean Architecture** and **Vertical Slice**/ or **Feature Sliced** pattern to ensure scalability and maintainability:
 
 ```text
 src/
-├── core/                 # Shared configurations and Dependency Injection
-│   ├── config/
-│   └── di/
-├── data/                 # Implementation of data sources
-│   ├── api/              # API clients and network calls
-│   ├── mappers/          # Data transformation
-│   └── repositories/     # Implementation of repository interfaces
-├── domain/               # Business logic
-│   ├── entities/         # Business models
-│   ├── interfaces/       # Abstract definitions
-│   │   ├── repositories/
-│   │   └── useCases/
-│   └── useCases/         # Application specific business rules
-└── ui/                   # Presentation layer
-    ├── components/       # Reusable UI components
-    ├── hooks/            # Custom React hooks
-    ├── viewModels/       # Logic for views
-    └── views/            # Screen components
+├── core/                 # Global configurations and core elements
+└── features/             # Feature-based modules
+    ├── pokemonDetail/    # Feature: Pokémon Details
+    │   ├── data/         # Implementation of data sources
+    │   ├── domain/       # Business logic (Models, Rules, Interfaces)
+    │   │   ├── interfaces/
+    │   │   │   ├── repositories/
+    │   │   │   └── useCases/
+    │   │   └── useCases/ # Specific use cases for this feature
+    │   └── ui/           # Presentation layer
+    │       ├── components/
+    │       ├── viewModels/
+    │       └── views/
+    ├── pokemonList/      # Feature: Pokémon List
+    │   ├── data/         # Implementation of data sources
+    │   ├── domain/       # Business logic (Rules, Interfaces)
+    │   │   ├── interfaces/
+    │   │   │   ├── repositories/
+    │   │   │   └── useCases/
+    │   │   └── useCases/ # Specific use cases for the list
+    │   └── ui/           # Presentation layer
+    │       ├── components/
+    │       │   └── pokemonSearch/
+    │       ├── viewModels/
+    │       └── views/
+    └── shared/           # Shared resources across multiple features
+        ├── data/         # Shared data logic
+        │   ├── api/      # API clients and network calls
+        │   └── mappers/  # General data transformation
+        ├── domain/       # Shared business logic
+        │   └── api/      # Core entities
+        └── ui/           # Shared presentation elements
+            ├── components/ # Reusable UI components
+            └── hooks/      # General custom React hooks
 ```
 
 ---

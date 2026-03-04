@@ -6,7 +6,7 @@ import {
     Sizes,
     Spacing,
     Typography,
-} from '../../../constants/theme';
+} from '../../../../constants/theme';
 
 interface Props {
   title: string;

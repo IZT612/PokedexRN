@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BorderRadius, Colors, Spacing } from '../../../constants/theme';
+import { BorderRadius, Colors, Spacing } from '../../../../constants/theme';
 
 export const Card = ({ children }: { children: React.ReactNode }) => (
   <View style={styles.card}>{children}</View>
