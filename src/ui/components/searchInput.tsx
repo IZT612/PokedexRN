@@ -1,8 +1,13 @@
 import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 import { BorderRadius, Colors, Sizes, Spacing } from '../../../constants/theme';
 
-export const SearchInput = ({ placeholder, onChangeText }: any) => (
+type Props = {
+  placeholder: string;
+  onChangeText: (text: string) => void;
+} & Omit<TextInputProps, 'onChangeText'>;
+
+export const SearchInput = ({ placeholder, onChangeText }: Props) => (
   <View style={styles.container}>
     <TextInput
       style={styles.input}
