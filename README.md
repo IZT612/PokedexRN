@@ -86,4 +86,4 @@ src/
 
 ### 3. Components
 
-You can find the information [Here](COMPONENTS.md)
+You can find the information by clicking [here](COMPONENTS.md)
