@@ -40,7 +40,31 @@ To ensure the best development experience and maintain code quality, we recommen
 
 ---
 
-### 2. Project Structure
+### 2. Running the app
+
+Follow these steps to get the app running locally on your machine
+
+#### 2.1 Install dependencies
+
+Install dependencies with `npm install`
+
+#### 2.2 Start the app
+
+In a terminal such as 'cmd' or 'powershell', start the app with `npx expo start`.
+
+If you intend to use a physical phone device, start with `npx expo start --tunnel` instead.
+
+#### 2.3 Open the app
+
+Once the app is running, a QR code will appear in your terminal. You can open the app in different ways:
+
+- **Web:** Press `w` in your terminal.
+- **Android Emulator:** Press `a` in your terminal with an emulator started in Android Studio.
+- **Physical Phone Device:** Install the 'Expo Go' app in your phone device and scan the QR code that appears in your terminal.
+
+---
+
+### 3. Project Structure
 
 The project follows a **Clean Architecture** and **Vertical Slice**/ or **Feature Sliced** pattern to ensure scalability and maintainability:
 
@@ -84,6 +108,6 @@ src/
 
 ---
 
-### 3. Components
+### 4. Components
 
 You can find the information by clicking [here](COMPONENTS.md)
