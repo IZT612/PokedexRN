@@ -88,7 +88,7 @@ export default function TabTwoScreen() {
         <ThemedText>
           This template includes an example of an animated component. The{' '}
           <ThemedText type="defaultSemiBold">
-            components/HelloWave.tsx
+            src/ui/components/HelloWave.tsx
           </ThemedText>{' '}
           component uses the powerful{' '}
           <ThemedText type="defaultSemiBold" style={{ fontFamily: Fonts.mono }}>
@@ -101,7 +101,7 @@ export default function TabTwoScreen() {
             <ThemedText>
               The{' '}
               <ThemedText type="defaultSemiBold">
-                components/ParallaxScrollView.tsx
+                src/ui/components/ParallaxScrollView.tsx
               </ThemedText>{' '}
               component provides a parallax effect for the header image.
             </ThemedText>
