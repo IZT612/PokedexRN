@@ -3,7 +3,7 @@ import { createTamagui } from 'tamagui';
 
 const tamaguiConfig = createTamagui(config);
 
-// Esto ayuda a que TypeScript reconozca los tipos de Tamagui
+// This helps Typescript to recognize Tamagui's types
 type Conf = typeof tamaguiConfig;
 declare module 'tamagui' {
   interface TamaguiCustomConfig extends Conf {}
