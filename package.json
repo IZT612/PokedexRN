@@ -54,5 +54,8 @@
     "jest-expo": "^55.0.9",
     "typescript": "~5.9.2"
   },
-  "private": true
+  "private": true,
+  "jest": {
+    "preset": "jest-expo"
+  }
 }
