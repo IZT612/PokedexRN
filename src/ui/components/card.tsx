@@ -1,13 +1,10 @@
 import React from 'react';
-import { StyleSheet, View, ViewStyle } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { BorderRadius, Colors, Spacing } from '../../../constants/theme';
 
-export const Card = ({
-  children,
-}: {
-  children: React.ReactNode;
-  style?: ViewStyle;
-}) => <View style={styles.card}>{children}</View>;
+export const Card = ({ children }: { children: React.ReactNode }) => (
+  <View style={styles.card}>{children}</View>
+);
 
 const styles = StyleSheet.create({
   card: {
