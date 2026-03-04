@@ -17,6 +17,7 @@
     "@react-navigation/native": "^7.1.8",
     "@tamagui/config": "^2.0.0-rc.22",
     "@tamagui/core": "^2.0.0-rc.22",
+    "axios": "^1.13.6",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "expo": "~54.0.33",
