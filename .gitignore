@@ -1,5 +1,8 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
+# Template for pull requests
+pull_request_template.md
+
 # dependencies
 node_modules/
 
