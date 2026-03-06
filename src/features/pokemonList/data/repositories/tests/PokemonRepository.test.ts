@@ -1,6 +1,6 @@
 import { PokemonRepository } from '../PokemonRepository';
 
-describe('PokemonRepository - E2E test', () => {
+describe('PokemonList: PokemonRepository - E2E test', () => {
   const repository = new PokemonRepository();
 
   it('Should fetch a list of Pokemon', async () => {
