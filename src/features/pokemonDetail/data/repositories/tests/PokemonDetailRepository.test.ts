@@ -38,7 +38,7 @@ describe('PokemonDetail: PokemonDetailRepository - E2E test', () => {
     expect(pokemon.name).toBe('bulbasaur');
 
     expect(typeof pokemon.image).toBe('string');
-    expect(pokemon.image).toContain('http');
+    expect(pokemon.image).toContain('https');
 
     expect(pokemon.types).toContain('grass');
     expect(pokemon.types).toContain('poison');

@@ -15,14 +15,14 @@ describe('PokemonList: PokemonListRepository - E2E test', () => {
     it('Should fetch a list of Pokemon', async () => {
       const mockResults = Array(30).fill({
         name: 'pikachu',
-        url: 'http://fake-url.com',
+        url: 'https://fake-url.com',
       });
 
       const mockApiResponse = {
         data: {
           results: mockResults,
           count: 1302,
-          next: 'http://fake-url.com/next',
+          next: 'https://fake-url.com/next',
           previous: null,
         },
       };
