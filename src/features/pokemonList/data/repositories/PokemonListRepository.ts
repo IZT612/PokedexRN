@@ -3,7 +3,10 @@ import { PokemonListResponse } from '@/src/shared/data/api/PokemonListResponse';
 import { IPokemonListRepository } from '../../domain/interfaces/repositories/IPokemonListRepository';
 
 export class PokemonListRepository implements IPokemonListRepository {
-  async getPokemonList(limit: 30, offset: 0): Promise<PokemonListResponse> {
+  async getPokemonList(
+    limit: number = 30,
+    offset: number = 0,
+  ): Promise<PokemonListResponse> {
     try {
       const response = await apiClient.get<PokemonListResponse>(
         `/pokemon?limit=${limit}&offset=${offset}`,
