@@ -16,26 +16,28 @@ apiClient.interceptors.response.use(
   },
   // If there is an error, handle it
   (error: AxiosError) => {
-    // Error sent because of a timeout or network error
-    if (error.code === 'ECONNABORTED') {
-      console.error(
-        'Network error: The request has exceeded the wait time (Timeout).',
-      );
+    if (__DEV__) {
+      // Error sent because of a timeout or network error
+      if (error.code === 'ECONNABORTED') {
+        console.error(
+          'Network error: The request has exceeded the wait time (Timeout).',
+        );
 
-      // Error sent because the server responded with an error status code
-    } else if (error.response) {
-      console.error(
-        `API error [${error.response.status}]:`,
-        error.response.data,
-      );
-      // Error sent because no response was received from the server, could be a network error or the server is down
-    } else if (error.request) {
-      console.error(
-        'Error: No response received from the server. It is possible that the server is down or there are network issues.',
-        error.request,
-      );
-    } else {
-      console.error('Error:', error.message);
+        // Error sent because the server responded with an error status code
+      } else if (error.response) {
+        console.error(
+          `API error [${error.response.status}]:`,
+          error.response.data,
+        );
+        // Error sent because no response was received from the server, could be a network error or the server is down
+      } else if (error.request) {
+        console.error(
+          'Error: No response received from the server. It is possible that the server is down or there are network issues.',
+          error.request,
+        );
+      } else {
+        console.error('Error:', error.message);
+      }
     }
 
     return Promise.reject(error);
