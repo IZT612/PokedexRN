@@ -1,8 +1,8 @@
 import apiClient from '@/src/shared/data/api/client';
 import { PokemonListResponse } from '@/src/shared/data/api/PokemonListResponse';
-import { IPokemonRepository } from '../../domain/interfaces/repositories/IPokemonRepository';
+import { IPokemonListRepository } from '../../domain/interfaces/repositories/IPokemonListRepository';
 
-export class PokemonRepository implements IPokemonRepository {
+export class PokemonListRepository implements IPokemonListRepository {
   async getPokemonList(limit: 30, offset: 0): Promise<PokemonListResponse> {
     try {
       const response = await apiClient.get<PokemonListResponse>(

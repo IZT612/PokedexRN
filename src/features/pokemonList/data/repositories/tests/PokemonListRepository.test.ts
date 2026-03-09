@@ -1,7 +1,7 @@
-import { PokemonRepository } from '../PokemonRepository';
+import { PokemonListRepository } from '../PokemonListRepository';
 
 describe('PokemonList: PokemonRepository - E2E test', () => {
-  const repository = new PokemonRepository();
+  const repository = new PokemonListRepository();
 
   it('Should fetch a list of Pokemon', async () => {
     const result = await repository.getPokemonList(30, 0);
