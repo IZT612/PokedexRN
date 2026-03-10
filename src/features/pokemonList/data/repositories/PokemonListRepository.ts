@@ -1,5 +1,6 @@
 import apiClient from '@/src/shared/data/api/client';
 import { PokemonListResponse } from '@/src/shared/data/api/PokemonListResponse';
+import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
 import { IPokemonListRepository } from '../../domain/interfaces/repositories/IPokemonListRepository';
 
 export class PokemonListRepository implements IPokemonListRepository {
@@ -20,12 +21,12 @@ export class PokemonListRepository implements IPokemonListRepository {
     }
   }
 
-  async getPokemonTypes(): Promise<string[]> {
+  async getPokemonTypes(): Promise<PokemonType[]> {
     try {
       const response = await apiClient.get('/type');
 
-      const types = response.data.results.map(
-        (type: { name: string }) => type.name,
+      const types: PokemonType[] = response.data.results.map(
+        (type: { name: string }) => ({ name: type.name }),
       );
 
       return types;
