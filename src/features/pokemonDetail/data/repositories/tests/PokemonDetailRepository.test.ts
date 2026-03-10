@@ -55,7 +55,7 @@ describe('PokemonDetail: PokemonDetailRepository - unit test', () => {
     (apiClient.get as jest.Mock).mockRejectedValueOnce(simulatedError);
 
     await expect(repository.getPokemonDetail(1)).rejects.toThrow(
-      'Network Error',
+      'Failed to fetch Pokemon detail for 1: Network Error',
     );
   });
 
