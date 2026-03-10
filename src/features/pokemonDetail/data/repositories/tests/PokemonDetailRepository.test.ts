@@ -3,7 +3,7 @@ import { PokemonDetailRepository } from '../PokemonDetailRepository';
 
 jest.mock('@/src/shared/data/api/client');
 
-describe('PokemonDetail: PokemonDetailRepository - E2E test', () => {
+describe('PokemonDetail: PokemonDetailRepository - unit test', () => {
   const repository = new PokemonDetailRepository();
 
   beforeEach(() => {
