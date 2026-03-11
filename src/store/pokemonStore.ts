@@ -8,6 +8,7 @@ export interface PokemonState {
   selectedPokemon: Pokemon | null;
   loading: boolean;
   error: string | null;
+  offset: number;
 
   setPokemonList: (pokemonList: Pokemon[]) => void;
   setSelectedPokemon: (selectedPokemon: Pokemon | null) => void;
@@ -27,6 +28,7 @@ export const usePokemonStore = create<PokemonState>()(
       selectedPokemon: null,
       loading: false,
       error: null,
+      offset: 0,
 
       setPokemonList: (pokemonList) =>
         set({ pokemonList }, false, 'setPokemonList'),
