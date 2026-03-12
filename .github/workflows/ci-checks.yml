@@ -6,7 +6,7 @@ on:
 
 jobs:
   validate-and-build:
-    name: Validate Code and Build Android
+    name: Validate Code
     runs-on: ubuntu-latest
 
     steps:
