@@ -41,11 +41,15 @@ jobs:
           reporter: github-pr-review
           eslint_flags: '.'
 
-      - name: Type Check (TypeScript)
-        uses: reviewdog/action-tsc@v1
+      - name: Setup Reviewdog CLI
+        uses: reviewdog/action-setup@v1
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          reporter: github-pr-review
+          reviewdog_version: latest
+
+      - name: Type Check (TypeScript)
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx tsc --noEmit | reviewdog -f=tsc -name="tsc" -reporter=github-pr-review -fail-on-error
 
         # Regular checks
       - name: Run Tests
