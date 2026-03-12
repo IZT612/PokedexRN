@@ -66,5 +66,18 @@ describe('PokemonListStore', () => {
       expect(state.loading).toBe(false);
       expect(state.error).toBeNull();
     });
+
+    it('Should handle error when fetching initial pokemon fails', async () => {
+      const errorMessage = 'Simulated error';
+      const mockFetchData = jest
+        .fn()
+        .mockRejectedValue(new Error(errorMessage));
+
+      await usePokemonListStore.getState().fetchInitialPokemon(mockFetchData);
+
+      const state = usePokemonListStore.getState();
+      expect(state.error).toBe(errorMessage);
+      expect(state.loading).toBe(false);
+    });
   });
 });
