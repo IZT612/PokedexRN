@@ -10,24 +10,19 @@ permissions:
   checks: write
 
 jobs:
-  validate-and-build:
-    name: Validate Code
+  format:
+    name: Format Check
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
-
       - name: Install dependencies
         run: npm ci
-
-        # Reviewdog
       - name: Check Formatting (Prettier)
         uses: EPMatt/reviewdog-action-prettier@v1
         with:
@@ -35,6 +30,19 @@ jobs:
           reporter: github-pr-review
           level: warning
 
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
       - name: Run Linter (ESLint)
         uses: reviewdog/action-eslint@v1
         with:
@@ -42,16 +50,40 @@ jobs:
           reporter: github-pr-review
           eslint_flags: '.'
 
+  typecheck:
+    name: Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
       - name: Setup Reviewdog CLI
         uses: reviewdog/action-setup@v1
         with:
           reviewdog_version: latest
-
       - name: Type Check (TypeScript)
         env:
           REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: npx tsc --noEmit | reviewdog -f=tsc -name="tsc" -reporter=github-pr-review -fail-on-error
+        run: npx tsc --noEmit --pretty false 2>&1 | reviewdog -f=tsc -name="tsc" -reporter=github-pr-review -fail-on-error
 
-        # Regular checks
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
       - name: Run Tests
         run: npm run test
