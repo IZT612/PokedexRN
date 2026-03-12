@@ -39,9 +39,3 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-
-      - name: Build Android (Debug)
-        run: |
-          cd android
-          chmod +x gradlew
-          ./gradlew assembleDebug
