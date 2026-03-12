@@ -51,4 +51,20 @@ describe('PokemonListStore', () => {
     usePokemonListStore.getState().setError(errorMessage);
     expect(usePokemonListStore.getState().error).toBe(errorMessage);
   });
+
+  describe('Listing and pagination', () => {
+    it('Should fetch initial pokemon successfully', async () => {
+      const mockFetchData = jest.fn().mockResolvedValue(mockPokemonList);
+
+      await usePokemonListStore.getState().fetchInitialPokemon(mockFetchData);
+
+      const state = usePokemonListStore.getState();
+
+      expect(mockFetchData).toHaveBeenCalledWith(30, 0);
+      expect(state.pokemonList).toEqual(mockPokemonList);
+      expect(state.offset).toBe(30);
+      expect(state.loading).toBe(false);
+      expect(state.error).toBeNull();
+    });
+  });
 });
