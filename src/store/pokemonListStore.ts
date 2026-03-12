@@ -3,7 +3,7 @@ import { devtools } from 'zustand/middleware';
 import { Pokemon } from '../shared/domain/entities/Pokemon';
 
 // This store is responsible for managing the state of the pokemon list and selected pokemon.
-export interface PokemonState {
+export interface PokemonListState {
   pokemonList: Pokemon[];
   selectedPokemon: Pokemon | null;
   loading: boolean;
@@ -26,7 +26,7 @@ export interface PokemonState {
   ) => Promise<void>;
 }
 
-export const usePokemonStore = create<PokemonState>()(
+export const usePokemonListStore = create<PokemonListState>()(
   // Devtools is a middleware that allows us to see the state changes in the browser devtools, it also allows us to time travel and see the state at any point in time.
   devtools(
     // The first argument of the devtools function is a function that receives the set function as an argument,
