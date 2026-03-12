@@ -111,5 +111,22 @@ describe('PokemonListStore', () => {
       expect(usePokemonListStore.getState().error).toBe(errorMessage);
       expect(usePokemonListStore.getState().loading).toBe(false);
     });
+
+    it('Should refresh the pokemon list correctly', async () => {
+      usePokemonListStore.setState({
+        pokemonList: [{ ...mockPokemonList[0], name: 'justgarbage' }],
+        // Set the offset to a non-zero value to ensure it resets to 0 after refresh
+        offset: 150,
+      });
+
+      const mockFetchData = jest.fn().mockResolvedValue(mockPokemonList);
+
+      await usePokemonListStore.getState().refreshPokemonList(mockFetchData);
+
+      const state = usePokemonListStore.getState();
+      expect(mockFetchData).toHaveBeenCalledWith(30, 0);
+      expect(state.pokemonList).toEqual(mockPokemonList);
+      expect(state.offset).toBe(30);
+    });
   });
 });
