@@ -99,5 +99,17 @@ describe('PokemonListStore', () => {
       expect(state.pokemonList).toEqual([...mockPokemonList, ...newBatch]);
       expect(state.offset).toBe(60);
     });
+
+    it('Should handle error when fetching more pokemon fails', async () => {
+      const errorMessage = 'Simulated Error';
+      const mockFetchData = jest
+        .fn()
+        .mockRejectedValue(new Error(errorMessage));
+
+      await usePokemonListStore.getState().fetchMorePokemon(mockFetchData);
+
+      expect(usePokemonListStore.getState().error).toBe(errorMessage);
+      expect(usePokemonListStore.getState().loading).toBe(false);
+    });
   });
 });
