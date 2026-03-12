@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import { Pokemon } from '../shared/domain/entities/Pokemon';
+import { Pokemon } from '../../../../shared/domain/entities/Pokemon';
 
 // This store is responsible for managing the state of the pokemon list and selected pokemon.
 export interface PokemonListState {
