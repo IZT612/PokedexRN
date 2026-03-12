@@ -2,6 +2,21 @@ import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
 import { usePokemonListStore } from '../pokemonListStore';
 
 describe('PokemonListStore', () => {
+  const mockPokemonList: Pokemon[] = [
+    {
+      id: 1,
+      name: 'bulbasaur',
+      image:
+        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+      types: ['grass', 'poison'],
+      stats: [
+        { name: 'hp', value: 45 },
+        { name: 'attack', value: 49 },
+      ],
+      abilities: ['overgrow'],
+    },
+  ];
+
   const initialStoreState = usePokemonListStore.getState();
 
   beforeEach(() => {
@@ -20,23 +35,6 @@ describe('PokemonListStore', () => {
   });
 
   it('Should update the pokemon list correctly', () => {
-    const mockPokemonList: Pokemon[] = [
-      {
-        id: 1,
-        name: 'bulbasaur',
-        image:
-          'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
-        // Sustituye el interior de estos arrays por las propiedades exactas
-        // que hayas definido en tus tipos PokemonType, Stat, etc.
-        types: ['grass', 'poison'],
-        stats: [
-          { name: 'hp', value: 45 },
-          { name: 'attack', value: 49 },
-        ],
-        abilities: ['overgrow'],
-      },
-    ];
-
     usePokemonListStore.getState().setPokemonList(mockPokemonList);
 
     expect(usePokemonListStore.getState().pokemonList).toEqual(mockPokemonList);
