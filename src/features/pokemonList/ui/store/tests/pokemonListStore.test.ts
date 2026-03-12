@@ -79,5 +79,25 @@ describe('PokemonListStore', () => {
       expect(state.error).toBe(errorMessage);
       expect(state.loading).toBe(false);
     });
+
+    it('Should fetch more pokemon and add them to the existing list', async () => {
+      usePokemonListStore.setState({
+        pokemonList: mockPokemonList,
+        offset: 30,
+      });
+
+      const newBatch: Pokemon[] = [
+        { ...mockPokemonList[0], id: 2, name: 'ivysaur' },
+      ];
+      const mockFetchData = jest.fn().mockResolvedValue(newBatch);
+
+      await usePokemonListStore.getState().fetchMorePokemon(mockFetchData);
+
+      const state = usePokemonListStore.getState();
+      expect(mockFetchData).toHaveBeenCalledWith(30, 30);
+
+      expect(state.pokemonList).toEqual([...mockPokemonList, ...newBatch]);
+      expect(state.offset).toBe(60);
+    });
   });
 });
