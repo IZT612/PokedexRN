@@ -121,6 +121,14 @@ describe('PokemonListStore', () => {
       expect(filtered[0].name).toBe('charmander');
       expect(filtered[1].name).toBe('charmeleon');
     });
+
+    it('Should filter pokemon by selected type', () => {
+      usePokemonListStore.getState().setSelectedType('water');
+      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      expect(filtered.length).toBe(1);
+      expect(filtered[0].name).toBe('squirtle');
+    });
   });
 
   describe('Listing and pagination', () => {
