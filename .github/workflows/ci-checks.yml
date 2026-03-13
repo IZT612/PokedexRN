@@ -1,0 +1,64 @@
+name: PR Checks for Develop
+
+on:
+  pull_request:
+    branches: ['develop', 'main']
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  ci-checks:
+    name: ${{ matrix.jobName }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        check: [format, lint, typecheck, test]
+        include:
+          - check: format
+            jobName: Format Check
+          - check: lint
+            jobName: Lint
+          - check: typecheck
+            jobName: Type Check
+          - check: test
+            jobName: Unit Tests
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Check Formatting (Prettier)
+        if: matrix.check == 'format'
+        uses: EPMatt/reviewdog-action-prettier@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          level: warning
+      - name: Run Linter (ESLint)
+        if: matrix.check == 'lint'
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          eslint_flags: '.'
+      - name: Setup Reviewdog CLI
+        if: matrix.check == 'typecheck'
+        uses: reviewdog/action-setup@v1
+        with:
+          reviewdog_version: v0.20.3
+      - name: Type Check (TypeScript)
+        if: matrix.check == 'typecheck'
+        env:
+          REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npx tsc --noEmit --pretty false 2>&1 | reviewdog -f=tsc -name="tsc" -reporter=github-pr-review -fail-on-error
+
+      - name: Run Tests
+        if: matrix.check == 'test'
+        run: npm run test
