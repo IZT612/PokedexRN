@@ -1,3 +1,4 @@
+import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { Pokemon } from '../../../../shared/domain/entities/Pokemon';
@@ -8,11 +9,16 @@ export interface PokemonListState {
   loading: boolean;
   error: string | null;
   offset: number;
+  searchQuery: string;
+  selectedType: PokemonType | null;
 
   setPokemonList: (pokemonList: Pokemon[]) => void;
   setSelectedPokemon: (selectedPokemon: Pokemon | null) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
+  setSearchQuery: (searchQuery: string) => void;
+  setSelectedType: (selectedType: PokemonType | null) => void;
+  clearFilters: () => void;
 
   fetchInitialPokemon: (
     fetchData: (limit: number, offset: number) => Promise<Pokemon[]>,
