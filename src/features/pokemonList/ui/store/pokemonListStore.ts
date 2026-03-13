@@ -13,7 +13,6 @@ export interface PokemonListState {
   selectedType: PokemonType | null;
 
   setPokemonList: (pokemonList: Pokemon[]) => void;
-  setSelectedPokemon: (selectedPokemon: Pokemon | null) => void;
   setLoading: (loading: boolean) => void;
   setError: (error: string | null) => void;
   setSearchQuery: (searchQuery: string) => void;
@@ -40,7 +39,6 @@ export const usePokemonListStore = create<PokemonListState>()(
     // performed.
     (set, get) => ({
       pokemonList: [],
-      selectedPokemon: null,
       loading: false,
       error: null,
       offset: 0,
