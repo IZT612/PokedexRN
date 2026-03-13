@@ -81,6 +81,16 @@ describe('PokemonListStore', () => {
     expect(usePokemonListStore.getState().error).toBe(errorMessage);
   });
 
+  it('Should update search query', () => {
+    usePokemonListStore.getState().setSearchQuery('char');
+    expect(usePokemonListStore.getState().searchQuery).toBe('char');
+  });
+
+  it('Should update selected type', () => {
+    usePokemonListStore.getState().setSelectedType('fire');
+    expect(usePokemonListStore.getState().selectedType).toBe('fire');
+  });
+
   describe('Listing and pagination', () => {
     it('Should fetch initial pokemon successfully', async () => {
       const mockFetchData = jest.fn().mockResolvedValue(mockPokemonList);
