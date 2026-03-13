@@ -112,6 +112,15 @@ describe('PokemonListStore', () => {
       const filtered = usePokemonListStore.getState().getFilteredPokemon();
       expect(filtered.length).toBe(4);
     });
+
+    it('Should filter pokemon by searchQuery', () => {
+      usePokemonListStore.getState().setSearchQuery('char');
+      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      expect(filtered.length).toBe(2);
+      expect(filtered[0].name).toBe('charmander');
+      expect(filtered[1].name).toBe('charmeleon');
+    });
   });
 
   describe('Listing and pagination', () => {
