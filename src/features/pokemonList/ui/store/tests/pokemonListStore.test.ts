@@ -129,6 +129,19 @@ describe('PokemonListStore', () => {
       expect(filtered.length).toBe(1);
       expect(filtered[0].name).toBe('squirtle');
     });
+
+    it('Should filter by both name and type correctly', () => {
+      // Charmeleon and squirtle have "le" in their name.
+      usePokemonListStore.getState().setSearchQuery('le');
+
+      // Charmeleon and charmander are the only fire type pokemon.
+      usePokemonListStore.getState().setSelectedType('fire');
+
+      // Only Charmeleon meets both requirements, so it should be the only one in the filtered list.
+      let filtered = usePokemonListStore.getState().getFilteredPokemon();
+      expect(filtered.length).toBe(1);
+      expect(filtered[0].name).toBe('charmeleon');
+    });
   });
 
   describe('Listing and pagination', () => {
