@@ -17,6 +17,34 @@ describe('PokemonListStore', () => {
     },
   ];
 
+  const mockFilterPokemonList: Pokemon[] = [
+    ...mockPokemonList,
+    {
+      id: 4,
+      name: 'charmander',
+      image: 'url',
+      types: ['fire'],
+      stats: [],
+      abilities: [],
+    },
+    {
+      id: 5,
+      name: 'charmeleon',
+      image: 'url',
+      types: ['fire'],
+      stats: [],
+      abilities: [],
+    },
+    {
+      id: 7,
+      name: 'squirtle',
+      image: 'url',
+      types: ['water'],
+      stats: [],
+      abilities: [],
+    },
+  ];
+
   const initialStoreState = usePokemonListStore.getState();
 
   beforeEach(() => {
