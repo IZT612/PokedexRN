@@ -91,6 +91,24 @@ describe('PokemonListStore', () => {
     expect(usePokemonListStore.getState().selectedType).toBe('fire');
   });
 
+  describe('Searching and filtering', () => {
+    beforeEach(() => {
+      usePokemonListStore.setState({ pokemonList: mockFilterPokemonList });
+    });
+
+    it('Should clear all filters', () => {
+      usePokemonListStore.setState({
+        searchQuery: 'saur',
+        selectedType: 'grass',
+      });
+      usePokemonListStore.getState().clearFilters();
+
+      const state = usePokemonListStore.getState();
+      expect(state.searchQuery).toBe('');
+      expect(state.selectedType).toBeNull();
+    });
+  });
+
   describe('Listing and pagination', () => {
     it('Should fetch initial pokemon successfully', async () => {
       const mockFetchData = jest.fn().mockResolvedValue(mockPokemonList);
