@@ -44,6 +44,8 @@ export const usePokemonListStore = create<PokemonListState>()(
       loading: false,
       error: null,
       offset: 0,
+      searchQuery: '',
+      selectedType: null,
 
       setPokemonList: (pokemonList) =>
         set({ pokemonList }, false, 'setPokemonList'),
