@@ -19,6 +19,8 @@ export interface PokemonListState {
   setSelectedType: (selectedType: PokemonType | null) => void;
   clearFilters: () => void;
 
+  getFilteredPokemon: () => Pokemon[];
+
   fetchInitialPokemon: (
     fetchData: (limit: number, offset: number) => Promise<Pokemon[]>,
   ) => Promise<void>;
@@ -55,6 +57,26 @@ export const usePokemonListStore = create<PokemonListState>()(
         set({ selectedType }, false, 'setSelectedType'),
       clearFilters: () =>
         set({ searchQuery: '', selectedType: null }, false, 'clearFilters'),
+
+      // Gets the filtered list of pokemon based on the search query and selected type
+      getFilteredPokemon: () => {
+        const { pokemonList, searchQuery, selectedType } = get();
+
+        pokemonList.filter((pokemon) => {
+          const containsSearchQuery = pokemon.name
+            .toLowerCase()
+            // If searchQuery is "" it will match all pokemon, since every string includes an empty string
+            .includes(searchQuery.toLowerCase());
+
+          // If there's a type selected, we check if the pokemon has that type, otherwise (Type not selected) we put true so it doesn't
+          // filter any pokemon based on the type.
+          const matchesSelectedType = selectedType
+            ? pokemon.types.includes(selectedType)
+            : true;
+
+          return containsSearchQuery && matchesSelectedType;
+        });
+      },
 
       // Fetches the initial list of pokemon
       fetchInitialPokemon: async (fetchData) => {
