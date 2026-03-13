@@ -49,6 +49,12 @@ export const usePokemonListStore = create<PokemonListState>()(
         set({ pokemonList }, false, 'setPokemonList'),
       setLoading: (loading) => set({ loading }, false, 'setLoading'),
       setError: (error) => set({ error }, false, 'setError'),
+      setSearchQuery: (searchQuery) =>
+        set({ searchQuery }, false, 'setSearchQuery'),
+      setSelectedType: (selectedType) =>
+        set({ selectedType }, false, 'setSelectedType'),
+      clearFilters: () =>
+        set({ searchQuery: '', selectedType: null }, false, 'clearFilters'),
 
       // Fetches the initial list of pokemon
       fetchInitialPokemon: async (fetchData) => {
