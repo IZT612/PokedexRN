@@ -59,6 +59,8 @@ describe('PokemonListStore', () => {
     expect(state.pokemonList).toEqual([]);
     expect(state.loading).toBe(false);
     expect(state.error).toBeNull();
+    expect(state.searchQuery).toBe('');
+    expect(state.selectedType).toBeNull();
   });
 
   it('Should update the pokemon list correctly', () => {
