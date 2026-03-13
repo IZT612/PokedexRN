@@ -107,6 +107,11 @@ describe('PokemonListStore', () => {
       expect(state.searchQuery).toBe('');
       expect(state.selectedType).toBeNull();
     });
+
+    it('Should return every pokemon when no filters are applied', () => {
+      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+      expect(filtered.length).toBe(4);
+    });
   });
 
   describe('Listing and pagination', () => {
