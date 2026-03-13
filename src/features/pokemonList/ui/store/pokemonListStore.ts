@@ -5,7 +5,6 @@ import { Pokemon } from '../../../../shared/domain/entities/Pokemon';
 // This store is responsible for managing the state of the pokemon list and selected pokemon.
 export interface PokemonListState {
   pokemonList: Pokemon[];
-  selectedPokemon: Pokemon | null;
   loading: boolean;
   error: string | null;
   offset: number;
@@ -42,8 +41,6 @@ export const usePokemonListStore = create<PokemonListState>()(
 
       setPokemonList: (pokemonList) =>
         set({ pokemonList }, false, 'setPokemonList'),
-      setSelectedPokemon: (selectedPokemon) =>
-        set({ selectedPokemon }, false, 'setSelectedPokemon'),
       setLoading: (loading) => set({ loading }, false, 'setLoading'),
       setError: (error) => set({ error }, false, 'setError'),
 

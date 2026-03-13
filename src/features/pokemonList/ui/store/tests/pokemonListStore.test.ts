@@ -29,7 +29,6 @@ describe('PokemonListStore', () => {
     const state = usePokemonListStore.getState();
 
     expect(state.pokemonList).toEqual([]);
-    expect(state.selectedPokemon).toBeNull();
     expect(state.loading).toBe(false);
     expect(state.error).toBeNull();
   });
