@@ -62,7 +62,7 @@ export const usePokemonListStore = create<PokemonListState>()(
       getFilteredPokemon: () => {
         const { pokemonList, searchQuery, selectedType } = get();
 
-        pokemonList.filter((pokemon) => {
+        return pokemonList.filter((pokemon) => {
           const containsSearchQuery = pokemon.name
             .toLowerCase()
             // If searchQuery is "" it will match all pokemon, since every string includes an empty string
