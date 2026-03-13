@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-   ci-checks:
+  ci-checks:
     name: ${{ matrix.jobName }}
     runs-on: ubuntu-latest
     strategy:
@@ -42,7 +42,7 @@ jobs:
           reporter: github-pr-review
           level: warning
       - name: Run Linter (ESLint)
-      if: matrix.check == 'lint'
+        if: matrix.check == 'lint'
         uses: reviewdog/action-eslint@v1
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
