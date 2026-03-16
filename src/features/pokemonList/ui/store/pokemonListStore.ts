@@ -3,6 +3,8 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { Pokemon } from '../../../../shared/domain/entities/Pokemon';
 
+const BATCH_SIZE = 30;
+
 // This store is responsible for managing the state of the pokemon list and selected pokemon.
 export interface PokemonListState {
   pokemonList: Pokemon[];
@@ -82,9 +84,9 @@ export const usePokemonListStore = create<PokemonListState>()(
       fetchInitialPokemon: async (fetchData) => {
         set({ loading: true, error: null }, false, 'fetchInitialPokemon');
         try {
-          const data = await fetchData(30, 0);
+          const data = await fetchData(BATCH_SIZE, 0);
           set(
-            { pokemonList: data, offset: 30, loading: false },
+            { pokemonList: data, offset: BATCH_SIZE, loading: false },
             false,
             'fetchInitialPokemon:success',
           );
@@ -102,11 +104,11 @@ export const usePokemonListStore = create<PokemonListState>()(
         const { offset, pokemonList } = get();
         set({ loading: true, error: null }, false, 'fetchMorePokemon');
         try {
-          const data = await fetchData(30, offset);
+          const data = await fetchData(BATCH_SIZE, offset);
           set(
             {
               pokemonList: [...pokemonList, ...data],
-              offset: offset + 30,
+              offset: offset + BATCH_SIZE,
               loading: false,
             },
             false,
@@ -127,9 +129,9 @@ export const usePokemonListStore = create<PokemonListState>()(
       refreshPokemonList: async (fetchData) => {
         set({ loading: true, error: null }, false, 'refreshPokemonList');
         try {
-          const data = await fetchData(30, 0);
+          const data = await fetchData(BATCH_SIZE, 0);
           set(
-            { pokemonList: data, offset: 30, loading: false },
+            { pokemonList: data, offset: BATCH_SIZE, loading: false },
             false,
             'refreshPokemonList:success',
           );
