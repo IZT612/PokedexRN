@@ -5,7 +5,7 @@ import { Pokemon } from '../../../../shared/domain/entities/Pokemon';
 
 const BATCH_SIZE = 30;
 
-// This store is responsible for managing the state of the pokemon list and selected pokemon.
+// This store is responsible for managing the state of the pokemon list, filters, and related loading state.
 export interface PokemonListState {
   pokemonList: Pokemon[];
   loading: boolean;
