@@ -54,4 +54,17 @@ describe('PokemonDetailStore', () => {
     expect(state.pokemonDetail).toBeNull();
     expect(state.error).toBeNull();
   });
+
+  it('Should fetch pokemon details successfully', async () => {
+    const mockFetchData = jest.fn().mockResolvedValue(mockPokemon);
+
+    await usePokemonDetailStore.getState().fetchPokemonDetail(1, mockFetchData);
+
+    const state = usePokemonDetailStore.getState();
+
+    expect(mockFetchData).toHaveBeenCalledWith(1);
+    expect(state.pokemonDetail).toEqual(mockPokemon);
+    expect(state.loading).toBe(false);
+    expect(state.error).toBeNull();
+  });
 });
