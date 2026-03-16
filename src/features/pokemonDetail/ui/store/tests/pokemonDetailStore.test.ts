@@ -15,4 +15,15 @@ describe('PokemonDetailStore', () => {
     expect(state.loading).toBe(false);
     expect(state.error).toBeNull();
   });
+
+  it('Should update the loading state correctly', () => {
+    usePokemonDetailStore.getState().setLoading(true);
+    expect(usePokemonDetailStore.getState().loading).toBe(true);
+  });
+
+  it('Should update the error state correctly', () => {
+    const errorMessage = 'Network Error';
+    usePokemonDetailStore.getState().setError(errorMessage);
+    expect(usePokemonDetailStore.getState().error).toBe(errorMessage);
+  });
 });
