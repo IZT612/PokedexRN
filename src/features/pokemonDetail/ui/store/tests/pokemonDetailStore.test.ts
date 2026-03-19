@@ -31,15 +31,46 @@ describe('PokemonDetailStore', () => {
     expect(state.error).toBeNull();
   });
 
-  it('Should update the loading state correctly', () => {
-    usePokemonDetailStore.getState().setLoading(true);
+  // Since we don't have a setLoading function, we test it by fetching a Pokemon
+  it('Should handle loading state and successful fetch correctly', async () => {
+    const mockFetchData = jest.fn().mockResolvedValue(mockPokemon);
+
+    const fetchPokemon = usePokemonDetailStore
+      .getState()
+      .fetchPokemonDetail(1, mockFetchData);
+
+    // Right after we call the fetchPokemon function we check "loading" (Should be true) and "error" (Should be null) values
     expect(usePokemonDetailStore.getState().loading).toBe(true);
+    expect(usePokemonDetailStore.getState().error).toBeNull();
+
+    // We wait until the function ends
+    await fetchPokemon;
+
+    // We check once more the values of "loading" (Should be false) and "error" (Should still be null)
+    expect(usePokemonDetailStore.getState().loading).toBe(false);
+    expect(usePokemonDetailStore.getState().pokemonDetail).toEqual(mockPokemon);
   });
 
-  it('Should update the error state correctly', () => {
+  // To check the error too we simulate one
+  it('Should handle loading and error states correctly on failed fetch', async () => {
     const errorMessage = 'Network Error';
-    usePokemonDetailStore.getState().setError(errorMessage);
+    const mockFetchData = jest.fn().mockRejectedValue(new Error(errorMessage));
+
+    const fetchError = usePokemonDetailStore
+      .getState()
+      .fetchPokemonDetail(1, mockFetchData);
+
+    // "loading" should be true
+    expect(usePokemonDetailStore.getState().loading).toBe(true);
+
+    // Wait until it fails
+    await fetchError;
+
+    // Check the values of "loading" (Should be false), "error" (Should be the error message), and pokemonDetail
+    // (Should be null, because of the error it couldn't be fetched)
+    expect(usePokemonDetailStore.getState().loading).toBe(false);
     expect(usePokemonDetailStore.getState().error).toBe(errorMessage);
+    expect(usePokemonDetailStore.getState().pokemonDetail).toBeNull();
   });
 
   it('Should clear the pokemon detail correctly', () => {

@@ -14,8 +14,6 @@ export interface PokemonListState {
   selectedType: PokemonType | null;
 
   setPokemonList: (pokemonList: Pokemon[]) => void;
-  setLoading: (loading: boolean) => void;
-  setError: (error: string | null) => void;
   setSearchQuery: (searchQuery: string) => void;
   setSelectedType: (selectedType: PokemonType | null) => void;
   clearFilters: () => void;
@@ -49,8 +47,6 @@ export const usePokemonListStore = create<PokemonListState>()(
     selectedType: null,
 
     setPokemonList: (pokemonList) => set({ pokemonList }),
-    setLoading: (loading) => set({ loading }),
-    setError: (error) => set({ error }),
     setSearchQuery: (searchQuery) => set({ searchQuery }),
     setSelectedType: (selectedType) => set({ selectedType }),
     clearFilters: () => set({ searchQuery: '', selectedType: null }),

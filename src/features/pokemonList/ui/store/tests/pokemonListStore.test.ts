@@ -69,18 +69,6 @@ describe('PokemonListStore', () => {
     expect(usePokemonListStore.getState().pokemonList).toEqual(mockPokemonList);
   });
 
-  it('Should update the loading state correctly', () => {
-    usePokemonListStore.getState().setLoading(true);
-    expect(usePokemonListStore.getState().loading).toBe(true);
-  });
-
-  it('Should update the error state correctly', () => {
-    const errorMessage: string | null = 'Network Error';
-
-    usePokemonListStore.getState().setError(errorMessage);
-    expect(usePokemonListStore.getState().error).toBe(errorMessage);
-  });
-
   it('Should update search query', () => {
     usePokemonListStore.getState().setSearchQuery('char');
     expect(usePokemonListStore.getState().searchQuery).toBe('char');
