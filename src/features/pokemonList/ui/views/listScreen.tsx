@@ -1,5 +1,7 @@
 import React from 'react';
 import { Platform, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { SearchBar } from '../components/SearchBar';
+import { TypeFilter } from '../components/TypeFilter';
 
 export const ListScreen = () => {
   return (
@@ -11,9 +13,8 @@ export const ListScreen = () => {
         <View style={styles.mainContent}>
           {/* Filters and search container */}
           <View style={styles.filtersContainer}>
-            <Text style={styles.placeholderText}>
-              Search and filters will go here
-            </Text>
+            <SearchBar />
+            <TypeFilter />
           </View>
           {/* List container */}
           <View style={styles.listContainer}>
@@ -53,8 +54,6 @@ const styles = StyleSheet.create({
   },
   mainContent: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   filtersContainer: {
     marginBottom: 16,
