@@ -32,12 +32,6 @@ export interface PokemonListState {
 }
 
 export const usePokemonListStore = create<PokemonListState>()(
-  // Devtools is a middleware that allows us to see the state changes in the browser devtools, it also allows us to time travel and see the state at any point in time.
-
-  // The first argument of the devtools function is a function that receives the set function as an argument,
-  // this set function is used to update the state of the store, it takes an object with the new state and an optional boolean to
-  // indicate if we want to replace the state or merge it, and an optional string to indicate the name of the action that is being
-  // performed.
   (set, get) => ({
     pokemonList: [],
     loading: false,
