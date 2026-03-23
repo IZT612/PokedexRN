@@ -1,5 +1,5 @@
+import { PokemonListRepository } from '@/src/features/pokemonList/data/repositories/PokemonListRepository';
 import apiClient from '@/src/shared/data/api/client';
-import { PokemonListRepository } from '../PokemonListRepository';
 
 jest.mock('@/src/shared/data/api/client');
 
@@ -13,12 +13,13 @@ describe('PokemonList: PokemonListRepository - E2E test', () => {
   describe('List tests', () => {
     // Success case: Able fetch a list of Pokemon
     it('Should fetch a list of Pokemon', async () => {
+      // Mock the first API call (The basic list response)
       const mockResults = Array(30).fill({
         name: 'pikachu',
-        url: 'https://fake-url.com',
+        url: 'https://fake-url.com/pokemon/25',
       });
 
-      const mockApiResponse = {
+      const mockListApiResponse = {
         data: {
           results: mockResults,
           count: 1302,
@@ -27,13 +28,59 @@ describe('PokemonList: PokemonListRepository - E2E test', () => {
         },
       };
 
-      (apiClient.get as jest.Mock).mockResolvedValueOnce(mockApiResponse);
+      // Mock the following API calls (The detailed Pokemon responses)
+      const mockDetailApiResponse = {
+        data: {
+          id: 25,
+          name: 'pikachu',
+          sprites: {
+            front_default:
+              'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png',
+            other: {
+              'official-artwork': {
+                front_default:
+                  'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png',
+              },
+            },
+          },
+          types: [{ type: { name: 'electric' } }],
+          stats: [
+            { base_stat: 35, stat: { name: 'hp' } },
+            { base_stat: 55, stat: { name: 'attack' } },
+            { base_stat: 40, stat: { name: 'defense' } },
+            { base_stat: 50, stat: { name: 'special-attack' } },
+            { base_stat: 50, stat: { name: 'special-defense' } },
+            { base_stat: 90, stat: { name: 'speed' } },
+          ],
+          abilities: [
+            { ability: { name: 'static' } },
+            { ability: { name: 'lightning-rod' } },
+          ],
+        },
+      };
 
+      // Set up the jest mocks
+      (apiClient.get as jest.Mock)
+        .mockResolvedValueOnce(mockListApiResponse)
+        .mockResolvedValue(mockDetailApiResponse);
+
+      // Execute
       const result = await repository.getPokemonList(30, 0);
 
-      expect(result.results.length).toBe(30);
-      expect(typeof result.results[0].name).toBe('string');
-      expect(typeof result.results[0].url).toBe('string');
+      // Check the mapped entity
+      expect(result.length).toBe(30);
+      expect(result[0].id).toBe(25);
+      expect(result[0].name).toBe('pikachu');
+      expect(result[0].image).toBe(
+        'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/25.png',
+      );
+      expect(result[0].types).toContain('electric');
+      expect(result[0].stats[0].name).toBe('hp');
+      expect(result[0].stats[0].value).toBe(35);
+      expect(result[0].abilities).toContain('static');
+
+      // 1 call for the main list + 30 calls for the details = 31 total calls
+      expect(apiClient.get).toHaveBeenCalledTimes(31);
     });
 
     // Error case: Simulates a network error when trying to fetch a list of Pokemon
@@ -42,7 +89,7 @@ describe('PokemonList: PokemonListRepository - E2E test', () => {
       (apiClient.get as jest.Mock).mockRejectedValueOnce(simulatedError);
 
       await expect(repository.getPokemonList(30, 0)).rejects.toThrow(
-        'Network error',
+        'Failed to fetch Pokemon list: Network error',
       );
     });
   });
