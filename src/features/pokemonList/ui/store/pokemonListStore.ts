@@ -1,6 +1,6 @@
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
 import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
-import { IPokemonListRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
+import { IPokemonRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
 import { create } from 'zustand';
 
 const BATCH_SIZE = 30;
@@ -19,7 +19,7 @@ export interface PokemonListState {
   loadPokemons: () => Promise<void>;
 }
 
-export const createPokemonListStore = (repository: IPokemonListRepository) =>
+export const createPokemonListStore = (repository: IPokemonRepository) =>
   create<PokemonListState>()((set, get) => ({
     pokemonList: [],
     loading: false,

@@ -1,10 +1,10 @@
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
 import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
-import { IPokemonListRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
+import { IPokemonRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
 import { createPokemonDetailStore } from '../pokemonDetailStore';
 
 describe('PokemonDetailStore', () => {
-  let mockRepository: jest.Mocked<IPokemonListRepository>;
+  let mockRepository: jest.Mocked<IPokemonRepository>;
   let usePokemonDetailStore: ReturnType<typeof createPokemonDetailStore>;
 
   const mockPokemon: Pokemon = {

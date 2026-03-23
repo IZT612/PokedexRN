@@ -1,5 +1,5 @@
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
-import { IPokemonListRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
+import { IPokemonRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
 import { createPokemonListStore } from '../pokemonListStore';
 
 describe('PokemonListStore', () => {
@@ -26,7 +26,7 @@ describe('PokemonListStore', () => {
     },
   ];
 
-  let mockRepository: jest.Mocked<IPokemonListRepository>;
+  let mockRepository: jest.Mocked<IPokemonRepository>;
 
   let usePokemonListStore: ReturnType<typeof createPokemonListStore>;
 

@@ -1,5 +1,5 @@
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
-import { IPokemonListRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
+import { IPokemonRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
 import { create } from 'zustand';
 
 export interface PokemonDetailState {
@@ -11,7 +11,7 @@ export interface PokemonDetailState {
   clearPokemonDetail: () => void;
 }
 
-export const createPokemonDetailStore = (repository: IPokemonListRepository) =>
+export const createPokemonDetailStore = (repository: IPokemonRepository) =>
   create<PokemonDetailState>()((set) => ({
     pokemonDetail: null,
     loading: false,

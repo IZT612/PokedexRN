@@ -8,7 +8,7 @@ export interface Pokemon {
   stats: PokemonStat[];
 
   // It's a string array to only display the names of the abilities, in the future,
-  // if we wanted to display full information of the abilities too we would have to change this, smilar to the stats.
+  // if we wanted to display full information of the abilities too we would have to change this, similar to the stats.
   abilities: string[];
 }
 

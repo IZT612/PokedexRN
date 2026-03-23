@@ -3,9 +3,10 @@ import { PokemonDetailResponse } from '@/src/shared/data/api/PokemonDetailRespon
 import { PokemonListResponse } from '@/src/shared/data/api/PokemonListResponse';
 import { mapPokemonDetailToDomain } from '@/src/shared/data/mappers/PokemonMapper';
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
-import { IPokemonListRepository } from '../../domain/interfaces/IPokemonRepository';
+import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
+import { IPokemonRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
 
-export class PokemonListRepository implements IPokemonListRepository {
+export class PokemonRepository implements IPokemonRepository {
   async getPokemonList(
     limit: number = 30,
     offset: number = 0,
@@ -47,8 +48,8 @@ export class PokemonListRepository implements IPokemonListRepository {
     try {
       const response = await apiClient.get('/type');
 
-      const types = response.data.results.map(
-        (type: { name: string }) => type.name,
+      const types: PokemonType[] = response.data.results.map(
+        (type: { name: string }) => ({ name: type.name }),
       );
 
       return types;
