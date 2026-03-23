@@ -1,9 +1,11 @@
+import { IPokemonListRepository } from '@/src/features/pokemonList/domain/interfaces/repositories/IPokemonListRepository';
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
 import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
-import { usePokemonDetailStore } from '../pokemonDetailStore';
+import { createPokemonDetailStore } from '../pokemonDetailStore';
 
 describe('PokemonDetailStore', () => {
-  const initialStoreState = usePokemonDetailStore.getState();
+  let mockRepository: jest.Mocked<IPokemonListRepository>;
+  let usePokemonDetailStore: ReturnType<typeof createPokemonDetailStore>;
 
   const mockPokemon: Pokemon = {
     id: 1,
@@ -19,8 +21,13 @@ describe('PokemonDetailStore', () => {
   };
 
   beforeEach(() => {
-    // Reset the store state before each test
-    usePokemonDetailStore.setState(initialStoreState);
+    mockRepository = {
+      getPokemonDetails: jest.fn(),
+      getPokemonList: jest.fn(),
+      getPokemonTypes: jest.fn(),
+    };
+
+    usePokemonDetailStore = createPokemonDetailStore(mockRepository);
   });
 
   it('Should have the correct initial state', () => {
@@ -31,43 +38,40 @@ describe('PokemonDetailStore', () => {
     expect(state.error).toBeNull();
   });
 
-  // Since we don't have a setLoading function, we test it by fetching a Pokemon
   it('Should handle loading state and successful fetch correctly', async () => {
-    const mockFetchData = jest.fn().mockResolvedValue(mockPokemon);
+    mockRepository.getPokemonDetails.mockResolvedValue(mockPokemon);
 
-    const fetchPokemon = usePokemonDetailStore
-      .getState()
-      .fetchPokemonDetail(1, mockFetchData);
+    const fetchPromise = usePokemonDetailStore.getState().fetchPokemonDetail(1);
 
-    // Right after we call the fetchPokemon function we check "loading" (Should be true) and "error" (Should be null) values
+    // Right after we call the function we check "loading" (Should be true) and "error" (Should be null)
     expect(usePokemonDetailStore.getState().loading).toBe(true);
     expect(usePokemonDetailStore.getState().error).toBeNull();
 
     // We wait until the function ends
-    await fetchPokemon;
+    await fetchPromise;
 
-    // We check once more the values of "loading" (Should be false) and "error" (Should still be null)
+    // We check once more the values of "loading" and "pokemonDetail"
     expect(usePokemonDetailStore.getState().loading).toBe(false);
     expect(usePokemonDetailStore.getState().pokemonDetail).toEqual(mockPokemon);
+
+    expect(mockRepository.getPokemonDetails).toHaveBeenCalledWith(1);
   });
 
-  // To check the error too we simulate one
   it('Should handle loading and error states correctly on failed fetch', async () => {
-    const errorMessage = 'Network Error';
-    const mockFetchData = jest.fn().mockRejectedValue(new Error(errorMessage));
+    usePokemonDetailStore.setState({ pokemonDetail: mockPokemon });
 
-    const fetchError = usePokemonDetailStore
-      .getState()
-      .fetchPokemonDetail(1, mockFetchData);
+    const errorMessage = 'Network Error';
+    mockRepository.getPokemonDetails.mockRejectedValue(new Error(errorMessage));
+
+    const fetchPromise = usePokemonDetailStore.getState().fetchPokemonDetail(2);
 
     // "loading" should be true
     expect(usePokemonDetailStore.getState().loading).toBe(true);
 
     // Wait until it fails
-    await fetchError;
+    await fetchPromise;
 
-    // Check the values of "loading" (Should be false), "error" (Should be the error message), and pokemonDetail
-    // (Should be null, because of the error it couldn't be fetched)
+    // Check the values of "loading", "error", and "pokemonDetail"
     expect(usePokemonDetailStore.getState().loading).toBe(false);
     expect(usePokemonDetailStore.getState().error).toBe(errorMessage);
     expect(usePokemonDetailStore.getState().pokemonDetail).toBeNull();
@@ -83,19 +87,6 @@ describe('PokemonDetailStore', () => {
 
     const state = usePokemonDetailStore.getState();
     expect(state.pokemonDetail).toBeNull();
-    expect(state.error).toBeNull();
-  });
-
-  it('Should fetch pokemon details successfully', async () => {
-    const mockFetchData = jest.fn().mockResolvedValue(mockPokemon);
-
-    await usePokemonDetailStore.getState().fetchPokemonDetail(1, mockFetchData);
-
-    const state = usePokemonDetailStore.getState();
-
-    expect(mockFetchData).toHaveBeenCalledWith(1);
-    expect(state.pokemonDetail).toEqual(mockPokemon);
-    expect(state.loading).toBe(false);
     expect(state.error).toBeNull();
   });
 });

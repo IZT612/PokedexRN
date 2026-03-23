@@ -1,5 +1,6 @@
+import { IPokemonListRepository } from '@/src/features/pokemonList/domain/interfaces/repositories/IPokemonListRepository';
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
-import { usePokemonListStore } from '../pokemonListStore';
+import { createPokemonListStore } from '../pokemonListStore';
 
 describe('PokemonListStore', () => {
   const mockPokemonList: Pokemon[] = [
@@ -15,10 +16,6 @@ describe('PokemonListStore', () => {
       ],
       abilities: ['overgrow'],
     },
-  ];
-
-  const mockFilterPokemonList: Pokemon[] = [
-    ...mockPokemonList,
     {
       id: 4,
       name: 'charmander',
@@ -27,29 +24,20 @@ describe('PokemonListStore', () => {
       stats: [],
       abilities: [],
     },
-    {
-      id: 5,
-      name: 'charmeleon',
-      image: 'url',
-      types: ['fire'],
-      stats: [],
-      abilities: [],
-    },
-    {
-      id: 7,
-      name: 'squirtle',
-      image: 'url',
-      types: ['water'],
-      stats: [],
-      abilities: [],
-    },
   ];
 
-  const initialStoreState = usePokemonListStore.getState();
+  let mockRepository: jest.Mocked<IPokemonListRepository>;
+
+  let usePokemonListStore: ReturnType<typeof createPokemonListStore>;
 
   beforeEach(() => {
-    // Reset the store state before each test
-    usePokemonListStore.setState(initialStoreState);
+    mockRepository = {
+      getPokemonList: jest.fn(),
+      getPokemonDetails: jest.fn(),
+      getPokemonTypes: jest.fn(),
+    };
+
+    usePokemonListStore = createPokemonListStore(mockRepository);
   });
 
   // Test the initial state of the store
@@ -59,14 +47,9 @@ describe('PokemonListStore', () => {
     expect(state.pokemonList).toEqual([]);
     expect(state.loading).toBe(false);
     expect(state.error).toBeNull();
+    expect(state.offset).toBe(0);
     expect(state.searchQuery).toBe('');
     expect(state.selectedType).toBeNull();
-  });
-
-  it('Should update the pokemon list correctly', () => {
-    usePokemonListStore.getState().setPokemonList(mockPokemonList);
-
-    expect(usePokemonListStore.getState().pokemonList).toEqual(mockPokemonList);
   });
 
   it('Should update search query', () => {
@@ -79,134 +62,70 @@ describe('PokemonListStore', () => {
     expect(usePokemonListStore.getState().selectedType).toBe('fire');
   });
 
-  describe('Searching and filtering', () => {
-    beforeEach(() => {
-      usePokemonListStore.setState({ pokemonList: mockFilterPokemonList });
-    });
-
-    it('Should clear all filters', () => {
-      usePokemonListStore.setState({
-        searchQuery: 'saur',
-        selectedType: 'grass',
-      });
-      usePokemonListStore.getState().clearFilters();
-
-      const state = usePokemonListStore.getState();
-      expect(state.searchQuery).toBe('');
-      expect(state.selectedType).toBeNull();
-    });
-
-    it('Should return every pokemon when no filters are applied', () => {
-      const filtered = usePokemonListStore.getState().getFilteredPokemon();
-      expect(filtered.length).toBe(4);
-    });
-
-    it('Should filter pokemon by searchQuery', () => {
-      usePokemonListStore.getState().setSearchQuery('char');
-      const filtered = usePokemonListStore.getState().getFilteredPokemon();
-
-      expect(filtered.length).toBe(2);
-      expect(filtered[0].name).toBe('charmander');
-      expect(filtered[1].name).toBe('charmeleon');
-    });
-
-    it('Should filter pokemon by selected type', () => {
-      usePokemonListStore.getState().setSelectedType('water');
-      const filtered = usePokemonListStore.getState().getFilteredPokemon();
-
-      expect(filtered.length).toBe(1);
-      expect(filtered[0].name).toBe('squirtle');
-    });
-
-    it('Should filter by both name and type correctly', () => {
-      // Charmeleon and squirtle have "le" in their name.
-      usePokemonListStore.getState().setSearchQuery('le');
-
-      // Charmeleon and charmander are the only fire type pokemon.
-      usePokemonListStore.getState().setSelectedType('fire');
-
-      // Only Charmeleon meets both requirements, so it should be the only one in the filtered list.
-      let filtered = usePokemonListStore.getState().getFilteredPokemon();
-      expect(filtered.length).toBe(1);
-      expect(filtered[0].name).toBe('charmeleon');
-    });
-  });
-
-  describe('Listing and pagination', () => {
+  describe('Loading Pokemons', () => {
     it('Should fetch initial pokemon successfully', async () => {
-      const mockFetchData = jest.fn().mockResolvedValue(mockPokemonList);
+      mockRepository.getPokemonList.mockResolvedValue(mockPokemonList);
 
-      await usePokemonListStore.getState().fetchInitialPokemon(mockFetchData);
+      await usePokemonListStore.getState().loadPokemons();
 
       const state = usePokemonListStore.getState();
 
-      expect(mockFetchData).toHaveBeenCalledWith(30, 0);
+      expect(mockRepository.getPokemonList).toHaveBeenCalledWith(30, 0);
+
       expect(state.pokemonList).toEqual(mockPokemonList);
       expect(state.offset).toBe(30);
       expect(state.loading).toBe(false);
       expect(state.error).toBeNull();
     });
 
-    it('Should handle error when fetching initial pokemon fails', async () => {
-      const errorMessage = 'Simulated error';
-      const mockFetchData = jest
-        .fn()
-        .mockRejectedValue(new Error(errorMessage));
+    it('Should handle error when fetching pokemon fails', async () => {
+      const errorMessage = 'Simulated error from API';
+      mockRepository.getPokemonList.mockRejectedValue(new Error(errorMessage));
 
-      await usePokemonListStore.getState().fetchInitialPokemon(mockFetchData);
+      await usePokemonListStore.getState().loadPokemons();
 
       const state = usePokemonListStore.getState();
+
       expect(state.error).toBe(errorMessage);
       expect(state.loading).toBe(false);
+      expect(state.pokemonList).toEqual([]);
     });
 
-    it('Should fetch more pokemon and add them to the existing list', async () => {
-      usePokemonListStore.setState({
-        pokemonList: mockPokemonList,
-        offset: 30,
-      });
+    it('Should fetch more pokemon and add them to the existing list (Pagination)', async () => {
+      mockRepository.getPokemonList.mockResolvedValue([mockPokemonList[0]]); // Bulbasaur
+      await usePokemonListStore.getState().loadPokemons();
 
-      const newBatch: Pokemon[] = [
-        { ...mockPokemonList[0], id: 2, name: 'ivysaur' },
-      ];
-      const mockFetchData = jest.fn().mockResolvedValue(newBatch);
-
-      await usePokemonListStore.getState().fetchMorePokemon(mockFetchData);
+      mockRepository.getPokemonList.mockResolvedValue([mockPokemonList[1]]); // Charmander
+      await usePokemonListStore.getState().loadPokemons();
 
       const state = usePokemonListStore.getState();
-      expect(mockFetchData).toHaveBeenCalledWith(30, 30);
 
-      expect(state.pokemonList).toEqual([...mockPokemonList, ...newBatch]);
+      // First argument is the position
+      expect(mockRepository.getPokemonList).toHaveBeenNthCalledWith(1, 30, 0);
+      expect(mockRepository.getPokemonList).toHaveBeenNthCalledWith(2, 30, 30);
+
+      expect(state.pokemonList).toEqual(mockPokemonList);
       expect(state.offset).toBe(60);
     });
 
-    it('Should handle error when fetching more pokemon fails', async () => {
-      const errorMessage = 'Simulated Error';
-      const mockFetchData = jest
-        .fn()
-        .mockRejectedValue(new Error(errorMessage));
+    it('Should not trigger a new fetch if it is already loading', async () => {
+      let resolvePromise: (value: Pokemon[]) => void;
+      mockRepository.getPokemonList.mockReturnValue(
+        new Promise((resolve) => {
+          resolvePromise = resolve;
+        }),
+      );
 
-      await usePokemonListStore.getState().fetchMorePokemon(mockFetchData);
+      const firstLoad = usePokemonListStore.getState().loadPokemons();
 
-      expect(usePokemonListStore.getState().error).toBe(errorMessage);
-      expect(usePokemonListStore.getState().loading).toBe(false);
-    });
+      expect(usePokemonListStore.getState().loading).toBe(true);
 
-    it('Should refresh the pokemon list correctly', async () => {
-      usePokemonListStore.setState({
-        pokemonList: [{ ...mockPokemonList[0], name: 'justgarbage' }],
-        // Set the offset to a non-zero value to ensure it resets to 0 after refresh
-        offset: 150,
-      });
+      await usePokemonListStore.getState().loadPokemons();
 
-      const mockFetchData = jest.fn().mockResolvedValue(mockPokemonList);
+      expect(mockRepository.getPokemonList).toHaveBeenCalledTimes(1);
 
-      await usePokemonListStore.getState().refreshPokemonList(mockFetchData);
-
-      const state = usePokemonListStore.getState();
-      expect(mockFetchData).toHaveBeenCalledWith(30, 0);
-      expect(state.pokemonList).toEqual(mockPokemonList);
-      expect(state.offset).toBe(30);
+      resolvePromise!(mockPokemonList);
+      await firstLoad;
     });
   });
 });
