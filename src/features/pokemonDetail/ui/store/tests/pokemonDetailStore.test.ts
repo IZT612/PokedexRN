@@ -76,17 +76,4 @@ describe('PokemonDetailStore', () => {
     expect(usePokemonDetailStore.getState().error).toBe(errorMessage);
     expect(usePokemonDetailStore.getState().pokemonDetail).toBeNull();
   });
-
-  it('Should clear the pokemon detail correctly', () => {
-    usePokemonDetailStore.setState({
-      pokemonDetail: mockPokemon,
-      error: 'Some error',
-    });
-
-    usePokemonDetailStore.getState().clearPokemonDetail();
-
-    const state = usePokemonDetailStore.getState();
-    expect(state.pokemonDetail).toBeNull();
-    expect(state.error).toBeNull();
-  });
 });

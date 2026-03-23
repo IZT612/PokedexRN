@@ -8,7 +8,6 @@ export interface PokemonDetailState {
   error: string | null;
 
   fetchPokemonDetail: (idOrName: string | number) => Promise<void>;
-  clearPokemonDetail: () => void;
 }
 
 export const createPokemonDetailStore = (repository: IPokemonRepository) =>
@@ -16,8 +15,6 @@ export const createPokemonDetailStore = (repository: IPokemonRepository) =>
     pokemonDetail: null,
     loading: false,
     error: null,
-
-    clearPokemonDetail: () => set({ pokemonDetail: null, error: null }),
 
     fetchPokemonDetail: async (idOrName) => {
       set({ loading: true, error: null });
