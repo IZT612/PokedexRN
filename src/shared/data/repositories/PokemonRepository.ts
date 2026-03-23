@@ -49,7 +49,7 @@ export class PokemonRepository implements IPokemonRepository {
       const response = await apiClient.get('/type');
 
       const types: PokemonType[] = response.data.results.map(
-        (type: { name: string }) => ({ name: type.name }),
+        (type: { name: string }) => type.name,
       );
 
       return types;
