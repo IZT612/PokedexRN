@@ -1,5 +1,5 @@
-import { PokemonListRepository } from '@/src/features/pokemonList/data/repositories/PokemonListRepository';
 import apiClient from '@/src/shared/data/api/client';
+import { PokemonListRepository } from '@/src/shared/data/repositories/PokemonListRepository';
 
 jest.mock('@/src/shared/data/api/client');
 

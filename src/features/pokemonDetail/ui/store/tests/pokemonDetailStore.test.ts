@@ -1,6 +1,6 @@
-import { IPokemonListRepository } from '@/src/features/pokemonList/domain/interfaces/repositories/IPokemonListRepository';
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
 import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
+import { IPokemonListRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
 import { createPokemonDetailStore } from '../pokemonDetailStore';
 
 describe('PokemonDetailStore', () => {

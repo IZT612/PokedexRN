@@ -3,7 +3,7 @@ import { PokemonDetailResponse } from '@/src/shared/data/api/PokemonDetailRespon
 import { PokemonListResponse } from '@/src/shared/data/api/PokemonListResponse';
 import { mapPokemonDetailToDomain } from '@/src/shared/data/mappers/PokemonMapper';
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
-import { IPokemonListRepository } from '../../domain/interfaces/repositories/IPokemonListRepository';
+import { IPokemonListRepository } from '../../domain/interfaces/IPokemonRepository';
 
 export class PokemonListRepository implements IPokemonListRepository {
   async getPokemonList(
