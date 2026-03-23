@@ -1,10 +1,10 @@
 import apiClient from '@/src/shared/data/api/client';
-import { PokemonListRepository } from '@/src/shared/data/repositories/PokemonListRepository';
+import { PokemonRepository } from '@/src/shared/data/repositories/PokemonRepository';
 
 jest.mock('@/src/shared/data/api/client');
 
-describe('PokemonList: PokemonListRepository - unit test', () => {
-  const repository = new PokemonListRepository();
+describe('PokemonList: PokemonListRepository - E2E test', () => {
+  const repository = new PokemonRepository();
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -130,24 +130,24 @@ describe('PokemonList: PokemonListRepository - unit test', () => {
       expect(types.length).toBeGreaterThanOrEqual(18);
 
       // We check if the types array contains all the currently known Pokemon types
-      expect(types).toContainEqual({ name: 'normal' });
-      expect(types).toContainEqual({ name: 'fighting' });
-      expect(types).toContainEqual({ name: 'flying' });
-      expect(types).toContainEqual({ name: 'poison' });
-      expect(types).toContainEqual({ name: 'ground' });
-      expect(types).toContainEqual({ name: 'rock' });
-      expect(types).toContainEqual({ name: 'bug' });
-      expect(types).toContainEqual({ name: 'ghost' });
-      expect(types).toContainEqual({ name: 'steel' });
-      expect(types).toContainEqual({ name: 'fire' });
-      expect(types).toContainEqual({ name: 'water' });
-      expect(types).toContainEqual({ name: 'grass' });
-      expect(types).toContainEqual({ name: 'electric' });
-      expect(types).toContainEqual({ name: 'psychic' });
-      expect(types).toContainEqual({ name: 'ice' });
-      expect(types).toContainEqual({ name: 'dragon' });
-      expect(types).toContainEqual({ name: 'dark' });
-      expect(types).toContainEqual({ name: 'fairy' });
+      expect(types).toContain('normal');
+      expect(types).toContain('fighting');
+      expect(types).toContain('flying');
+      expect(types).toContain('poison');
+      expect(types).toContain('ground');
+      expect(types).toContain('rock');
+      expect(types).toContain('bug');
+      expect(types).toContain('ghost');
+      expect(types).toContain('steel');
+      expect(types).toContain('fire');
+      expect(types).toContain('water');
+      expect(types).toContain('grass');
+      expect(types).toContain('electric');
+      expect(types).toContain('psychic');
+      expect(types).toContain('ice');
+      expect(types).toContain('dragon');
+      expect(types).toContain('dark');
+      expect(types).toContain('fairy');
     });
 
     // Error case: Simulates a network error when trying to fetch a list of Pokemon types
