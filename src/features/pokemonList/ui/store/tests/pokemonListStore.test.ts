@@ -109,7 +109,7 @@ describe('PokemonListStore', () => {
     });
 
     it('Should not trigger a new fetch if it is already loading', async () => {
-      let resolvePromise: (value: Pokemon[]) => void;
+      let resolvePromise!: (value: Pokemon[]) => void;
       mockRepository.getPokemonList.mockReturnValue(
         new Promise((resolve) => {
           resolvePromise = resolve;

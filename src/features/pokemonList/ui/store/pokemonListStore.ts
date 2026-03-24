@@ -17,6 +17,8 @@ export interface PokemonListState {
   setSelectedType: (selectedType: PokemonType | null) => void;
 
   loadPokemons: () => Promise<void>;
+
+  getFilteredPokemon: () => Pokemon[];
 }
 
 export const createPokemonListStore = (repository: IPokemonRepository) =>
@@ -38,18 +40,38 @@ export const createPokemonListStore = (repository: IPokemonRepository) =>
       set({ loading: true, error: null });
 
       try {
-        const Pokemons = await repository.getPokemonList(BATCH_SIZE, offset);
+        const pokemons = await repository.getPokemonList(BATCH_SIZE, offset);
 
         set((state) => ({
-          pokemonList: [...state.pokemonList, ...Pokemons],
+          pokemonList: [...state.pokemonList, ...pokemons],
           offset: offset + BATCH_SIZE,
           loading: false,
         }));
       } catch (error: any) {
+        const errorMessage =
+          error instanceof Error ? error.message : String(error);
         set({
-          error: error.message || 'Error al cargar los Pokémon',
+          error: errorMessage || 'Error loading the Pokemons',
           loading: false,
         });
       }
+    },
+
+    // Gets the list of filtered Pokemon
+    getFilteredPokemon: () => {
+      const { pokemonList, searchQuery, selectedType } = get();
+
+      return pokemonList.filter((pokemon) => {
+        const matchesSearch = pokemon.name
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase());
+
+        const matchesType = selectedType
+          ? pokemon.types.includes(selectedType)
+          : true;
+
+        // Both have to be true
+        return matchesSearch && matchesType;
+      });
     },
   }));
