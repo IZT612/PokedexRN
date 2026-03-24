@@ -2,10 +2,10 @@ import React from 'react';
 import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { XStack } from 'tamagui';
 
+import { usePokemonListStore } from '@/app/store';
 import { Tag } from '@/src/shared/ui/components/tag';
 import { pokemonTypeColors } from '../../../../../constants/colors';
 import { PokemonType } from '../../../../shared/domain//entities/PokemonType';
-import { usePokemonListStore } from '../store/pokemonListStore';
 
 const POKEMON_TYPES: PokemonType[] = [
   'normal',

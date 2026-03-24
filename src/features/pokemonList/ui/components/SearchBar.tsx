@@ -4,7 +4,7 @@ import { XStack } from 'tamagui';
 import { Button } from '../../../../shared/ui/components/button';
 import { SearchInput } from '../../../../shared/ui/components/searchInput';
 
-import { usePokemonListStore } from '../store/pokemonListStore';
+import { usePokemonListStore } from '@/app/store';
 
 export const SearchBar = () => {
   // Connection with the store
