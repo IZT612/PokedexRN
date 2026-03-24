@@ -117,6 +117,8 @@ describe('PokemonRepository - unit tests', () => {
             { name: 'dragon' },
             { name: 'dark' },
             { name: 'fairy' },
+            { name: 'unknown' },
+            { name: 'shadow' },
           ],
         },
       };
@@ -148,6 +150,9 @@ describe('PokemonRepository - unit tests', () => {
       expect(types).toContain('dragon');
       expect(types).toContain('dark');
       expect(types).toContain('fairy');
+
+      expect(types).not.toContain('unknown');
+      expect(types).not.toContain('shadow');
     });
 
     // Error case: Simulates a network error when trying to fetch a list of Pokemon types

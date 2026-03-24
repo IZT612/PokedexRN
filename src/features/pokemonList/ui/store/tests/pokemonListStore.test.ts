@@ -128,4 +128,54 @@ describe('PokemonListStore', () => {
       await firstLoad;
     });
   });
+
+  describe('Filtering Pokemon (getFilteredPokemon)', () => {
+    beforeEach(() => {
+      usePokemonListStore.setState({ pokemonList: mockPokemonList });
+    });
+
+    it('(1) Should filter by search query only', () => {
+      // Only Pokemon containing 'bulb' in the mock is bulbasaur
+      usePokemonListStore.getState().setSearchQuery('bulb');
+      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      expect(filtered.length).toBe(1);
+      expect(filtered[0].name).toBe('bulbasaur');
+    });
+
+    it('(2) Should filter by selected type only', () => {
+      // Only fire type Pokemon in the mock is Charmander
+      usePokemonListStore.getState().setSelectedType('fire');
+      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      expect(filtered.length).toBe(1);
+      expect(filtered[0].name).toBe('charmander');
+    });
+
+    it('(3) Should filter by both search query and selected type', () => {
+      // There's no Pokemon in the mock containing 'char' with water type
+      usePokemonListStore.getState().setSearchQuery('char');
+      usePokemonListStore.getState().setSelectedType('water');
+      let filtered = usePokemonListStore.getState().getFilteredPokemon();
+      expect(filtered.length).toBe(0);
+
+      // The only Pokemon in the mock containing 'char' with fire type is charmander
+      usePokemonListStore.getState().setSearchQuery('char');
+      usePokemonListStore.getState().setSelectedType('fire');
+      filtered = usePokemonListStore.getState().getFilteredPokemon();
+      expect(filtered.length).toBe(1);
+      expect(filtered[0].name).toBe('charmander');
+    });
+
+    it('(4) Should return all pokemon when no filters are applied', () => {
+      usePokemonListStore.getState().setSearchQuery('');
+      usePokemonListStore.getState().setSelectedType(null);
+      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      // Should return both charmander and bulbasaur
+      expect(filtered.length).toBe(2);
+      expect(filtered[0].name).toBe('bulbasaur');
+      expect(filtered[1].name).toBe('charmander');
+    });
+  });
 });

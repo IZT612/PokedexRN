@@ -48,9 +48,15 @@ export class PokemonRepository implements IPokemonRepository {
     try {
       const response = await apiClient.get('/type');
 
-      const types = response.data.results.map(
-        (type: { name: string }) => type.name as PokemonType,
-      );
+      const types = response.data.results
+
+        // Although these types exist in the API, there are no Pokemons with those, so we filter it out
+        .filter(
+          (type: { name: string }) =>
+            type.name !== 'unknown' && type.name !== 'shadow',
+        )
+
+        .map((type: { name: string }) => type.name as PokemonType);
 
       return types;
     } catch (error) {
