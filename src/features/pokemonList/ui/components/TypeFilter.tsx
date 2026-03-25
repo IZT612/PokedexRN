@@ -3,9 +3,10 @@ import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { XStack } from 'tamagui';
 
 import { usePokemonListStore } from '@/app/store';
+import { pokemonTypeColors } from '@/constants/colors';
+import { Spacing } from '@/constants/theme';
+import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
 import { Tag } from '@/src/shared/ui/components/tag';
-import { pokemonTypeColors } from '../../../../../constants/colors';
-import { PokemonType } from '../../../../shared/domain//entities/PokemonType';
 
 const POKEMON_TYPES: PokemonType[] = [
   'normal',
@@ -34,7 +35,7 @@ export const TypeFilter = () => {
   const setSelectedType = usePokemonListStore((state) => state.setSelectedType);
 
   // Handles the toggles of types (Only one at a time for now)
-  const ToggleType = (type: PokemonType) => {
+  const toggleType = (type: PokemonType) => {
     if (selectedType === type) {
       setSelectedType(null);
     } else {
@@ -48,7 +49,7 @@ export const TypeFilter = () => {
   };
 
   return (
-    <XStack width="100%" paddingVertical={8}>
+    <XStack width="100%" paddingVertical={Spacing.sm}>
       {/* Horizontal slider, doesn't show the slider bar*/}
       <ScrollView
         horizontal
@@ -64,7 +65,7 @@ export const TypeFilter = () => {
             <TouchableOpacity
               key={type}
               activeOpacity={0.7}
-              onPress={() => ToggleType(type)}
+              onPress={() => toggleType(type)}
               style={{ opacity }}
             >
               <Tag label={type} color={getTypeColor(type)} />
@@ -77,14 +78,5 @@ export const TypeFilter = () => {
 };
 
 const styles = StyleSheet.create({
-  scrollContent: { paddingHorizontal: 12, gap: 8 },
-  chip: {
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    borderRadius: 20,
-    borderWidth: 1.5,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  chipText: { fontSize: 14, fontWeight: '600' },
+  scrollContent: { paddingHorizontal: Spacing.md, gap: Spacing.sm },
 });

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import { pokemonTypeColors } from '../../../../../constants/colors';
-import { Colors, Spacing } from '../../../../../constants/theme';
-import { Pokemon } from '../../../../shared/domain/entities/Pokemon';
-import { Card } from '../../../../shared/ui/components/card';
-import { Tag } from '../../../../shared/ui/components/tag';
+import { pokemonTypeColors } from '@/constants/colors';
+import { Colors, Spacing, Typography } from '@/constants/theme';
+import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
+import { Card } from '@/src/shared/ui/components/card';
+import { Tag } from '@/src/shared/ui/components/tag';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -13,7 +13,7 @@ interface PokemonCardProps {
 }
 
 export const PokemonCard = ({ pokemon, onPress }: PokemonCardProps) => {
-  // Formats the ID to look like this "#001"
+  // Formats the ID to look like this "#0 01"
   const formattedId = `#${pokemon.id.toString().padStart(3, '0')}`;
 
   return (
@@ -22,7 +22,7 @@ export const PokemonCard = ({ pokemon, onPress }: PokemonCardProps) => {
         {/* Header: name and id */}
         <View style={styles.header}>
           <Text style={styles.name}>
-            {/* Captializes the first letter of the Pokemon's name */}
+            {/* Capitalizes the first letter of the Pokemon's name */}
             {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
           </Text>
           <Text style={styles.id}>{formattedId}</Text>
@@ -56,13 +56,13 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.sm,
   },
   name: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: Typography.fontSize.lg,
+    fontWeight: Typography.fontWeight.bold,
     color: Colors.light.text,
   },
   id: {
-    fontSize: 14,
-    fontWeight: '600',
+    fontSize: Typography.fontSize.xs,
+    fontWeight: Typography.fontWeight.semibold,
     color: Colors.light.icon,
   },
   imageContainer: {
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: Spacing.sm,
     marginTop: Spacing.sm,
   },
 });

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { XStack } from 'tamagui';
 
-import { Button } from '../../../../shared/ui/components/button';
-import { SearchInput } from '../../../../shared/ui/components/searchInput';
+import { Button } from '@/src/shared/ui/components/button';
+import { SearchInput } from '@/src/shared/ui/components/searchInput';
 
 import { usePokemonListStore } from '@/app/store';
+import { Spacing } from '@/constants/theme';
 
 export const SearchBar = () => {
   // Connection with the store
@@ -17,13 +18,17 @@ export const SearchBar = () => {
   useEffect(() => {
     const timerId = setTimeout(() => {
       setSearchQuery(localQuery);
-      console.log('Stored:', localQuery);
     }, 300);
 
     return () => {
       clearTimeout(timerId);
     };
   }, [localQuery, setSearchQuery]);
+
+  // Use effect to update the local query if for some reason the global query changes
+  useEffect(() => {
+    setLocalQuery(globalQuery);
+  }, [globalQuery]);
 
   // Clear button
   const clearQuery = () => {
@@ -35,9 +40,9 @@ export const SearchBar = () => {
     <XStack
       alignItems="center"
       width="100%"
-      paddingHorizontal={12}
-      paddingVertical={4}
-      gap={8}
+      paddingHorizontal={Spacing.md}
+      paddingVertical={Spacing.xs}
+      gap={Spacing.sm}
     >
       <XStack flex={1}>
         <SearchInput
