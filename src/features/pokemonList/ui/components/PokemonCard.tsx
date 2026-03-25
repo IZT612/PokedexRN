@@ -13,7 +13,7 @@ interface PokemonCardProps {
 }
 
 export const PokemonCard = ({ pokemon, onPress }: PokemonCardProps) => {
-  // Formats the ID to look like this "#0 01"
+  // Formats the ID to look like this "#001"
   const formattedId = `#${pokemon.id.toString().padStart(3, '0')}`;
 
   return (
