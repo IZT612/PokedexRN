@@ -137,7 +137,16 @@ describe('PokemonListStore', () => {
     it('(1) Should filter by search query only', () => {
       // Only Pokemon containing 'bulb' in the mock is bulbasaur
       usePokemonListStore.getState().setSearchQuery('bulb');
-      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      let state = usePokemonListStore.getState();
+
+      const filtered = usePokemonListStore
+        .getState()
+        .getFilteredPokemon(
+          state.pokemonList,
+          state.searchQuery,
+          state.selectedType,
+        );
 
       expect(filtered.length).toBe(1);
       expect(filtered[0].name).toBe('bulbasaur');
@@ -146,7 +155,16 @@ describe('PokemonListStore', () => {
     it('(2) Should filter by selected type only', () => {
       // Only fire type Pokemon in the mock is Charmander
       usePokemonListStore.getState().setSelectedType('fire');
-      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      let state = usePokemonListStore.getState();
+
+      const filtered = usePokemonListStore
+        .getState()
+        .getFilteredPokemon(
+          state.pokemonList,
+          state.searchQuery,
+          state.selectedType,
+        );
 
       expect(filtered.length).toBe(1);
       expect(filtered[0].name).toBe('charmander');
@@ -156,13 +174,31 @@ describe('PokemonListStore', () => {
       // There's no Pokemon in the mock containing 'char' with water type
       usePokemonListStore.getState().setSearchQuery('char');
       usePokemonListStore.getState().setSelectedType('water');
-      let filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      let state = usePokemonListStore.getState();
+
+      let filtered = usePokemonListStore
+        .getState()
+        .getFilteredPokemon(
+          state.pokemonList,
+          state.searchQuery,
+          state.selectedType,
+        );
       expect(filtered.length).toBe(0);
 
       // The only Pokemon in the mock containing 'char' with fire type is charmander
       usePokemonListStore.getState().setSearchQuery('char');
       usePokemonListStore.getState().setSelectedType('fire');
-      filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      state = usePokemonListStore.getState();
+
+      filtered = usePokemonListStore
+        .getState()
+        .getFilteredPokemon(
+          state.pokemonList,
+          state.searchQuery,
+          state.selectedType,
+        );
       expect(filtered.length).toBe(1);
       expect(filtered[0].name).toBe('charmander');
     });
@@ -170,7 +206,16 @@ describe('PokemonListStore', () => {
     it('(4) Should return all pokemon when no filters are applied', () => {
       usePokemonListStore.getState().setSearchQuery('');
       usePokemonListStore.getState().setSelectedType(null);
-      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      let state = usePokemonListStore.getState();
+
+      const filtered = usePokemonListStore
+        .getState()
+        .getFilteredPokemon(
+          state.pokemonList,
+          state.searchQuery,
+          state.selectedType,
+        );
 
       // Should return both charmander and bulbasaur
       expect(filtered.length).toBe(2);
