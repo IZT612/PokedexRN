@@ -1,38 +1,32 @@
+import { BorderRadius, Colors, Sizes, Spacing } from '@/constants/theme';
 import React from 'react';
-import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
-import {
-    BorderRadius,
-    Colors,
-    Sizes,
-    Spacing,
-} from '../../../../constants/theme';
+import { ColorTokens, Input, InputProps } from 'tamagui';
 
 type Props = {
   placeholder: string;
+  value: string;
   onChangeText: (text: string) => void;
-} & Omit<TextInputProps, 'onChangeText'>;
+} & Omit<InputProps, 'onChangeText' | 'placeholderTextColor'>;
 
-export const SearchInput = ({ placeholder, onChangeText }: Props) => (
-  <View style={styles.container}>
-    <TextInput
-      style={styles.input}
-      placeholder={placeholder}
-      placeholderTextColor={Colors.light.icon}
-      onChangeText={onChangeText}
-    />
-  </View>
+export const SearchInput = ({
+  placeholder,
+  value,
+  onChangeText,
+  ...rest
+}: Props) => (
+  <Input
+    flex={1}
+    height={Sizes.buttonHeight.md}
+    backgroundColor={Colors.light.surface}
+    borderRadius={BorderRadius.full}
+    paddingHorizontal={Spacing.md}
+    borderWidth={1}
+    borderColor="#E0E0E0"
+    color={Colors.light.text}
+    placeholder={placeholder}
+    placeholderTextColor={'$gray10' as ColorTokens}
+    value={value}
+    onChangeText={onChangeText}
+    {...rest}
+  />
 );
-
-const styles = StyleSheet.create({
-  container: {
-    height: Sizes.buttonHeight.md,
-    backgroundColor: '#F5F5F5',
-    borderRadius: BorderRadius.full,
-    paddingHorizontal: Spacing.md,
-    justifyContent: 'center',
-  },
-  input: {
-    flex: 1,
-    color: Colors.light.text,
-  },
-});
