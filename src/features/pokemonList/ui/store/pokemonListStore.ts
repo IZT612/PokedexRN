@@ -18,7 +18,11 @@ export interface PokemonListState {
 
   loadPokemons: () => Promise<void>;
 
-  getFilteredPokemon: () => Pokemon[];
+  getFilteredPokemon: (
+    pokemonList: Pokemon[],
+    searchQuery: string,
+    selectedType: PokemonType | null,
+  ) => Pokemon[];
 }
 
 export const createPokemonListStore = (repository: IPokemonRepository) =>
@@ -58,9 +62,11 @@ export const createPokemonListStore = (repository: IPokemonRepository) =>
     },
 
     // Gets the list of filtered Pokemon
-    getFilteredPokemon: () => {
-      const { pokemonList, searchQuery, selectedType } = get();
-
+    getFilteredPokemon: (
+      pokemonList: Pokemon[],
+      searchQuery: string,
+      selectedType: PokemonType | null,
+    ) => {
       return pokemonList.filter((pokemon) => {
         const matchesSearch = pokemon.name
           .toLowerCase()
