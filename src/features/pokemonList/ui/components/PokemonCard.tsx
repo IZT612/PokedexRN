@@ -1,11 +1,12 @@
 import React from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { pokemonTypeColors } from '@/constants/colors';
-import { Colors, Spacing, Typography } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
 import { Card } from '@/src/shared/ui/components/card';
 import { Tag } from '@/src/shared/ui/components/tag';
+import { H3, Small } from '@/src/shared/ui/components/TextPresets';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
@@ -21,11 +22,11 @@ export const PokemonCard = ({ pokemon, onPress }: PokemonCardProps) => {
       <Card>
         {/* Header: name and id */}
         <View style={styles.header}>
-          <Text style={styles.name}>
+          <H3>
             {/* Capitalizes the first letter of the Pokemon's name */}
             {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
-          </Text>
-          <Text style={styles.id}>{formattedId}</Text>
+          </H3>
+          <Small>{formattedId}</Small>
         </View>
 
         {/* Pokemon image */}
@@ -54,16 +55,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: Spacing.sm,
-  },
-  name: {
-    fontSize: Typography.fontSize.lg,
-    fontWeight: Typography.fontWeight.bold,
-    color: Colors.light.text,
-  },
-  id: {
-    fontSize: Typography.fontSize.xs,
-    fontWeight: Typography.fontWeight.semibold,
-    color: Colors.light.icon,
   },
   imageContainer: {
     alignItems: 'center',
