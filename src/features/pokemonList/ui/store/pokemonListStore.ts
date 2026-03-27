@@ -12,6 +12,7 @@ export interface PokemonListState {
   offset: number;
   searchQuery: string;
   selectedType: PokemonType | null;
+  hasMore: boolean;
 
   setSearchQuery: (searchQuery: string) => void;
   setSelectedType: (selectedType: PokemonType | null) => void;
@@ -29,6 +30,7 @@ export const createPokemonListStore = (repository: IPokemonRepository) =>
     offset: 0,
     searchQuery: '',
     selectedType: null,
+    hasMore: true,
 
     setSearchQuery: (searchQuery) => set({ searchQuery }),
     setSelectedType: (selectedType) => set({ selectedType }),
@@ -45,9 +47,11 @@ export const createPokemonListStore = (repository: IPokemonRepository) =>
         set((state) => ({
           pokemonList: [...state.pokemonList, ...pokemons],
           offset: offset + BATCH_SIZE,
+          // If the length of the received pokemon is not equal to the batch size, we reached the end
+          hasMore: pokemons.length === BATCH_SIZE,
           loading: false,
         }));
-      } catch (error: any) {
+      } catch (error: unknown) {
         const errorMessage =
           error instanceof Error ? error.message : String(error);
         set({
