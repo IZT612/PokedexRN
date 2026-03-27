@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import { XStack } from 'tamagui';
 
 import { usePokemonListStore } from '@/app/store';
@@ -54,7 +54,10 @@ export const TypeFilter = () => {
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={{
+          paddingHorizontal: Spacing.md,
+          gap: Spacing.sm,
+        }}
       >
         {POKEMON_TYPES.map((type) => {
           const isSelected = selectedType === type;
@@ -76,7 +79,3 @@ export const TypeFilter = () => {
     </XStack>
   );
 };
-
-const styles = StyleSheet.create({
-  scrollContent: { paddingHorizontal: Spacing.md, gap: Spacing.sm },
-});
