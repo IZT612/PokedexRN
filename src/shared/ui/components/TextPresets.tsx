@@ -43,8 +43,8 @@ export const Title = ({ style, ...props }: TextProps) => (
   <Text style={[styles.title, style]} {...props} />
 );
 
-export const PlaceHolder = ({ style, ...props }: TextProps) => (
-  <Text style={[styles.placeHolder, style]} {...props} />
+export const Placeholder = ({ style, ...props }: TextProps) => (
+  <Text style={[styles.placeholder, style]} {...props} />
 );
 
 const styles = StyleSheet.create({
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     fontWeight: Typography.fontWeight.bold,
     color: brandColors.primaryRed,
   },
-  placeHolder: {
+  placeholder: {
     fontSize: Typography.fontSize.md,
     color: Colors.light.icon,
     fontStyle: 'italic',

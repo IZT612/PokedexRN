@@ -4,8 +4,8 @@ import { BorderRadius, Spacing } from '@/constants/theme';
 import { SearchBar } from '@/src/features/pokemonList/ui/components/SearchBar';
 import { TypeFilter } from '@/src/features/pokemonList/ui/components/TypeFilter';
 import { LoadingSpinner } from '@/src/shared/ui/components/loadingSpinner';
-import { PlaceHolder, Title } from '@/src/shared/ui/components/TextPresets';
-import React, { useEffect, useMemo } from 'react';
+import { Placeholder, Title } from '@/src/shared/ui/components/TextPresets';
+import React, { useEffect } from 'react';
 import {
   FlatList,
   Platform,
@@ -16,28 +16,22 @@ import {
 import { PokemonCard } from '../components/PokemonCard';
 
 export const ListScreen = () => {
-  const loadPokemons = usePokemonListStore((state) => state.loadPokemons);
-  const getFilteredPokemon = usePokemonListStore(
-    (state) => state.getFilteredPokemon,
-  );
+  const state = usePokemonListStore();
 
-  const loading = usePokemonListStore((state) => state.loading);
-  const error = usePokemonListStore((state) => state.error);
-  const pokemonList = usePokemonListStore((state) => state.pokemonList);
-  const searchQuery = usePokemonListStore((state) => state.searchQuery);
-  const selectedType = usePokemonListStore((state) => state.selectedType);
+  const loadPokemons = state.loadPokemons;
+  const loading = state.loading;
+  const error = state.error;
+  const pokemonList = state.pokemonList;
 
   // Get the filtered list, even if no filters are being used, it will show the normal pokemon list
-  const filteredList = useMemo(() => {
-    return getFilteredPokemon(pokemonList, searchQuery, selectedType);
-  }, [getFilteredPokemon, pokemonList, searchQuery, selectedType]);
+  const filteredList = state.getFilteredPokemon();
 
   // Effect to load pokemons when loading the app for the first time
   useEffect(() => {
     if (pokemonList.length === 0) {
       loadPokemons();
     }
-  }, [loadPokemons, pokemonList.length]);
+  }, [loadPokemons, pokemonList.length, loading, error]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -58,16 +52,14 @@ export const ListScreen = () => {
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               // For each item in the filtered list, render a PokemonCard with that data, no onPress function YET
-              renderItem={({ item }) => (
-                <PokemonCard pokemon={item} onPress={() => {}} />
-              )}
+              renderItem={({ item }) => <PokemonCard pokemon={item} />}
               contentContainerStyle={styles.flatListContent}
               ItemSeparatorComponent={() => (
                 <View style={{ height: Spacing.md }} />
               )}
               // When reached the end of the current list, load more Pokemons
               onEndReached={() => {
-                if (filteredList.length > 0) {
+                if (filteredList.length > 0 && !loading) {
                   loadPokemons();
                 }
               }}
@@ -75,9 +67,9 @@ export const ListScreen = () => {
               ListFooterComponent={loading ? <LoadingSpinner /> : null}
               ListEmptyComponent={
                 !loading ? (
-                  <PlaceHolder>
+                  <Placeholder>
                     {error ? `Error: ${error}` : 'No Pokemons found.'}
-                  </PlaceHolder>
+                  </Placeholder>
                 ) : null
               }
             />
@@ -131,7 +123,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: BorderRadius.xs,
     elevation: 2,
-    overflow: 'hidden',
+    ...(Platform.OS === 'ios' ? {} : { overflow: 'hidden' }),
   },
   flatListContent: {
     padding: Spacing.md,
