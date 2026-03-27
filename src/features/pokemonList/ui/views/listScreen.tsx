@@ -1,134 +1,108 @@
 import { usePokemonListStore } from '@/app/store';
 import { brandColors } from '@/constants/colors';
-import { BorderRadius, Spacing } from '@/constants/theme';
+import { BorderRadius, Shadows, Spacing } from '@/constants/theme';
 import { SearchBar } from '@/src/features/pokemonList/ui/components/SearchBar';
 import { TypeFilter } from '@/src/features/pokemonList/ui/components/TypeFilter';
+import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
 import { LoadingSpinner } from '@/src/shared/ui/components/loadingSpinner';
-import { Placeholder, Title } from '@/src/shared/ui/components/TextPresets';
-import React, { useEffect } from 'react';
-import {
-  FlatList,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import React, { useCallback, useEffect } from 'react';
+import { FlatList, Platform, SafeAreaView } from 'react-native';
+import { H1, Paragraph, View, YStack } from 'tamagui';
 import { PokemonCard } from '../components/PokemonCard';
+
+const keyExtractor = (item: Pokemon) => item.id.toString();
+const ItemSeparator = () => <View height={Spacing.md} />;
 
 export const ListScreen = () => {
   const state = usePokemonListStore();
 
-  const loadPokemons = state.loadPokemons;
-  const loading = state.loading;
-  const error = state.error;
-  const pokemonList = state.pokemonList;
+  const { loadPokemons, loading, error, hasMore } = usePokemonListStore();
 
   // Get the filtered list, even if no filters are being used, it will show the normal pokemon list
   const filteredList = state.getFilteredPokemon();
 
   // Effect to load pokemons when loading the app for the first time
   useEffect(() => {
-    if (pokemonList.length === 0) {
+    if (usePokemonListStore.getState().pokemonList.length === 0) {
       loadPokemons();
     }
-  }, [loadPokemons, pokemonList.length, loading, error]);
+  }, [loadPokemons]);
+
+  const renderItem = useCallback(
+    ({ item }: { item: Pokemon }) => <PokemonCard pokemon={item} />,
+    [],
+  );
+
+  const loadMore = useCallback(() => {
+    if (filteredList.length > 0 && !loading && hasMore) {
+      loadPokemons();
+    }
+  }, [filteredList.length, loading, hasMore, loadPokemons]);
+
+  const renderEmptyComponent = useCallback(() => {
+    if (loading) return null;
+    return (
+      <Paragraph fontStyle="italic" color="$color11" textAlign="center">
+        {error ? `Error: ${error}` : 'No Pokemons found.'}
+      </Paragraph>
+    );
+  }, [loading, error]);
 
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Title>Pokédex</Title>
-        </View>
-        <View style={styles.mainContent}>
+    <SafeAreaView
+      style={{ flex: 1, backgroundColor: brandColors.backgroundLight }}
+    >
+      <YStack
+        flex={1}
+        width="100%"
+        maxWidth={1200}
+        alignSelf="center"
+        paddingHorizontal={Spacing.md}
+      >
+        <YStack
+          paddingTop={Platform.OS === 'android' ? 40 : Spacing.lg}
+          paddingBottom={Spacing.lg}
+          borderBottomWidth={1}
+          borderBottomColor={brandColors.borderLight}
+          marginBottom={Spacing.md}
+        >
+          <H1 color={brandColors.primaryRed}>Pokédex</H1>
+        </YStack>
+        <YStack flex={1}>
           {/* Filters and search container */}
-          <View style={styles.filtersContainer}>
+          <YStack
+            marginBottom={Spacing.md}
+            padding={Spacing.md}
+            backgroundColor={brandColors.surfaceLight}
+            borderRadius={BorderRadius.md}
+            {...Shadows.base}
+          >
             <SearchBar />
             <TypeFilter />
-          </View>
+          </YStack>
           {/* List container */}
-          <View style={styles.listContainer}>
+          <YStack
+            flex={1}
+            backgroundColor={brandColors.surfaceLight}
+            borderRadius={BorderRadius.md}
+            {...Shadows.base}
+            overflow={Platform.OS === 'ios' ? 'visible' : 'hidden'}
+          >
             <FlatList
               data={filteredList}
-              keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
-              // For each item in the filtered list, render a PokemonCard with that data, no onPress function YET
-              renderItem={({ item }) => <PokemonCard pokemon={item} />}
-              contentContainerStyle={styles.flatListContent}
-              ItemSeparatorComponent={() => (
-                <View style={{ height: Spacing.md }} />
-              )}
-              // When reached the end of the current list, load more Pokemons
-              onEndReached={() => {
-                if (filteredList.length > 0 && !loading) {
-                  loadPokemons();
-                }
-              }}
+              contentContainerStyle={{ padding: Spacing.md }}
               onEndReachedThreshold={0.5}
               ListFooterComponent={loading ? <LoadingSpinner /> : null}
-              ListEmptyComponent={
-                !loading ? (
-                  <Placeholder>
-                    {error ? `Error: ${error}` : 'No Pokemons found.'}
-                  </Placeholder>
-                ) : null
-              }
+              keyExtractor={keyExtractor}
+              renderItem={renderItem}
+              ItemSeparatorComponent={ItemSeparator}
+              onEndReached={loadMore}
+              ListEmptyComponent={renderEmptyComponent}
             />
-          </View>
-        </View>
-      </View>
+          </YStack>
+        </YStack>
+      </YStack>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: brandColors.backgroundLight,
-  },
-  container: {
-    flex: 1,
-    width: '100%',
-    maxWidth: 1200,
-    alignSelf: 'center',
-    paddingHorizontal: Spacing.md,
-  },
-  header: {
-    // Other Spacing tokens are way too far from 40 to replace it for any of the tokens
-    paddingTop: Platform.OS === 'android' ? 40 : Spacing.lg,
-    paddingBottom: Spacing.lg,
-    borderBottomWidth: 1,
-    borderBottomColor: '#E0E0E0',
-    marginBottom: Spacing.md,
-  },
-  mainContent: {
-    flex: 1,
-  },
-  filtersContainer: {
-    marginBottom: Spacing.md,
-    padding: Spacing.md,
-    backgroundColor: brandColors.surfaceLight,
-    borderRadius: BorderRadius.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: BorderRadius.xs,
-    elevation: 2,
-  },
-  listContainer: {
-    flex: 1,
-    backgroundColor: brandColors.surfaceLight,
-    borderRadius: BorderRadius.md,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.05,
-    shadowRadius: BorderRadius.xs,
-    elevation: 2,
-    ...(Platform.OS === 'ios' ? {} : { overflow: 'hidden' }),
-  },
-  flatListContent: {
-    padding: Spacing.md,
-  },
-  loader: {
-    marginVertical: Spacing.lg,
-  },
-});
