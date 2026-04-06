@@ -47,7 +47,7 @@ export const createPokemonListStore = (repository: IPokemonRepository) =>
         set((state) => ({
           pokemonList: [...state.pokemonList, ...pokemons],
           offset: offset + BATCH_SIZE,
-          // If the length of the received pokemon is not equal to the batch size, we reached the end
+          // We only have more to load if we received a full batch
           hasMore: pokemons.length === BATCH_SIZE,
           loading: false,
         }));
@@ -71,11 +71,11 @@ export const createPokemonListStore = (repository: IPokemonRepository) =>
 
       return pokemonList.filter((pokemon) => {
         const matchesSearch = searchQuery
-          ? pokemon.name?.toLowerCase().includes(searchQuery.toLowerCase())
+          ? pokemon.name.toLowerCase().includes(searchQuery.toLowerCase())
           : true;
 
         const matchesType = selectedType
-          ? pokemon?.types.includes(selectedType)
+          ? pokemon.types.includes(selectedType)
           : true;
 
         // Both have to be true
