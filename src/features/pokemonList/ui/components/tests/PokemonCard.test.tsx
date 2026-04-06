@@ -1,6 +1,6 @@
 import { PokemonCard } from '@/src/features/pokemonList/ui/components/PokemonCard';
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
-import { render } from '@testing-library/react-native';
+import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 
 jest.mock('tamagui', () => ({
@@ -32,5 +32,18 @@ describe('PokemonCard Component', () => {
     expect(getByText('#025')).toBeTruthy();
     // Type
     expect(getByText('electric')).toBeTruthy();
+  });
+
+  it('calls onPress when the card is pressed', () => {
+    const onPressMock = jest.fn();
+    const { getByText } = render(
+      <PokemonCard pokemon={mockPokemon} onPress={onPressMock} />,
+    );
+
+    // Simulated press
+    fireEvent.press(getByText('Pikachu'));
+
+    // We check if the onPress mock function has been called
+    expect(onPressMock).toHaveBeenCalledTimes(1);
   });
 });
