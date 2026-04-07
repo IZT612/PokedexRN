@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, TouchableOpacity } from 'react-native';
+import { Image, TouchableOpacity, useColorScheme } from 'react-native';
 
 import { pokemonTypeColors } from '@/constants/colors';
 import { Colors, Spacing, Typography } from '@/constants/theme';
@@ -14,28 +14,32 @@ interface PokemonCardProps {
 }
 
 export const PokemonCard = ({ pokemon, onPress }: PokemonCardProps) => {
-  // Formats the ID to look like this "#001"
   const formattedId = `#${pokemon.id.toString().padStart(3, '0')}`;
 
+  const colorScheme = useColorScheme() ?? 'light';
+  const themeColors = Colors[colorScheme];
+
   return (
-    <TouchableOpacity activeOpacity={0.8} onPress={onPress}>
+    <TouchableOpacity
+      activeOpacity={0.8}
+      onPress={onPress}
+      disabled={!onPress}
+      accessibilityRole={onPress ? 'button' : 'none'}
+    >
       <Card>
-        {/* Header: name and id */}
         <XStack
           justifyContent="space-between"
           alignItems="center"
           marginBottom={Spacing.sm}
         >
-          <H3>
-            {/* Capitalizes the first letter of the Pokemon's name */}
+          <H3 color={themeColors.text}>
             {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
           </H3>
-          <Text fontSize={Typography.fontSize.xs} color={Colors.light.icon}>
+          <Text fontSize={Typography.fontSize.xs} color={themeColors.icon}>
             {formattedId}
           </Text>
         </XStack>
 
-        {/* Pokemon image */}
         <YStack
           alignItems="center"
           justifyContent="center"
@@ -48,7 +52,6 @@ export const PokemonCard = ({ pokemon, onPress }: PokemonCardProps) => {
           />
         </YStack>
 
-        {/* Pokemon types */}
         <XStack
           justifyContent="center"
           flexWrap="wrap"

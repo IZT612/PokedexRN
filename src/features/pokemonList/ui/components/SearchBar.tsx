@@ -8,11 +8,9 @@ import { usePokemonListStore } from '@/app/store';
 import { Spacing } from '@/constants/theme';
 
 export const SearchBar = () => {
-  // Connection with the store
   const globalQuery = usePokemonListStore((state) => state.searchQuery);
   const setSearchQuery = usePokemonListStore((state) => state.setSearchQuery);
 
-  // Local query for the input with debounce to not update the store on every keystroke
   const [localQuery, setLocalQuery] = useState(globalQuery);
 
   useEffect(() => {
@@ -25,12 +23,10 @@ export const SearchBar = () => {
     };
   }, [localQuery, setSearchQuery]);
 
-  // Use effect to update the local query if for some reason the global query changes
   useEffect(() => {
     setLocalQuery(globalQuery);
   }, [globalQuery]);
 
-  // Clear button
   const clearQuery = () => {
     setLocalQuery('');
     setSearchQuery('');
