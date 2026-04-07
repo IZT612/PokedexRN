@@ -1,46 +1,29 @@
 import { usePokemonListStore } from '@/app/store';
-
-import { brandColors } from '@/constants/colors';
-
-import { BorderRadius, Shadows, Spacing } from '@/constants/theme';
-
+import { BorderRadius, Colors, Shadows, Spacing } from '@/constants/theme'; // Importa Colors
 import { SearchBar } from '@/src/features/pokemonList/ui/components/SearchBar';
-
 import { TypeFilter } from '@/src/features/pokemonList/ui/components/TypeFilter';
-
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
-
 import { LoadingSpinner } from '@/src/shared/ui/components/loadingSpinner';
-
 import React, { useCallback, useEffect } from 'react';
-
-import { FlatList, Platform, SafeAreaView, StatusBar } from 'react-native';
-
+import {
+  FlatList,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  useColorScheme,
+} from 'react-native'; // Importa useColorScheme
 import { H1, Paragraph, View, YStack } from 'tamagui';
-
 import { PokemonCard } from '../components/PokemonCard';
 
 const keyExtractor = (item: Pokemon) => item.id.toString();
-
 const ItemSeparator = () => <View height={Spacing.md} />;
 
 export const ListScreen = () => {
-  const {
-    loadPokemons,
-    loading,
-    error,
-    hasMore,
-    getFilteredPokemon,
-    searchQuery,
-    selectedType,
-    pokemonList,
-  } = usePokemonListStore();
+  const { loadPokemons, loading, error, hasMore, filteredList, pokemonList } =
+    usePokemonListStore();
 
-  // Get the filtered list, even if no filters are being used, it will show the normal pokemon list
-
-  const filteredList = getFilteredPokemon();
-
-  // Effect to load pokemons when loading the app for the first time
+  const colorScheme = useColorScheme() ?? 'light';
+  const themeColors = Colors[colorScheme];
 
   useEffect(() => {
     if (pokemonList.length === 0) {
@@ -51,32 +34,27 @@ export const ListScreen = () => {
 
   const renderItem = useCallback(
     ({ item }: { item: Pokemon }) => <PokemonCard pokemon={item} />,
-
     [],
   );
 
   const loadMore = useCallback(() => {
-    const isFiltering = searchQuery !== '' || selectedType !== null;
-
     if (!loading && hasMore) {
       loadPokemons();
     }
-  }, [loading, hasMore, searchQuery, selectedType, loadPokemons]);
+  }, [loading, hasMore, loadPokemons]);
 
   const renderEmptyComponent = useCallback(() => {
     if (loading) return null;
 
     return (
-      <Paragraph fontStyle="italic" color="$color11" textAlign="center">
+      <Paragraph fontStyle="italic" color={themeColors.text} textAlign="center">
         {error ? `Error: ${error}` : 'No Pokemons found.'}
       </Paragraph>
     );
-  }, [loading, error]);
+  }, [loading, error, themeColors.text]);
 
   return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: brandColors.backgroundLight }}
-    >
+    <SafeAreaView style={{ flex: 1, backgroundColor: themeColors.background }}>
       <YStack
         flex={1}
         width="100%"
@@ -90,32 +68,27 @@ export const ListScreen = () => {
           }
           paddingBottom={Spacing.lg}
           borderBottomWidth={1}
-          borderBottomColor={brandColors.borderLight}
+          borderBottomColor={themeColors.border}
           marginBottom={Spacing.md}
         >
-          <H1 color={brandColors.primaryRed}>Pokédex</H1>
+          <H1 color={themeColors.primaryRed}>Pokédex</H1>
         </YStack>
 
         <YStack flex={1}>
-          {/* Filters and search container */}
-
           <YStack
             marginBottom={Spacing.md}
             padding={Spacing.md}
-            backgroundColor={brandColors.surfaceLight}
+            backgroundColor={themeColors.surface}
             borderRadius={BorderRadius.md}
             {...Shadows.base}
           >
             <SearchBar />
-
             <TypeFilter />
           </YStack>
 
-          {/* List container */}
-
           <YStack
             flex={1}
-            backgroundColor={brandColors.surfaceLight}
+            backgroundColor={themeColors.surface}
             borderRadius={BorderRadius.md}
             {...Shadows.base}
             overflow={Platform.OS === 'ios' ? 'visible' : 'hidden'}
