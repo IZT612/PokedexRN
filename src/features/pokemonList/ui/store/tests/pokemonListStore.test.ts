@@ -1,4 +1,5 @@
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
+import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
 import { IPokemonRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
 import { act, renderHook } from '@testing-library/react-native';
 import { createPokemonListStore } from '../pokemonListStore';
@@ -10,20 +11,24 @@ describe('PokemonListStore', () => {
       name: 'bulbasaur',
       image:
         'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
-      types: ['grass', 'poison'],
+      types: ['grass', 'poison'] as PokemonType[],
       stats: [
         { name: 'hp', value: 45 },
         { name: 'attack', value: 49 },
       ],
       abilities: ['overgrow'],
+      height: 7,
+      weight: 69,
     },
     {
       id: 4,
       name: 'charmander',
       image: 'url',
-      types: ['fire'],
+      types: ['fire'] as any,
       stats: [],
       abilities: [],
+      height: 6,
+      weight: 85,
     },
   ];
 
@@ -139,8 +144,11 @@ describe('PokemonListStore', () => {
           types: [],
           stats: [],
           abilities: [],
+          height: 0,
+          weight: 0,
         }),
       );
+
       mockRepository.getPokemonList.mockResolvedValueOnce(mockSmallBatch);
 
       const { result } = renderHook(() => usePokemonListStore());
