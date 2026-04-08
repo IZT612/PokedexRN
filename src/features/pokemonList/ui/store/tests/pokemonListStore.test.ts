@@ -1,5 +1,6 @@
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
 import { IPokemonRepository } from '@/src/shared/domain/interfaces/IPokemonRepository';
+import { act, renderHook } from '@testing-library/react-native';
 import { createPokemonListStore } from '../pokemonListStore';
 
 describe('PokemonListStore', () => {
@@ -127,42 +128,68 @@ describe('PokemonListStore', () => {
       resolvePromise!(mockPokemonList);
       await firstLoad;
     });
+
+    it('sets hasMore to false when the repository returns fewer items than BATCH_SIZE', async () => {
+      // Simulate API returning only 5 items instead of the BATCH_SIZE
+      const mockSmallBatch: Pokemon[] = Array.from({ length: 5 }).map(
+        (_, i) => ({
+          id: i,
+          name: `poke-${i}`,
+          image: '',
+          types: [],
+          stats: [],
+          abilities: [],
+        }),
+      );
+      mockRepository.getPokemonList.mockResolvedValueOnce(mockSmallBatch);
+
+      const { result } = renderHook(() => usePokemonListStore());
+
+      await act(async () => {
+        await result.current.loadPokemons();
+      });
+
+      expect(result.current.hasMore).toBe(false);
+    });
   });
 
-  describe('Filtering Pokemon (getFilteredPokemon)', () => {
+  describe('Filtering Pokemon (filteredList)', () => {
     beforeEach(() => {
-      usePokemonListStore.setState({ pokemonList: mockPokemonList });
+      usePokemonListStore.setState({
+        pokemonList: mockPokemonList,
+        filteredList: mockPokemonList,
+      });
     });
 
     it('(1) Should filter by search query only', () => {
-      // Only Pokemon containing 'bulb' in the mock is bulbasaur
       usePokemonListStore.getState().setSearchQuery('bulb');
-      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      const filtered = usePokemonListStore.getState().filteredList;
 
       expect(filtered.length).toBe(1);
       expect(filtered[0].name).toBe('bulbasaur');
     });
 
     it('(2) Should filter by selected type only', () => {
-      // Only fire type Pokemon in the mock is Charmander
       usePokemonListStore.getState().setSelectedType('fire');
-      const filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      const filtered = usePokemonListStore.getState().filteredList;
 
       expect(filtered.length).toBe(1);
       expect(filtered[0].name).toBe('charmander');
     });
 
     it('(3) Should filter by both search query and selected type', () => {
-      // There's no Pokemon in the mock containing 'char' with water type
       usePokemonListStore.getState().setSearchQuery('char');
       usePokemonListStore.getState().setSelectedType('water');
-      let filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      let filtered = usePokemonListStore.getState().filteredList;
       expect(filtered.length).toBe(0);
 
-      // The only Pokemon in the mock containing 'char' with fire type is charmander
       usePokemonListStore.getState().setSearchQuery('char');
       usePokemonListStore.getState().setSelectedType('fire');
-      filtered = usePokemonListStore.getState().getFilteredPokemon();
+
+      filtered = usePokemonListStore.getState().filteredList;
       expect(filtered.length).toBe(1);
       expect(filtered[0].name).toBe('charmander');
     });
@@ -170,9 +197,9 @@ describe('PokemonListStore', () => {
     it('(4) Should return all pokemon when no filters are applied', () => {
       usePokemonListStore.getState().setSearchQuery('');
       usePokemonListStore.getState().setSelectedType(null);
-      const filtered = usePokemonListStore.getState().getFilteredPokemon();
 
-      // Should return both charmander and bulbasaur
+      const filtered = usePokemonListStore.getState().filteredList;
+
       expect(filtered.length).toBe(2);
       expect(filtered[0].name).toBe('bulbasaur');
       expect(filtered[1].name).toBe('charmander');

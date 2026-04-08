@@ -5,6 +5,22 @@ import { create } from 'zustand';
 
 const BATCH_SIZE = 30;
 
+const applyFilters = (
+  list: Pokemon[],
+  query: string,
+  type: PokemonType | null,
+) => {
+  if (!query && !type) return list;
+
+  return list.filter((pokemon) => {
+    const matchesSearch = query
+      ? pokemon.name.toLowerCase().includes(query.toLowerCase())
+      : true;
+    const matchesType = type ? pokemon.types.includes(type) : true;
+    return matchesSearch && matchesType;
+  });
+};
+
 export interface PokemonListState {
   pokemonList: Pokemon[];
   loading: boolean;
@@ -12,13 +28,13 @@ export interface PokemonListState {
   offset: number;
   searchQuery: string;
   selectedType: PokemonType | null;
+  hasMore: boolean;
+  filteredList: Pokemon[];
 
   setSearchQuery: (searchQuery: string) => void;
   setSelectedType: (selectedType: PokemonType | null) => void;
 
   loadPokemons: () => Promise<void>;
-
-  getFilteredPokemon: () => Pokemon[];
 }
 
 export const createPokemonListStore = (repository: IPokemonRepository) =>
@@ -29,9 +45,27 @@ export const createPokemonListStore = (repository: IPokemonRepository) =>
     offset: 0,
     searchQuery: '',
     selectedType: null,
+    hasMore: true,
+    filteredList: [],
 
-    setSearchQuery: (searchQuery) => set({ searchQuery }),
-    setSelectedType: (selectedType) => set({ selectedType }),
+    setSearchQuery: (searchQuery) =>
+      set((state) => ({
+        searchQuery: searchQuery,
+        filteredList: applyFilters(
+          state.pokemonList,
+          searchQuery,
+          state.selectedType,
+        ),
+      })),
+    setSelectedType: (selectedType) =>
+      set((state) => ({
+        selectedType: selectedType,
+        filteredList: applyFilters(
+          state.pokemonList,
+          state.searchQuery,
+          selectedType,
+        ),
+      })),
 
     loadPokemons: async () => {
       const { offset, loading } = get();
@@ -44,10 +78,17 @@ export const createPokemonListStore = (repository: IPokemonRepository) =>
 
         set((state) => ({
           pokemonList: [...state.pokemonList, ...pokemons],
+          filteredList: applyFilters(
+            state.pokemonList,
+            state.searchQuery,
+            state.selectedType,
+          ),
           offset: offset + BATCH_SIZE,
+          // We only have more to load if we received a full batch
+          hasMore: pokemons.length === BATCH_SIZE,
           loading: false,
         }));
-      } catch (error: any) {
+      } catch (error: unknown) {
         const errorMessage =
           error instanceof Error ? error.message : String(error);
         set({
@@ -55,23 +96,5 @@ export const createPokemonListStore = (repository: IPokemonRepository) =>
           loading: false,
         });
       }
-    },
-
-    // Gets the list of filtered Pokemon
-    getFilteredPokemon: () => {
-      const { pokemonList, searchQuery, selectedType } = get();
-
-      return pokemonList.filter((pokemon) => {
-        const matchesSearch = pokemon.name
-          .toLowerCase()
-          .includes(searchQuery.toLowerCase());
-
-        const matchesType = selectedType
-          ? pokemon.types.includes(selectedType)
-          : true;
-
-        // Both have to be true
-        return matchesSearch && matchesType;
-      });
     },
   }));

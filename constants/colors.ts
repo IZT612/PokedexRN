@@ -27,4 +27,6 @@ export const brandColors = {
   success: '#4CAF50',
   error: '#D32F2F',
   warning: '#FFA000',
+  borderLight: '#E0E0E0',
+  shadowDark: '#000000',
 };
