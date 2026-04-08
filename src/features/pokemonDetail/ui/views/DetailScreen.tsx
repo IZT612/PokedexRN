@@ -1,12 +1,12 @@
 import { usePokemonDetailStore } from '@/app/store';
 import { brandColors, pokemonTypeColors } from '@/constants/colors';
 import {
-    BorderRadius,
-    Colors,
-    Shadows,
-    Sizes,
-    Spacing,
-    Typography,
+  BorderRadius,
+  Colors,
+  Shadows,
+  Sizes,
+  Spacing,
+  Typography,
 } from '@/constants/theme';
 import { Button } from '@/src/shared/ui/components/button';
 import { LoadingSpinner } from '@/src/shared/ui/components/loadingSpinner';
@@ -14,12 +14,12 @@ import { Tag } from '@/src/shared/ui/components/tag';
 import { Activity, Ruler, Scale, Sparkles } from '@tamagui/lucide-icons';
 import React, { useEffect } from 'react';
 import {
-    Image,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StatusBar,
-    useColorScheme,
+  Image,
+  Platform,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  useColorScheme,
 } from 'react-native';
 import { H1, H2, H3, Paragraph, XStack, YStack } from 'tamagui';
 
@@ -106,8 +106,8 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
     );
 
     // TO DO: add weight/height to Pokemon entity
-    const weight = (pokemonDetail as any).weight;
-    const height = (pokemonDetail as any).height;
+    const weight = pokemonDetail.weight;
+    const height = pokemonDetail.height;
     const displayWeight = weight ? `${(weight / 10).toFixed(1)} kg` : 'N/A';
 
     const displayHeight = height ? `${(height / 10).toFixed(1)} m` : 'N/A';
