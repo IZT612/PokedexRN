@@ -24,7 +24,7 @@ describe('PokemonListStore', () => {
       id: 4,
       name: 'charmander',
       image: 'url',
-      types: ['fire'] as any,
+      types: ['fire'] as PokemonType[],
       stats: [],
       abilities: [],
       height: 6,
