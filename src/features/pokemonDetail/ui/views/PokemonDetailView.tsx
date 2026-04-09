@@ -1,56 +1,58 @@
-import { usePokemonDetailStore } from '@/app/store';
 import { brandColors, pokemonTypeColors } from '@/constants/colors';
 import {
-  BorderRadius,
-  Colors,
-  Shadows,
-  Sizes,
-  Spacing,
-  Typography,
+    BorderRadius,
+    Colors,
+    Shadows,
+    Sizes,
+    Spacing,
+    Typography,
 } from '@/constants/theme';
+import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
 import { Button } from '@/src/shared/ui/components/button';
 import { LoadingSpinner } from '@/src/shared/ui/components/loadingSpinner';
 import { Tag } from '@/src/shared/ui/components/tag';
-import { Activity, Ruler, Scale, Sparkles } from '@tamagui/lucide-icons';
-import React, { useEffect } from 'react';
 import {
-  Image,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  useColorScheme,
+    Activity,
+    ChevronLeft,
+    Ruler,
+    Scale,
+    Sparkles,
+} from '@tamagui/lucide-icons-2';
+import React from 'react';
+import {
+    Image,
+    Platform,
+    ScrollView,
+    StatusBar,
+    TouchableOpacity,
+    useColorScheme,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { H1, H2, H3, Paragraph, XStack, YStack } from 'tamagui';
 
-interface DetailScreenProps {
-  id: string | number;
+interface PokemonDetailViewProps {
+  pokemonDetail: any;
+  loading: boolean;
+  error: string | null;
+  onRetry: () => void;
   onBack?: () => void;
 }
 
-export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
-  const { pokemonDetail, loading, error, fetchPokemonDetail } =
-    usePokemonDetailStore();
-
+export const PokemonDetailView = ({
+  pokemonDetail,
+  loading,
+  error,
+  onRetry,
+  onBack,
+}: PokemonDetailViewProps) => {
   const colorScheme = useColorScheme() ?? 'light';
   const themeColors = Colors[colorScheme];
 
   const getStatColor = (value: number) => {
-    // Changes the color of the stat bar based on the value
-    if (value < 50) {
-      return themeColors.error;
-    } else if (value < 80) {
-      return themeColors.warning;
-    } else {
-      return themeColors.success;
-    }
+    if (value < 50) return themeColors.error;
+    if (value < 80) return themeColors.warning;
+    return themeColors.success;
   };
-
-  useEffect(() => {
-    if (id) {
-      fetchPokemonDetail(id);
-    }
-  }, [id, fetchPokemonDetail]);
 
   const renderContent = () => {
     if (loading) {
@@ -63,12 +65,16 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
 
     if (error) {
       return (
-        <YStack flex={1} justifyContent="center" alignItems="center">
+        <YStack
+          flex={1}
+          justifyContent="center"
+          alignItems="center"
+          gap={Spacing.md}
+        >
           <Paragraph color={themeColors.error}>
             Failed to load Pokémon.
           </Paragraph>
-
-          <Button title="Try again" onPress={() => fetchPokemonDetail(id)} />
+          <Button title="Try again" onPress={onRetry} />
         </YStack>
       );
     }
@@ -90,8 +96,8 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
     const capitalizedName =
       pokemonDetail.name[0].toUpperCase() + pokemonDetail.name.slice(1);
 
-    const primaryType = pokemonDetail.types[0];
-    const secondaryType = pokemonDetail.types[1];
+    const primaryType = (pokemonDetail.types?.[0] ?? 'normal') as PokemonType;
+    const secondaryType = pokemonDetail.types?.[1] as PokemonType | undefined;
 
     const primaryTypeColor =
       pokemonTypeColors[primaryType] ?? themeColors.surface;
@@ -100,16 +106,15 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
       ? pokemonTypeColors[secondaryType]
       : primaryTypeColor;
 
-    const totalStats = pokemonDetail.stats.reduce(
-      (acc, stat) => acc + stat.value,
-      0,
-    );
+    const totalStats =
+      pokemonDetail.stats?.reduce(
+        (acc: number, stat: any) => acc + stat.value,
+        0,
+      ) ?? 0;
 
-    // TO DO: add weight/height to Pokemon entity
     const weight = pokemonDetail.weight;
     const height = pokemonDetail.height;
     const displayWeight = weight ? `${(weight / 10).toFixed(1)} kg` : 'N/A';
-
     const displayHeight = height ? `${(height / 10).toFixed(1)} m` : 'N/A';
 
     const getStatWidth = (value: number) => {
@@ -126,7 +131,9 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
             padding={Spacing.lg}
             alignItems="center"
             borderWidth={
-              pokemonDetail.types.length > 1 ? Sizes.borderWidth.thick : 0
+              (pokemonDetail.types?.length ?? 0) > 1
+                ? Sizes.borderWidth.thick
+                : 0
             }
             borderColor={secondaryTypeColor}
             {...Shadows.base}
@@ -160,8 +167,12 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
               gap={Spacing.sm}
               marginTop={Spacing.md}
             >
-              {pokemonDetail.types.map((type) => (
-                <Tag key={type} label={type} color={pokemonTypeColors[type]} />
+              {pokemonDetail.types?.map((type: PokemonType) => (
+                <Tag
+                  key={type}
+                  label={type}
+                  color={pokemonTypeColors[type] ?? themeColors.icon}
+                />
               ))}
             </XStack>
           </YStack>
@@ -176,7 +187,7 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
               alignItems="center"
               {...Shadows.base}
             >
-              <Scale size={Sizes.icon.sm} color={themeColors.icon} />{' '}
+              <Scale size={Sizes.icon.sm} color={themeColors.icon} />
               <Paragraph
                 color={themeColors.icon}
                 fontSize={Typography.fontSize.xs}
@@ -201,7 +212,7 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
               alignItems="center"
               {...Shadows.base}
             >
-              <Ruler size={Sizes.icon.sm} color={themeColors.icon} />{' '}
+              <Ruler size={Sizes.icon.sm} color={themeColors.icon} />
               <Paragraph
                 color={themeColors.icon}
                 fontSize={Typography.fontSize.xs}
@@ -231,12 +242,12 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
               gap={Spacing.sm}
               marginBottom={Spacing.sm}
             >
-              <Sparkles size={Sizes.icon.sm} color={themeColors.icon} />{' '}
+              <Sparkles size={Sizes.icon.sm} color={themeColors.icon} />
               <H3 color={themeColors.text}>Abilities</H3>
             </XStack>
 
             <XStack flexWrap="wrap" gap={Spacing.sm}>
-              {pokemonDetail.abilities.map((ability) => (
+              {pokemonDetail.abilities?.map((ability: string) => (
                 <YStack
                   key={ability}
                   backgroundColor={themeColors.background}
@@ -270,7 +281,7 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
               marginBottom={Spacing.md}
             >
               <XStack alignItems="center" gap={Spacing.sm}>
-                <Activity size={Sizes.icon.sm} color={themeColors.icon} />{' '}
+                <Activity size={Sizes.icon.sm} color={themeColors.icon} />
                 <H3 color={themeColors.text}>Base Stats</H3>
               </XStack>
               <Paragraph color={themeColors.icon} fontWeight="bold">
@@ -279,7 +290,7 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
             </XStack>
 
             <YStack gap={Spacing.sm}>
-              {pokemonDetail.stats.map((stat) => (
+              {pokemonDetail.stats?.map((stat: any) => (
                 <XStack key={stat.name} alignItems="center" width="100%">
                   <Paragraph
                     color={themeColors.icon}
@@ -339,7 +350,16 @@ export const DetailScreen = ({ id, onBack }: DetailScreenProps) => {
           alignItems="center"
           gap={Spacing.md}
         >
-          {onBack && <Button title="<" onPress={onBack} />}
+          {onBack && (
+            <TouchableOpacity
+              onPress={onBack}
+              activeOpacity={0.7}
+              style={{ padding: Spacing.xs }}
+              testID="back-button"
+            >
+              <ChevronLeft size={28} color={themeColors.text} />
+            </TouchableOpacity>
+          )}
           <H1 color={themeColors.text} flex={1}>
             Details
           </H1>

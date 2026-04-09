@@ -59,7 +59,11 @@ export const PokemonCard = ({ pokemon, onPress }: PokemonCardProps) => {
           marginTop={Spacing.sm}
         >
           {pokemon.types.map((type) => (
-            <Tag key={type} label={type} color={pokemonTypeColors[type]} />
+            <Tag
+              key={type}
+              label={type}
+              color={pokemonTypeColors[type] ?? themeColors.icon}
+            />
           ))}
         </XStack>
       </Card>
