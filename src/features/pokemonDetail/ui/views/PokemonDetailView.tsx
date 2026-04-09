@@ -1,31 +1,31 @@
 import { brandColors, pokemonTypeColors } from '@/constants/colors';
 import {
-    BorderRadius,
-    Colors,
-    Shadows,
-    Sizes,
-    Spacing,
-    Typography,
+  BorderRadius,
+  Colors,
+  Shadows,
+  Sizes,
+  Spacing,
+  Typography,
 } from '@/constants/theme';
 import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
 import { Button } from '@/src/shared/ui/components/button';
 import { LoadingSpinner } from '@/src/shared/ui/components/loadingSpinner';
 import { Tag } from '@/src/shared/ui/components/tag';
 import {
-    Activity,
-    ChevronLeft,
-    Ruler,
-    Scale,
-    Sparkles,
+  Activity,
+  ChevronLeft,
+  Ruler,
+  Scale,
+  Sparkles,
 } from '@tamagui/lucide-icons-2';
 import React from 'react';
 import {
-    Image,
-    Platform,
-    ScrollView,
-    StatusBar,
-    TouchableOpacity,
-    useColorScheme,
+  Image,
+  Platform,
+  ScrollView,
+  StatusBar,
+  TouchableOpacity,
+  useColorScheme,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { H1, H2, H3, Paragraph, XStack, YStack } from 'tamagui';
