@@ -1,7 +1,7 @@
 import { usePokemonDetailStore } from '@/app/store';
 import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
-import { DetailScreen } from '../DetailScreen';
+import PokemonDetailScreen from '../PokemonDetailScreen';
 
 jest.mock('@/app/store', () => ({
   usePokemonDetailStore: jest.fn(),
@@ -12,6 +12,7 @@ jest.mock('@tamagui/lucide-icons-2', () => ({
   Ruler: 'RulerIcon',
   Scale: 'ScaleIcon',
   Sparkles: 'SparklesIcon',
+  ChevronLeft: 'ChevronLeftIcon',
 }));
 
 jest.mock('tamagui', () => {
@@ -65,7 +66,7 @@ describe('DetailScreen', () => {
       fetchPokemonDetail: mockFetchPokemonDetail,
     });
 
-    const { getByTestId } = render(<DetailScreen id="1" />);
+    const { getByTestId } = render(<PokemonDetailScreen id="1" />);
 
     expect(getByTestId('loading-spinner')).toBeTruthy();
   });
@@ -78,7 +79,7 @@ describe('DetailScreen', () => {
       fetchPokemonDetail: mockFetchPokemonDetail,
     });
 
-    const { getByText } = render(<DetailScreen id="1" />);
+    const { getByText } = render(<PokemonDetailScreen id="1" />);
 
     expect(getByText('Failed to load Pokémon.')).toBeTruthy();
 
@@ -95,7 +96,7 @@ describe('DetailScreen', () => {
       fetchPokemonDetail: mockFetchPokemonDetail,
     });
 
-    const { getByText } = render(<DetailScreen id="999" />);
+    const { getByText } = render(<PokemonDetailScreen id="999" />);
 
     expect(getByText('Pokemon not found.')).toBeTruthy();
   });
@@ -109,7 +110,7 @@ describe('DetailScreen', () => {
       fetchPokemonDetail: mockFetchPokemonDetail,
     });
 
-    const { getByText } = render(<DetailScreen id="1" />);
+    const { getByText } = render(<PokemonDetailScreen id="1" />);
 
     expect(getByText('Bulbasaur')).toBeTruthy();
     expect(getByText('#001')).toBeTruthy();
@@ -134,9 +135,11 @@ describe('DetailScreen', () => {
       fetchPokemonDetail: mockFetchPokemonDetail,
     });
 
-    const { getByText } = render(<DetailScreen id="1" onBack={mockOnBack} />);
+    const { getByTestId } = render(
+      <PokemonDetailScreen id="1" onBack={mockOnBack} />,
+    );
 
-    const backButton = getByText('<');
+    const backButton = getByTestId('back-button');
     fireEvent.press(backButton);
 
     expect(mockOnBack).toHaveBeenCalledTimes(1);
