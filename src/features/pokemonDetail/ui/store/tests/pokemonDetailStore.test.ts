@@ -18,6 +18,8 @@ describe('PokemonDetailStore', () => {
       { name: 'attack', value: 49 },
     ],
     abilities: ['overgrow'],
+    height: 7,
+    weight: 69,
   };
 
   beforeEach(() => {

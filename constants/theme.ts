@@ -124,4 +124,9 @@ export const Shadows = {
     shadowRadius: 4,
     elevation: 2,
   },
+  text: {
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 4,
+  },
 };

@@ -50,5 +50,7 @@ export const mapPokemonDetailToDomain = (
       value: s.base_stat,
     })),
     abilities: response.abilities.map((a) => a.ability.name),
+    height: response.height,
+    weight: response.weight,
   };
 };

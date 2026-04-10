@@ -18,6 +18,8 @@ const mockPokemon = {
   types: ['electric'],
   stats: [],
   abilities: [],
+  height: 4,
+  weight: 60,
 } as Pokemon;
 
 describe('PokemonCard Component', () => {

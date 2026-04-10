@@ -18,4 +18,6 @@ export interface PokemonDetailResponse {
   abilities: {
     ability: { name: string };
   }[];
+  height: number;
+  weight: number;
 }

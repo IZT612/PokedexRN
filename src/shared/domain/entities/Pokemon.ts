@@ -10,6 +10,8 @@ export interface Pokemon {
   // It's a string array to only display the names of the abilities, in the future,
   // if we wanted to display full information of the abilities too we would have to change this, similar to the stats.
   abilities: string[];
+  height: number;
+  weight: number;
 }
 
 export interface PokemonStat {
