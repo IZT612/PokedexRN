@@ -1,12 +1,5 @@
-import { Button, Text, YStack } from 'tamagui';
+import { ListScreen } from '@/src/features/pokemonList/ui/views/ListScreen';
 
-export default function HomeScreen() {
-  return (
-    <YStack f={1} ai="center" jc="center" bg="$background">
-      <Text fontSize={24} fontWeight="bold">
-        Hello Tamagui!
-      </Text>
-      <Button mt="$4">Botón de Prueba</Button>
-    </YStack>
-  );
+export default function PokedexTab() {
+  return <ListScreen showFavorites={false} />;
 }
