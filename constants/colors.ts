@@ -29,4 +29,5 @@ export const brandColors = {
   warning: '#FFA000',
   borderLight: '#E0E0E0',
   shadowDark: '#000000',
+  favoriteRed: '#EF4444',
 };
