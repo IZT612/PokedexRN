@@ -29,6 +29,8 @@ export const pokemonTypeColors = {
   fairy: '#D685AD',
 } as const;
 
+export const pokemonTypes = Object.keys(pokemonTypeColors) as Array<keyof typeof pokemonTypeColors>;
+
 export const typography = {
   fontFamily: 'Inter, system-ui',
   sizes: {
@@ -74,3 +76,7 @@ export const tokens = {
 
 export type PokemonType = keyof typeof pokemonTypeColors;
 export type ThemeTokens = typeof tokens;
+
+export function getPokemonTypeColor(type: PokemonType) {
+  return pokemonTypeColors[type];
+}
