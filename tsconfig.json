@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": ["ES2020"],
+    "jsx": "react-jsx",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noEmit": true,
+    "baseUrl": ".",
+    "types": ["react", "react-native"]
+  },
+  "include": ["App.tsx", "tamagui.config.ts", "src/**/*.ts", "src/**/*.tsx"],
+  "exclude": ["node_modules", "openspec", ".opencode"]
+}
