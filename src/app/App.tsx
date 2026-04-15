@@ -6,7 +6,6 @@ import { ThemeSurface } from '../shared/ui/ThemeSurface';
 import { ThemeText } from '../shared/ui/ThemeText';
 import { TypeBadge } from '../shared/ui/TypeBadge';
 import { TypeFrame } from '../shared/ui/TypeFrame';
-import { SearchBar, TypeFilter } from '../features/pokemon-list';
 
 export function App() {
   return (
@@ -14,8 +13,6 @@ export function App() {
       <View style={styles.root}>
         <ThemeSurface>
           <ThemeText>Pokedex</ThemeText>
-          <SearchBar />
-          <TypeFilter value="fire" />
           <TypeFrame type="fire">
             <TypeBadge type="fire" />
           </TypeFrame>
