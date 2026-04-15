@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { pokemonTypes, tokens, type PokemonType } from '../../theme';
+import { getPokemonTypeColor, pokemonTypes, tokens, type PokemonType } from '../../../theme';
 
 type TypeFilterProps = {
   value?: PokemonType;
@@ -17,7 +17,11 @@ export function TypeFilter({ value, onChange }: TypeFilterProps) {
           <Pressable
             key={type}
             onPress={() => onChange?.(type)}
-            style={[styles.pill, selected && styles.pillSelected]}
+            style={[
+              styles.pill,
+              selected && styles.pillSelected,
+              { borderColor: selected ? getPokemonTypeColor(type) : tokens.colors.border },
+            ]}
           >
             <Text style={[styles.label, selected && styles.labelSelected]}>{type}</Text>
           </Pressable>
@@ -36,14 +40,12 @@ const styles = StyleSheet.create({
   pill: {
     borderRadius: 999,
     borderWidth: 1,
-    borderColor: tokens.colors.border,
     paddingHorizontal: tokens.spacing.md,
     paddingVertical: tokens.spacing.xs,
     backgroundColor: tokens.colors.surface,
   },
   pillSelected: {
     backgroundColor: tokens.colors.primary,
-    borderColor: tokens.colors.primary,
   },
   label: {
     color: tokens.colors.textPrimary,
