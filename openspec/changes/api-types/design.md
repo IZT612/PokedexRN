@@ -31,11 +31,29 @@ This was rejected because the request explicitly treats them as API/data-layer e
 Alternative considered: storing every API response interface in `shared/data`.
 This was rejected because list and detail responses represent feature-specific endpoint contracts rather than broadly reusable shared entities.
 
+Alternative considered: trying to unify `PokemonListResponse` and `PokemonDetailResponse` through shared top-level response shapes.
+This was rejected because the list endpoint returns a collection-oriented response and the detail endpoint returns a single-Pokemon payload, so their top-level contracts should stay separate.
+
+Alternative considered: extracting small nested pieces from list and detail responses into shared helper types.
+This was rejected because the intent of this change is to keep `PokemonListResponse` and `PokemonDetailResponse` completely separate, even if some nested pieces appear similar, so feature ownership stays explicit.
+
 ### Use data-layer entities folders where they clarify ownership
 The implementation will create `entities/` folders under the relevant data modules when those folders are the clearest place for the interfaces. This keeps the type definitions close to the layer that owns the raw API contracts and leaves room for additional models or guards later.
 
 Alternative considered: putting all interfaces directly in `index.ts` files.
 This was rejected because it does not scale well as API contracts grow and makes ownership less obvious.
+
+### Keep sprites as a minimal object shape
+The `Pokemon` interface will keep `sprites` as a focused minimal object containing only the image fields the application actually needs, with `front_default` as the fallback field that is sufficient for the current app scope, instead of mirroring the full nested Pok\u00e9API sprite payload.
+
+Alternative considered: reproducing the full `sprites` response object.
+This was rejected because it would couple the shared contract to unnecessary API detail and make the core entity harder to consume.
+
+### Define PokemonDetailResponse separately from Pokemon
+`PokemonDetailResponse` will be its own interface in the pokemon-detail feature data layer even if it initially overlaps with `Pokemon`. This preserves endpoint ownership and leaves room for detail-specific fields or divergence later.
+
+Alternative considered: aliasing `PokemonDetailResponse` directly to `Pokemon`.
+This was rejected because it would blur the boundary between the shared entity contract and the feature-owned detail endpoint response.
 
 ### Keep type guards optional and targeted
 Type guards may be added if they are needed to narrow unknown data or protect future repository code, but they should stay minimal and focused on the interfaces introduced by this change.
@@ -60,5 +78,4 @@ Rollback is straightforward: remove the new entity files and any related exports
 
 ## Open Questions
 
-- Should `sprites` be kept as a focused minimal object shape or mirror the broader Pok\u00e9API nested response in full detail?
-- Will `PokemonDetailResponse` be identical to `Pokemon`, or should it be defined separately to leave room for future endpoint-specific divergence?
+- None for now.

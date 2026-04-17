@@ -22,6 +22,18 @@ The shared `Pokemon` interface MUST include `id`, `name`, `sprites`, `types`, `s
 - **WHEN** the shared `Pokemon` interface is created
 - **THEN** it SHALL expose all required fields needed by list or detail API consumers
 
+#### Scenario: Sprites are modeled minimally
+- **WHEN** the `sprites` field is defined on `Pokemon`
+- **THEN** it SHALL use a minimal object shape containing only the sprite fields required by the application rather than the full raw Pok\u00e9API sprite payload
+
+#### Scenario: Minimal sprites include a fallback image
+- **WHEN** the `sprites` field is defined on `Pokemon`
+- **THEN** the minimal object SHALL include `front_default` as a fallback image field
+
+#### Scenario: Front default is enough for fallback behavior
+- **WHEN** the minimal `sprites` object is defined for the current app scope
+- **THEN** `front_default` SHALL be considered sufficient fallback coverage without requiring additional fallback sprite fields
+
 ### Requirement: Feature response interfaces are kept in their owning features
 The system SHALL keep feature-specific API response interfaces inside the corresponding feature data modules.
 
@@ -32,6 +44,10 @@ The system SHALL keep feature-specific API response interfaces inside the corres
 #### Scenario: Detail response interface is added
 - **WHEN** the detail endpoint response contract is introduced
 - **THEN** `PokemonDetailResponse` SHALL be defined inside the pokemon-detail feature data layer
+
+#### Scenario: Detail response remains separate from shared Pokemon entity
+- **WHEN** `PokemonDetailResponse` is implemented
+- **THEN** it SHALL be defined as its own interface rather than reusing `Pokemon` directly
 
 #### Scenario: Feature data entities are organized
 - **WHEN** feature-specific API response interfaces are added
