@@ -11,6 +11,6 @@
 
 ## 3. Verification
 
-- [ ] 3.1 Add focused automated tests for successful Pokemon detail retrieval and response parsing
-- [ ] 3.2 Add focused automated tests that verify normalized failures are propagated by the pokemon-detail service
+- [ ] 3.1 Add focused mocked automated tests for successful Pokemon detail retrieval and response parsing
+- [ ] 3.2 Add focused mocked automated tests that verify normalized failures are propagated by the pokemon-detail service
 - [ ] 3.3 Run the relevant automated checks and confirm they pass before considering the implementation complete

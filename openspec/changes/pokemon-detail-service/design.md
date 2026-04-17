@@ -46,13 +46,19 @@ Why not: that would duplicate existing behavior and increase testing surface wit
 ### Keep tests close to the new feature service
 Tests should live near the pokemon-detail data code in a dedicated test location so the behavior is easy to find and maintain. The tests should cover successful detail retrieval, response parsing, and normalized failure propagation.
 
+### Use mocked tests that run offline
+The service tests should mock API client behavior instead of depending on live external calls so they remain reliable in offline and CI environments.
+
+Alternative considered: hitting the live PokeAPI in tests.
+Why not: that would make automated checks slower and more fragile, and it would break offline execution.
+
 Alternative considered: relying only on the existing API client tests.
 Why not: those tests do not prove that the new service calls the expected endpoint or returns the feature detail shape correctly.
 
 ## Risks / Trade-offs
 
 - [Risk] The detail endpoint may contain more fields than the feature contract needs. → Mitigation: parse only the fields already required by `PokemonDetailResponse`.
-- [Risk] Service tests could become fragile if they depend on live network responses. → Mitigation: use adapter-based client mocking, matching the existing API client and pokemon-list-service tests.
+- [Risk] Service tests could become fragile if they depend on live network responses. → Mitigation: use adapter-based client mocking, matching the existing API client and pokemon-list-service tests so the suite runs offline.
 - [Risk] The service could be promoted to shared too early and blur ownership boundaries. → Mitigation: keep it under `src/features/pokemon-detail/data/` unless a second real consumer appears.
 
 ## Migration Plan
