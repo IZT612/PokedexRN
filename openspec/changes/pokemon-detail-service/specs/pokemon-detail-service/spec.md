@@ -42,4 +42,4 @@ The system MUST include automated tests for the pokemon-detail service behavior.
 
 #### Scenario: Tests run offline
 - **WHEN** the pokemon-detail service tests are executed in local or CI environments
-- **THEN** they SHALL use mocks rather than live API calls so the suite can run reliably offline
+- **THEN** they SHALL mock shared API client behavior rather than use live API calls so the suite can run reliably offline

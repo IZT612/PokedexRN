@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { AxiosError, type InternalAxiosRequestConfig } from "axios";
+import type { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 
+import { apiClient } from "../../../../../shared/data/api/client";
 import { fetchPokemonDetail } from "../pokemonDetailService";
 
 function createConfig(url: string): InternalAxiosRequestConfig {
@@ -11,6 +12,20 @@ function createConfig(url: string): InternalAxiosRequestConfig {
     method: "get",
     url,
   } as InternalAxiosRequestConfig;
+}
+
+function createResponse(
+  data: unknown,
+  url: string,
+  status = 200,
+): AxiosResponse {
+  return {
+    data,
+    status,
+    statusText: String(status),
+    headers: {},
+    config: createConfig(url),
+  };
 }
 
 function createPokemonDetailApiResponse() {
@@ -54,22 +69,14 @@ function createPokemonDetailApiResponse() {
   };
 }
 
-test("fetchPokemonDetail resolves detail data through the shared API client", async () => {
-  const response = await fetchPokemonDetail("pikachu", {
-    requestConfig: {
-      adapter: async (config) => {
-        assert.equal(config.url, "/pokemon/pikachu");
+test("fetchPokemonDetail resolves detail data through mocked API client calls", async (t) => {
+  const getMock = t.mock.method(apiClient, "get", async (url) => {
+    assert.equal(url, "/pokemon/pikachu");
 
-        return {
-          data: createPokemonDetailApiResponse(),
-          status: 200,
-          statusText: "OK",
-          headers: {},
-          config,
-        };
-      },
-    },
+    return createResponse(createPokemonDetailApiResponse(), "/pokemon/pikachu");
   });
+
+  const response = await fetchPokemonDetail("pikachu");
 
   assert.deepEqual(response, {
     id: 25,
@@ -99,60 +106,47 @@ test("fetchPokemonDetail resolves detail data through the shared API client", as
     weight: 60,
     height: 4,
   });
+
+  assert.equal(getMock.mock.callCount(), 1);
 });
 
-test("fetchPokemonDetail falls back to null when official artwork is missing", async () => {
-  const response = await fetchPokemonDetail(25, {
-    requestConfig: {
-      adapter: async (config) => ({
-        data: {
-          ...createPokemonDetailApiResponse(),
-          sprites: {
-            front_default: "pikachu.png",
-          },
+test("fetchPokemonDetail falls back to null when official artwork is missing", async (t) => {
+  t.mock.method(apiClient, "get", async (url) =>
+    createResponse(
+      {
+        ...createPokemonDetailApiResponse(),
+        sprites: {
+          front_default: "pikachu.png",
         },
-        status: 200,
-        statusText: "OK",
-        headers: {},
-        config,
-      }),
-    },
-  });
+      },
+      String(url),
+    ),
+  );
+
+  const response = await fetchPokemonDetail(25);
 
   assert.equal(response.sprites.official_artwork, null);
   assert.equal(response.sprites.front_default, "pikachu.png");
 });
 
-test("fetchPokemonDetail preserves normalized shared API client errors", async () => {
+test("fetchPokemonDetail preserves normalized shared API client errors", async (t) => {
+  const normalizedError = {
+    type: "api",
+    message: "Request failed with status code 404",
+    code: "ERR_BAD_REQUEST",
+    status: 404,
+    details: { message: "not found" },
+  };
+
+  t.mock.method(apiClient, "get", async (url) => {
+    assert.equal(url, "/pokemon/pikachu");
+    throw normalizedError;
+  });
+
   await assert.rejects(
-    () =>
-      fetchPokemonDetail("pikachu", {
-        requestConfig: {
-          adapter: async () => {
-            throw new AxiosError(
-              "Request failed with status code 404",
-              "ERR_BAD_REQUEST",
-              createConfig("/pokemon/pikachu"),
-              undefined,
-              {
-                data: { message: "not found" },
-                status: 404,
-                statusText: "404",
-                headers: {},
-                config: createConfig("/pokemon/pikachu"),
-              },
-            );
-          },
-        },
-      }),
+    () => fetchPokemonDetail("pikachu"),
     (error) => {
-      assert.deepEqual(error, {
-        type: "api",
-        message: "Request failed with status code 404",
-        code: "ERR_BAD_REQUEST",
-        status: 404,
-        details: { message: "not found" },
-      });
+      assert.deepEqual(error, normalizedError);
       assert.equal(Object.getPrototypeOf(error), Object.prototype);
       return true;
     },
