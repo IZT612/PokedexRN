@@ -27,7 +27,7 @@
 - Preserve the current layering: app -> features/shared -> theme/data utilities.
 - Do not make one feature import from another feature unless there is a clear, intentional shared abstraction.
 - Keep API normalization logic in shared data utilities instead of spreading response-shape handling across UI components.
-- When adding files, avoid letting broad buckets like `data`, `domain`, or `ui` become catch-all directories; create more specific subfolders when that makes ownership and intent clearer.
+- Treat broad buckets like `data`, `domain`, and `ui` as containers, not final destinations for new files. If shared data code belongs to the API layer, place it under `src/shared/data/api/`; otherwise create a specific subfolder under `src/shared/data/` instead of dropping files directly into `data/`.
 - Reuse existing theme tokens from `src/theme/tokens.ts` instead of introducing ad hoc colors, spacing, or typography values.
 - If a change starts using Tamagui components for real, wire that change through the existing `tamagui.config.ts` and `TamaguiAppProvider` instead of creating a parallel theme path.
 
@@ -43,6 +43,7 @@
 
 - Add or update focused tests when changing shared logic, especially under `src/shared/data`.
 - The existing test setup uses Node's built-in test runner with `*.test.ts` files.
+- Prefer mocked tests over live external dependencies so automated checks can run reliably offline.
 - When a change has relevant automated tests available, do not consider the implementation complete until those tests pass; keep fixing failures and rerunning the tests until they succeed.
 - When automated tests are not available, manually check the changed behavior before considering the work complete; if you find errors, fix them and repeat the manual verification until the change behaves correctly.
 - When adding new tests, prefer keeping them close to the code they cover in a specific subfolder. For example, code in `src/shared/data/api/` should generally have tests under `src/shared/data/api/tests/`.
