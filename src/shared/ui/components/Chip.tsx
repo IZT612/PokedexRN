@@ -1,8 +1,8 @@
 // @ts-nocheck
-import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { uiTokens } from './tokens';
+import { uiTokens } from "./tokens";
 
 export type ChipProps = {
   label: string;
@@ -32,9 +32,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: uiTokens.spacing.md,
     borderRadius: uiTokens.radius.pill,
     backgroundColor: uiTokens.colors.chipBackground,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'flex-start',
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "flex-start",
   },
   selected: {
     backgroundColor: uiTokens.colors.chipSelected,
@@ -45,6 +45,6 @@ const styles = StyleSheet.create({
     color: uiTokens.colors.textPrimary,
   },
   selectedLabel: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
   },
 });

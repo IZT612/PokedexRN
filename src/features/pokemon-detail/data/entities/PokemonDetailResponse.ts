@@ -1,4 +1,4 @@
-import type { PokemonType } from '../../../../shared/data/entities/PokemonType';
+import type { PokemonType } from "../../../../shared/data/entities/PokemonType";
 
 export interface PokemonDetailResponse {
   id: number;

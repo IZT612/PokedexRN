@@ -5,7 +5,7 @@ import {
   spacing,
   tokens,
   typography,
-} from './src/theme';
+} from "./src/theme";
 
 const colorTokens = {
   ...brandColors,
@@ -19,8 +19,8 @@ const sizeTokens = {
   md: spacing.md,
   lg: spacing.lg,
   xl: spacing.xl,
-  '2xl': spacing['2xl'],
-  '3xl': spacing['3xl'],
+  "2xl": spacing["2xl"],
+  "3xl": spacing["3xl"],
 } as const;
 
 export const tamaguiConfig = {
@@ -49,6 +49,13 @@ export const tamaguiConfig = {
   },
 } as const;
 
-export { brandColors, getPokemonTypeColor, pokemonTypeColors, spacing, tokens, typography };
+export {
+  brandColors,
+  getPokemonTypeColor,
+  pokemonTypeColors,
+  spacing,
+  tokens,
+  typography,
+};
 
 export default tamaguiConfig;

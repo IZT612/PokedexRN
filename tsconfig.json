@@ -11,8 +11,14 @@
     "skipLibCheck": true,
     "ignoreDeprecations": "5.0",
     "strict": false,
-    "noEmit": true,
+    "noEmit": true
   },
-  "include": ["App.tsx", "tamagui.config.ts", "src/**/*.ts", "src/**/*.tsx", "src/**/*.d.ts"],
+  "include": [
+    "App.tsx",
+    "tamagui.config.ts",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.d.ts"
+  ],
   "exclude": ["node_modules", "openspec", ".opencode"]
 }

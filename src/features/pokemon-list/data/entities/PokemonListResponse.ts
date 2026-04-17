@@ -1,4 +1,4 @@
-import type { Pokemon } from '../../../../shared/data/entities/Pokemon';
+import type { Pokemon } from "../../../../shared/data/entities/Pokemon";
 
 export interface PokemonListResponse {
   count: number;

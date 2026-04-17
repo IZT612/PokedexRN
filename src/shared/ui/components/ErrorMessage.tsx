@@ -1,9 +1,9 @@
 // @ts-nocheck
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-import { Button } from './Button';
-import { uiTokens } from './tokens';
+import { Button } from "./Button";
+import { uiTokens } from "./tokens";
 
 export type ErrorMessageProps = {
   message: string;
@@ -12,16 +12,19 @@ export type ErrorMessageProps = {
   onRetry?: () => void;
 };
 
-export function ErrorMessage({ message, title = 'Something went wrong', retryLabel = 'Try again', onRetry }: ErrorMessageProps) {
+export function ErrorMessage({
+  message,
+  title = "Something went wrong",
+  retryLabel = "Try again",
+  onRetry,
+}: ErrorMessageProps) {
   return (
     <View style={styles.container} accessibilityRole="alert">
-      <Text style={styles.title}>
-        {title}
-      </Text>
-      <Text style={styles.message}>
-        {message}
-      </Text>
-      {onRetry ? <Button label={retryLabel} variant="secondary" onPress={onRetry} /> : null}
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.message}>{message}</Text>
+      {onRetry ? (
+        <Button label={retryLabel} variant="secondary" onPress={onRetry} />
+      ) : null}
     </View>
   );
 }
@@ -43,7 +46,8 @@ const styles = StyleSheet.create({
   message: {
     color: uiTokens.colors.textPrimary,
     fontSize: uiTokens.typography.sizes.sm,
-    lineHeight: uiTokens.typography.lineHeights.normal * uiTokens.typography.sizes.sm,
+    lineHeight:
+      uiTokens.typography.lineHeights.normal * uiTokens.typography.sizes.sm,
     marginBottom: uiTokens.spacing.sm,
   },
 });

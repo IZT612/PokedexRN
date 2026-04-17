@@ -1,17 +1,33 @@
 // @ts-nocheck
-import React from 'react';
-import { StyleProp, StyleSheet, TextInput, TextInputProps, View, ViewStyle } from 'react-native';
+import React from "react";
+import {
+  StyleProp,
+  StyleSheet,
+  TextInput,
+  TextInputProps,
+  View,
+  ViewStyle,
+} from "react-native";
 
-import { uiTokens } from './tokens';
+import { uiTokens } from "./tokens";
 
-export type SearchInputProps = Omit<TextInputProps, 'value' | 'onChangeText' | 'style'> & {
+export type SearchInputProps = Omit<
+  TextInputProps,
+  "value" | "onChangeText" | "style"
+> & {
   value: string;
   onChangeText: (value: string) => void;
   onSubmitQuery?: (value: string) => void;
   style?: StyleProp<ViewStyle>;
 };
 
-export function SearchInput({ value, onChangeText, onSubmitQuery, style, ...props }: SearchInputProps) {
+export function SearchInput({
+  value,
+  onChangeText,
+  onSubmitQuery,
+  style,
+  ...props
+}: SearchInputProps) {
   return (
     <View style={[styles.container, style]}>
       <TextInput
@@ -34,7 +50,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: uiTokens.colors.border,
     backgroundColor: uiTokens.colors.surface,
-    justifyContent: 'center',
+    justifyContent: "center",
     paddingHorizontal: uiTokens.spacing.md,
   },
   input: {

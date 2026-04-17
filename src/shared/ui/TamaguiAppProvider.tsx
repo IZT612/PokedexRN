@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren } from "react";
 
 type TamaguiAppProviderProps = PropsWithChildren<{}>;
 

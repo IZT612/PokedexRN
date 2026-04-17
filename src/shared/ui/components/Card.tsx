@@ -1,8 +1,14 @@
 // @ts-nocheck
-import React, { PropsWithChildren } from 'react';
-import { StyleProp, StyleSheet, View, ViewProps, ViewStyle } from 'react-native';
+import React, { PropsWithChildren } from "react";
+import {
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewProps,
+  ViewStyle,
+} from "react-native";
 
-import { uiTokens } from './tokens';
+import { uiTokens } from "./tokens";
 
 export type CardProps = PropsWithChildren<ViewProps> & {
   elevated?: boolean;
@@ -10,10 +16,21 @@ export type CardProps = PropsWithChildren<ViewProps> & {
   style?: StyleProp<ViewStyle>;
 };
 
-export function Card({ elevated = false, padded = true, style, children, ...props }: CardProps) {
+export function Card({
+  elevated = false,
+  padded = true,
+  style,
+  children,
+  ...props
+}: CardProps) {
   return (
     <View
-      style={[styles.base, padded && styles.padded, elevated && styles.elevated, style]}
+      style={[
+        styles.base,
+        padded && styles.padded,
+        elevated && styles.elevated,
+        style,
+      ]}
       {...props}
     >
       {children}
@@ -32,7 +49,7 @@ const styles = StyleSheet.create({
     padding: uiTokens.spacing.lg,
   },
   elevated: {
-    shadowColor: '#000000',
+    shadowColor: "#000000",
     shadowOpacity: 0.08,
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },

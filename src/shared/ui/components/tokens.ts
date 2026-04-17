@@ -1,4 +1,4 @@
-import { tokens } from '../../../theme';
+import { tokens } from "../../../theme";
 
 export const uiTokens = {
   colors: {
@@ -9,13 +9,13 @@ export const uiTokens = {
     textPrimary: tokens.colors.textPrimary,
     textSecondary: tokens.colors.textSecondary,
     border: tokens.colors.border,
-    success: '#16A34A',
-    successSoft: '#DCFCE7',
-    danger: '#DC2626',
-    dangerSoft: '#FEE2E2',
+    success: "#16A34A",
+    successSoft: "#DCFCE7",
+    danger: "#DC2626",
+    dangerSoft: "#FEE2E2",
     chipSelected: tokens.colors.textPrimary,
-    chipBackground: '#E5E7EB',
-    mutedSurface: '#F3F4F6',
+    chipBackground: "#E5E7EB",
+    mutedSurface: "#F3F4F6",
   },
   spacing: tokens.spacing,
   typography: tokens.typography,

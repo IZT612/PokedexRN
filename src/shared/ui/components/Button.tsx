@@ -1,12 +1,21 @@
 // @ts-nocheck
-import React from 'react';
-import { ActivityIndicator, Pressable, PressableProps, StyleProp, StyleSheet, Text, TextStyle, ViewStyle } from 'react-native';
+import React from "react";
+import {
+  ActivityIndicator,
+  Pressable,
+  PressableProps,
+  StyleProp,
+  StyleSheet,
+  Text,
+  TextStyle,
+  ViewStyle,
+} from "react-native";
 
-import { uiTokens } from './tokens';
+import { uiTokens } from "./tokens";
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+type ButtonVariant = "primary" | "secondary" | "ghost";
 
-export type ButtonProps = Omit<PressableProps, 'style'> & {
+export type ButtonProps = Omit<PressableProps, "style"> & {
   label: string;
   variant?: ButtonVariant;
   loading?: boolean;
@@ -25,18 +34,26 @@ const variantStyles: Record<ButtonVariant, ViewStyle> = {
     borderColor: uiTokens.colors.border,
   },
   ghost: {
-    backgroundColor: 'transparent',
-    borderColor: 'transparent',
+    backgroundColor: "transparent",
+    borderColor: "transparent",
   },
 };
 
 const variantLabelStyles: Record<ButtonVariant, TextStyle> = {
-  primary: { color: '#FFFFFF' },
+  primary: { color: "#FFFFFF" },
   secondary: { color: uiTokens.colors.textPrimary },
   ghost: { color: uiTokens.colors.primary },
 };
 
-export function Button({ label, variant = 'primary', loading = false, disabled = false, style, labelStyle, ...props }: ButtonProps) {
+export function Button({
+  label,
+  variant = "primary",
+  loading = false,
+  disabled = false,
+  style,
+  labelStyle,
+  ...props
+}: ButtonProps) {
   const isDisabled = disabled || loading;
 
   return (
@@ -53,9 +70,13 @@ export function Button({ label, variant = 'primary', loading = false, disabled =
       {...props}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'primary' ? '#FFFFFF' : uiTokens.colors.primary} />
+        <ActivityIndicator
+          color={variant === "primary" ? "#FFFFFF" : uiTokens.colors.primary}
+        />
       ) : (
-        <Text style={[styles.label, variantLabelStyles[variant], labelStyle]}>{label}</Text>
+        <Text style={[styles.label, variantLabelStyles[variant], labelStyle]}>
+          {label}
+        </Text>
       )}
     </Pressable>
   );
@@ -66,9 +87,9 @@ const styles = StyleSheet.create({
     minHeight: 48,
     paddingHorizontal: uiTokens.spacing.md,
     borderRadius: uiTokens.radius.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
     borderWidth: 1,
   },
   pressed: {
@@ -79,6 +100,6 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
