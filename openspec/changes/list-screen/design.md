@@ -35,6 +35,13 @@ The screen should use the existing `SearchInput`, `Chip`, `Card`, `Button`, `Loa
 Alternative considered: create list-screen-specific versions of inputs, chips, cards, or footer buttons.
 This was rejected because the repo already has reusable components that cover the requested layout.
 
+<!-- Had to tell the AI to add this, should add it into a ruleset. -->
+### Make design-token brand colors mandatory
+The list screen should use the existing color tokens from `src/theme/tokens.ts` for all brand, surface, border, and text color decisions. Type-specific visuals should use the existing Pokemon type color tokens rather than ad hoc values. This keeps the screen visually consistent with the current theme contract and avoids one-off colors creeping into the first real app screen.
+
+Alternative considered: style the screen with screen-local color values for speed.
+This was rejected because the repo already has an explicit token source and the first real screen should reinforce that token-driven styling rule.
+
 <!-- At a first glance, the layout seems to be just as I described it -->
 ### Use a simple four-section layout
 The screen should render in this order:
@@ -78,5 +85,6 @@ This was rejected because the requested screen explicitly needs the placeholder 
 
 - [Risk] The screen could feel too static if list-end pagination does not trigger reliably on different device sizes. -> Mitigation: keep store guards in place and test list-end loading behavior during implementation.
 - [Risk] Reusing general shared components may produce a UI that needs small layout overrides. -> Mitigation: prefer local screen layout styling around the shared components instead of changing the components themselves unless a reusable gap is proven.
+- [Risk] The screen could drift from the current visual language if implementation adds one-off colors. -> Mitigation: require brand, surface, text, border, and type styling to come from the existing theme tokens.
 - [Risk] The single shared error field may let the most recent request failure replace an earlier one. -> Mitigation: keep the first screen simple and surface the latest actionable error state through the existing shared error component.
 - [Risk] The footer placeholder may imply real navigation. -> Mitigation: style `Home` as the active action and keep `Favorites` visibly present but non-interactive.

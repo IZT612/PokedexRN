@@ -33,6 +33,18 @@ The list screen MUST reuse the existing shared UI components for search, chips, 
 - **WHEN** Pokemon results are rendered
 - **THEN** each Pokemon entry SHALL use the shared `Card` component and its displayed types SHALL use the shared `Chip` component
 
+<!-- Was not added at first, should add to a ruleset -->
+### Requirement: Screen uses existing theme color tokens
+The list screen MUST use the existing theme color tokens for brand, surface, border, and text styling, and it MUST use the existing Pokemon type color tokens for type-specific visuals.
+
+#### Scenario: Brand and surface colors come from tokens
+- **WHEN** the list screen styles its header, layout sections, cards, footer, or text treatments
+- **THEN** it SHALL use color values sourced from the existing theme tokens instead of screen-local ad hoc colors
+
+#### Scenario: Type visuals use Pokemon type color tokens
+- **WHEN** the screen renders Pokemon types or type filter chips with type-specific color treatment
+- **THEN** that styling SHALL come from the existing Pokemon type color token set
+
 ### Requirement: Screen renders Pokemon cards with key summary data
 The list screen MUST render the Pokemon results as cards that show the Pokemon image, id, name, and types.
 
@@ -99,4 +111,3 @@ The list screen MUST prepare the future Favorites destination without treating i
 - **WHEN** the footer is rendered before the Favorites feature exists
 - **THEN** the `Favorites` action SHALL be visible as a placeholder without requiring real navigation behavior yet
 
-<!-- Everything great, except there's no mention about the tokens and brandcolors. -->

@@ -14,6 +14,7 @@
 - [ ] 3.1 Use the shared `SearchInput` and `Chip` components for the query filter and horizontal type filter row.
 - [ ] 3.2 Use the shared `Card` and `Chip` components to render each Pokemon card with image, id, name, and types.
 - [ ] 3.3 Use the shared `LoadingSpinner`, `ErrorMessage`, and `Button` components for feedback and the Home/Favorites footer section.
+- [ ] 3.4 Use existing theme color tokens for brand, surface, border, text, and Pokemon type styling instead of ad hoc screen-local colors.
 
 ## 4. Filtering, pagination, and footer behavior
 
