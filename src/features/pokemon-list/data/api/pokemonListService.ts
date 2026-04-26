@@ -1,7 +1,6 @@
 import type { AxiosRequestConfig } from "axios";
 
 import type { PokemonListResponse } from "../entities/PokemonListResponse";
-import type { Pokemon } from "../../../../shared/data/entities/Pokemon";
 import type { PokemonType } from "../../../../shared/data/entities/PokemonType";
 import { apiClient } from "../../../../shared/data/api/client";
 
@@ -23,7 +22,8 @@ type PokemonTypesApiResponse = {
   }>;
 };
 
-type PokemonDetailApiResponse = Pokemon;
+export const DEFAULT_POKEMON_LIST_LIMIT = 30;
+export const DEFAULT_POKEMON_LIST_OFFSET = 0;
 
 export type FetchPokemonListOptions = {
   limit?: number;
@@ -31,58 +31,34 @@ export type FetchPokemonListOptions = {
   requestConfig?: AxiosRequestConfig;
 };
 
-export type PokemonTypeOption = Pick<PokemonType, "name">;
-
-function normalizePokemon(pokemon: PokemonDetailApiResponse): Pokemon {
-  return {
-    id: pokemon.id,
-    name: pokemon.name,
-    sprites: pokemon.sprites,
-    types: pokemon.types,
-    stats: pokemon.stats,
-    abilities: pokemon.abilities,
-    weight: pokemon.weight,
-    height: pokemon.height,
-  };
-}
-
 export async function fetchPokemonList(
   options: FetchPokemonListOptions = {},
 ): Promise<PokemonListResponse> {
   const { limit, offset, requestConfig } = options;
+  const resolvedLimit = limit ?? DEFAULT_POKEMON_LIST_LIMIT;
+  const resolvedOffset = offset ?? DEFAULT_POKEMON_LIST_OFFSET;
   const response = await apiClient.get<PokemonListApiResponse>("/pokemon", {
     ...requestConfig,
     params: {
       ...requestConfig?.params,
-      ...(limit !== undefined ? { limit } : {}),
-      ...(offset !== undefined ? { offset } : {}),
+      limit: resolvedLimit,
+      offset: resolvedOffset,
     },
   });
 
-  const results = await Promise.all(
-    response.data.results.map(async (pokemon) => {
-      const detailResponse = await apiClient.get<PokemonDetailApiResponse>(
-        pokemon.url,
-        {
-          ...requestConfig,
-        },
-      );
-
-      return normalizePokemon(detailResponse.data);
-    }),
-  );
-
   return {
     count: response.data.count,
+    limit: resolvedLimit,
+    offset: resolvedOffset,
     next: response.data.next,
     previous: response.data.previous,
-    results,
+    results: response.data.results,
   };
 }
 
 export async function fetchPokemonTypes(
   requestConfig?: AxiosRequestConfig,
-): Promise<PokemonTypeOption[]> {
+): Promise<PokemonType[]> {
   const response = await apiClient.get<PokemonTypesApiResponse>(
     "/type",
     requestConfig,

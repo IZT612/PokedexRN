@@ -1,4 +1,4 @@
 export interface PokemonType {
-  slot: number;
+  slot?: number;
   name: string;
 }

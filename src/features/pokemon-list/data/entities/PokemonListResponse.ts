@@ -1,8 +1,13 @@
-import type { Pokemon } from "../../../../shared/data/entities/Pokemon";
+export interface PokemonListItemResponse {
+  name: string;
+  url: string;
+}
 
 export interface PokemonListResponse {
   count: number;
+  limit: number;
+  offset: number;
   next: string | null;
   previous: string | null;
-  results: Pokemon[];
+  results: PokemonListItemResponse[];
 }

@@ -3,10 +3,51 @@ import test from "node:test";
 
 import { AxiosError, type InternalAxiosRequestConfig } from "axios";
 
-import { fetchPokemonList, fetchPokemonTypes } from "../pokemonListService";
+import { fetchPokemonList, fetchPokemonTypes } from "../pokemonListRepository";
 
 const bulbasaurUrl = "https://pokeapi.co/api/v2/pokemon/1/";
 const ivysaurUrl = "https://pokeapi.co/api/v2/pokemon/2/";
+
+function createPokemonDetailApiResponse(id: number, name: string) {
+  return {
+    id,
+    name,
+    sprites: {
+      front_default: `${name}.png`,
+      other: {
+        "official-artwork": {
+          front_default: `${name}-official.png`,
+        },
+      },
+    },
+    types: [
+      {
+        slot: 1,
+        type: {
+          name: "grass",
+        },
+      },
+    ],
+    stats: [
+      {
+        base_stat: 45,
+        stat: {
+          name: "hp",
+        },
+      },
+    ],
+    abilities: [
+      {
+        is_hidden: false,
+        ability: {
+          name: "overgrow",
+        },
+      },
+    ],
+    weight: 69,
+    height: 7,
+  };
+}
 
 function createConfig(url: string): InternalAxiosRequestConfig {
   return {
@@ -16,52 +57,76 @@ function createConfig(url: string): InternalAxiosRequestConfig {
   } as InternalAxiosRequestConfig;
 }
 
-test("fetchPokemonList resolves list data through the shared API client", async () => {
+test("fetchPokemonList maps service responses into repository results", async () => {
   const response = await fetchPokemonList({
-    limit: 2,
-    offset: 0,
     requestConfig: {
       adapter: async (config) => {
-        if (config.url !== "/pokemon") {
-          throw new Error(`Unexpected request: ${config.url}`);
+        if (config.url === "/pokemon") {
+          assert.deepEqual(config.params, { limit: 30, offset: 0 });
+
+          return {
+            data: {
+              count: 1302,
+              next: "https://pokeapi.co/api/v2/pokemon?offset=30&limit=30",
+              previous: null,
+              results: [
+                { name: "bulbasaur", url: bulbasaurUrl },
+                { name: "ivysaur", url: ivysaurUrl },
+              ],
+            },
+            status: 200,
+            statusText: "OK",
+            headers: {},
+            config,
+          };
         }
 
-        assert.deepEqual(config.params, { limit: 2, offset: 0 });
+        if (config.url === bulbasaurUrl) {
+          return {
+            data: createPokemonDetailApiResponse(1, "bulbasaur"),
+            status: 200,
+            statusText: "OK",
+            headers: {},
+            config,
+          };
+        }
 
-        return {
-          data: {
-            count: 1302,
-            next: "https://pokeapi.co/api/v2/pokemon?offset=2&limit=2",
-            previous: null,
-            results: [
-              { name: "bulbasaur", url: bulbasaurUrl },
-              { name: "ivysaur", url: ivysaurUrl },
-            ],
-          },
-          status: 200,
-          statusText: "OK",
-          headers: {},
-          config,
-        };
+        if (config.url === ivysaurUrl) {
+          return {
+            data: createPokemonDetailApiResponse(2, "ivysaur"),
+            status: 200,
+            statusText: "OK",
+            headers: {},
+            config,
+          };
+        }
+
+        throw new Error(`Unexpected request: ${config.url}`);
       },
     },
   });
 
   assert.equal(response.count, 1302);
-  assert.equal(response.limit, 2);
+  assert.equal(response.limit, 30);
   assert.equal(response.offset, 0);
+  assert.equal(response.next, "https://pokeapi.co/api/v2/pokemon?offset=30&limit=30");
   assert.equal(response.results.length, 2);
   assert.deepEqual(response.results[0], {
+    id: 1,
     name: "bulbasaur",
-    url: bulbasaurUrl,
-  });
-  assert.deepEqual(response.results[1], {
-    name: "ivysaur",
-    url: ivysaurUrl,
+    sprites: {
+      official_artwork: "bulbasaur-official.png",
+      front_default: "bulbasaur.png",
+    },
+    types: [{ slot: 1, name: "grass" }],
+    stats: [{ name: "hp", base_stat: 45 }],
+    abilities: [{ name: "overgrow", is_hidden: false }],
+    weight: 69,
+    height: 7,
   });
 });
 
-test("fetchPokemonTypes resolves type data through the shared API client", async () => {
+test("fetchPokemonTypes returns shared PokemonType values", async () => {
   const response = await fetchPokemonTypes({
     adapter: async (config) => ({
       data: {
