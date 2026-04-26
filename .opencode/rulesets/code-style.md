@@ -10,5 +10,6 @@
 
 - Check whether a similar helper, entity, or UI primitive already exists before adding a new one.
 - Keep components token-driven so visual updates stay centralized.
+- The use of existing color tokens is mandatory. Do not introduce ad hoc brand, surface, border, text, or type colors when a value should come from `src/theme/tokens.ts` or existing shared token helpers.
 - When adding exports, make sure import paths stay clean and consistent with the current barrel-file pattern.
 - Avoid touching unrelated files just to reshape the project.
