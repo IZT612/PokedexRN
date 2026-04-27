@@ -55,9 +55,9 @@ The list screen MUST render the Pokemon results as cards that show the Pokemon i
 - **WHEN** a Pokemon card renders its image
 - **THEN** it SHALL use the Pokemon's `official_artwork` image from the shared `Pokemon` entity
 
-#### Scenario: Pokemon card is pressable for selection
+#### Scenario: Pokemon card opens the detail screen
 - **WHEN** a user taps or clicks a Pokemon card in the list
-- **THEN** that card SHALL behave as a pressable/selectable UI element so the list can hand off selection to future detail-screen behavior
+- **THEN** the application SHALL open the detail screen for that specific Pokemon
 
 ### Requirement: Screen loads and uses list-screen store data
 The list screen MUST consume the `pokemon-list` store for result data, type options, active filters, and store-driven loading and error states.
