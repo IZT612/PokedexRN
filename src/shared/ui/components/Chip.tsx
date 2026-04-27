@@ -2,18 +2,36 @@
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 
+import type { PokemonType } from "../../../theme";
+import { getChipColors } from "./chipColors";
 import { uiTokens } from "./tokens";
 
 export type ChipProps = {
   label: string;
   selected?: boolean;
   onPress?: () => void;
+  pokemonType?: PokemonType;
 };
 
-export function Chip({ label, selected = false, onPress }: ChipProps) {
+export function Chip({
+  label,
+  selected = false,
+  onPress,
+  pokemonType,
+}: ChipProps) {
+  const colors = getChipColors({ selected, pokemonType });
+
   const content = (
-    <View style={[styles.base, selected && styles.selected]}>
-      <Text style={[styles.label, selected && styles.selectedLabel]}>
+    <View
+      style={[
+        styles.base,
+        {
+          backgroundColor: colors.backgroundColor,
+          borderColor: colors.borderColor,
+        },
+      ]}
+    >
+      <Text style={[styles.label, { color: colors.textColor }]}>
         {label}
       </Text>
     </View>
@@ -31,20 +49,13 @@ const styles = StyleSheet.create({
     minHeight: 32,
     paddingHorizontal: uiTokens.spacing.md,
     borderRadius: uiTokens.radius.pill,
-    backgroundColor: uiTokens.colors.chipBackground,
+    borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
     alignSelf: "flex-start",
   },
-  selected: {
-    backgroundColor: uiTokens.colors.chipSelected,
-  },
   label: {
     fontSize: uiTokens.typography.sizes.sm,
     fontWeight: uiTokens.typography.weights.semibold,
-    color: uiTokens.colors.textPrimary,
-  },
-  selectedLabel: {
-    color: "#FFFFFF",
   },
 });
