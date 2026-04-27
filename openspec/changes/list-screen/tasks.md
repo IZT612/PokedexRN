@@ -16,6 +16,7 @@
 - [x] 3.3 Use the shared `LoadingSpinner`, `ErrorMessage`, and `Button` components for feedback and the Home/Favorites footer section.
 - [x] 3.4 Extend the shared `Chip` component so it can render Pokemon type visuals using the existing type color tokens.
 - [x] 3.5 Use existing theme color tokens for brand, surface, border, text, and Pokemon type styling instead of ad hoc screen-local colors.
+- [x] 3.6 Extend the shared `Card` integration so Pokemon cards render as pressable/selectable entries in preparation for the detail-screen flow.
 
 ## 4. Filtering, pagination, and footer behavior
 

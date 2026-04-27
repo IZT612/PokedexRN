@@ -1,6 +1,8 @@
 // @ts-nocheck
 import React, { PropsWithChildren } from "react";
 import {
+  Pressable,
+  PressableProps,
   StyleProp,
   StyleSheet,
   View,
@@ -14,15 +16,36 @@ export type CardProps = PropsWithChildren<ViewProps> & {
   elevated?: boolean;
   padded?: boolean;
   style?: StyleProp<ViewStyle>;
+  onPress?: PressableProps["onPress"];
 };
 
 export function Card({
   elevated = false,
   padded = true,
   style,
+  onPress,
   children,
   ...props
 }: CardProps) {
+  if (onPress) {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        onPress={onPress}
+        style={({ pressed }) => [
+          styles.base,
+          padded && styles.padded,
+          elevated && styles.elevated,
+          pressed && styles.pressed,
+          style,
+        ]}
+        {...props}
+      >
+        {children}
+      </Pressable>
+    );
+  }
+
   return (
     <View
       style={[
@@ -54,5 +77,8 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     shadowOffset: { width: 0, height: 4 },
     elevation: 2,
+  },
+  pressed: {
+    opacity: 0.92,
   },
 });

@@ -11,6 +11,7 @@ This change needs to turn those existing building blocks into the first real scr
 - Render the screen using the existing `pokemon-list` Zustand store and shared UI components.
 - Support filtering by name, filtering by type, and combining those filters in the UI.
 - Show Pokemon cards with image, id, name, and type chips.
+- Make Pokemon cards pressable so the list can support selection and future detail-screen handoff.
 - Prepare a bottom navigation section with `Home` as the active screen and `Favorites` as a non-functional placeholder.
 - Expose the existing pagination behavior through the list screen so additional Pokemon can load as the user moves through the list.
 
@@ -93,6 +94,13 @@ Pokemon cards should render the `official_artwork` image from the shared `Pokemo
 Alternative considered: use `front_default` as the primary card image.
 This was rejected because the list cards are meant to present a cleaner showcase treatment and the shared entity already exposes `official_artwork` for that purpose.
 
+<!-- Had to specify that cards should be pressable for the next screen. -->
+### Make Pokemon cards directly pressable
+Pokemon cards should be rendered through the shared `Card` primitive in a pressable mode so the list screen exposes selection behavior without introducing a separate local wrapper component. This keeps the interaction reusable for future screens while letting the list feature hand off card selection to detail-screen logic later.
+
+Alternative considered: keep cards purely static until real navigation is implemented.
+This was rejected because the next screen flow depends on card selection, and the shared card already owns the visual surface that users will interact with.
+
 ### Keep footer actions visually ready but behavior-light
 The footer should show `Home` and `Favorites` using the shared button component. `Home` should appear as the current active/default action, while `Favorites` should be rendered as a pressable-looking button that is currently disabled. This prepares the screen structure for future expansion without pretending that navigation already exists.
 
@@ -103,6 +111,7 @@ This was rejected because the requested screen explicitly needs the placeholder 
 
 - [Risk] The screen could feel too static if list-end pagination does not trigger reliably on different device sizes. -> Mitigation: keep store guards in place and test list-end loading behavior during implementation.
 - [Risk] Reusing general shared components may produce a UI that needs small layout overrides. -> Mitigation: prefer local screen layout styling around the shared components instead of changing the components themselves unless a reusable gap is proven.
+- [Risk] Making the shared card pressable could affect non-interactive usages. -> Mitigation: keep press behavior opt-in through an `onPress` prop so existing static cards keep their current behavior.
 - [Risk] The screen could drift from the current visual language if implementation adds one-off colors. -> Mitigation: require brand, surface, text, border, and type styling to come from the existing theme tokens.
 - [Risk] The single shared error field may let the most recent request failure replace an earlier one. -> Mitigation: keep the first screen simple and surface the latest actionable error state through the existing shared error component.
 - [Risk] The footer placeholder may imply real navigation. -> Mitigation: style `Home` as the active action and keep `Favorites` visibly present but disabled.

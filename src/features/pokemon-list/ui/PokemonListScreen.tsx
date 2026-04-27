@@ -33,9 +33,18 @@ function isThemePokemonType(value: string): value is ThemePokemonType {
   return pokemonTypes.includes(value as ThemePokemonType);
 }
 
-function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
+type PokemonCardProps = {
+  pokemon: Pokemon;
+  onPress: () => void;
+};
+
+type PokemonListScreenProps = {
+  onPokemonPress?: (pokemon: Pokemon) => void;
+};
+
+function PokemonCard({ pokemon, onPress }: PokemonCardProps) {
   return (
-    <Card elevated style={styles.card}>
+    <Card elevated style={styles.card} onPress={onPress}>
       <View style={styles.cardHeader}>
         <ThemeText style={styles.pokemonId}>{formatPokemonId(pokemon.id)}</ThemeText>
       </View>
@@ -64,7 +73,7 @@ function PokemonCard({ pokemon }: { pokemon: Pokemon }) {
   );
 }
 
-export function PokemonListScreen() {
+export function PokemonListScreen({ onPokemonPress }: PokemonListScreenProps) {
   const filteredPokemon = usePokemonListStore((state) => state.filteredPokemon);
   const typeOptions = usePokemonListStore((state) => state.typeOptions);
   const query = usePokemonListStore((state) => state.query);
@@ -95,7 +104,14 @@ export function PokemonListScreen() {
   }
 
   function renderPokemonCard({ item }: ListRenderItemInfo<Pokemon>) {
-    return <PokemonCard pokemon={item} />;
+    return (
+      <PokemonCard
+        pokemon={item}
+        onPress={() => {
+          onPokemonPress?.(item);
+        }}
+      />
+    );
   }
 
   const showInitialLoading = listLoading && filteredPokemon.length === 0;
@@ -279,6 +295,8 @@ const styles = StyleSheet.create({
   },
   bottomSection: {
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     gap: tokens.spacing.md,
     padding: tokens.spacing.lg,
     backgroundColor: tokens.colors.surface,
