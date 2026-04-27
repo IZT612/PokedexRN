@@ -4,6 +4,7 @@
 
 - Treat implementation, commits, and pushes as separate steps that each require a direct user instruction. Do not implement a change, create a commit, and push in one go unless the user explicitly asks for that combined workflow.
 - Keep commits focused on related changes. When there are unrelated edits for different purposes, split them into separate commits instead of bundling them together; for example, a `README.md` update and a new feature should normally be committed separately.
+- When a change touches a function, helper, or flow only as preparation for later work, do not fully implement or expand that unrelated function unless the user explicitly asks for it in the current change. Default to leaving preparatory groundwork scoped and minimal rather than finishing future behavior early.
 
 ## Push Requirements
 
