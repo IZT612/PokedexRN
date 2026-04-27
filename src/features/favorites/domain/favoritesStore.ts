@@ -68,7 +68,20 @@ function getFilteredPokemon(
 }
 
 function sortTypeOptions(typeOptions: PokemonType[]) {
-  return [...typeOptions].sort((left, right) => left.name.localeCompare(right.name));
+  const trailingTypeNames = new Set(["stellar", "unknown"]);
+  const leadingTypeOptions: PokemonType[] = [];
+  const trailingTypeOptions: PokemonType[] = [];
+
+  for (const typeOption of typeOptions) {
+    if (trailingTypeNames.has(typeOption.name)) {
+      trailingTypeOptions.push(typeOption);
+      continue;
+    }
+
+    leadingTypeOptions.push(typeOption);
+  }
+
+  return [...leadingTypeOptions, ...trailingTypeOptions];
 }
 
 function sortPokemonByFavoriteIds(pokemon: Pokemon[], favoritePokemonIds: number[]) {

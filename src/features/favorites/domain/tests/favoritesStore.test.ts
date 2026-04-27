@@ -112,9 +112,36 @@ test("syncFavoritePokemonIds keeps the full type catalog when favorites use fewe
   await store.getState().syncFavoritePokemonIds([25]);
 
   assert.deepEqual(store.getState().typeOptions, [
-    { name: "bug" },
     { name: "electric" },
+    { name: "bug" },
     { name: "water" },
+  ]);
+});
+
+test("syncFavoritePokemonIds keeps fetched type order while pushing stellar and unknown last", async () => {
+  const store = createFavoritesStore(
+    createDependencies({
+      fetchFavoritePokemonByIds: async () => [createPokemon(25, "pikachu", ["electric"])],
+      fetchPokemonTypes: async () => [
+        { name: "normal" },
+        { name: "fighting" },
+        { name: "stellar" },
+        { name: "flying" },
+        { name: "unknown" },
+        { name: "fairy" },
+      ],
+    }),
+  );
+
+  await store.getState().syncFavoritePokemonIds([25]);
+
+  assert.deepEqual(store.getState().typeOptions, [
+    { name: "normal" },
+    { name: "fighting" },
+    { name: "flying" },
+    { name: "fairy" },
+    { name: "stellar" },
+    { name: "unknown" },
   ]);
 });
 
