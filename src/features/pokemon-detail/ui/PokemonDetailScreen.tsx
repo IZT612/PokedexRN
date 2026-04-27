@@ -130,7 +130,17 @@ export function PokemonDetailScreen({ pokemonId, onBack }: PokemonDetailScreenPr
   const loading = usePokemonDetailStore((state) => state.loading);
   const error = usePokemonDetailStore((state) => state.error);
   const favoritePokemonIds = usePokemonDetailStore((state) => state.favoritePokemonIds);
+  const favoritePokemonIdsLoading = usePokemonDetailStore(
+    (state) => state.favoritePokemonIdsLoading,
+  );
+  const favoritePokemonIdsSaving = usePokemonDetailStore(
+    (state) => state.favoritePokemonIdsSaving,
+  );
+  const favoritePokemonIdsError = usePokemonDetailStore(
+    (state) => state.favoritePokemonIdsError,
+  );
   const loadPokemonDetail = usePokemonDetailStore((state) => state.loadPokemonDetail);
+  const loadFavoritePokemonIds = usePokemonDetailStore((state) => state.loadFavoritePokemonIds);
   const toggleFavorite = usePokemonDetailStore((state) => state.toggleFavorite);
 
   useEffect(() => {
@@ -152,11 +162,23 @@ export function PokemonDetailScreen({ pokemonId, onBack }: PokemonDetailScreenPr
         <Button
           label={isFavorite ? "♥ Favorited" : "♡ Favorite"}
           variant={isFavorite ? "primary" : "secondary"}
+          loading={favoritePokemonIdsLoading || favoritePokemonIdsSaving}
           onPress={() => {
-            toggleFavorite(pokemonId);
+            void toggleFavorite(pokemonId);
           }}
         />
       </View>
+
+      {favoritePokemonIdsError ? (
+        <View style={styles.favoriteErrorSection}>
+          <ErrorMessage
+            message={favoritePokemonIdsError.message}
+            onRetry={() => {
+              void loadFavoritePokemonIds();
+            }}
+          />
+        </View>
+      ) : null}
 
       {loading && !pokemon ? (
         <View style={styles.feedbackState}>
@@ -268,6 +290,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     padding: tokens.spacing.xl,
+  },
+  favoriteErrorSection: {
+    paddingHorizontal: tokens.spacing.lg,
+    paddingTop: tokens.spacing.md,
   },
   hero: {
     width: "100%",

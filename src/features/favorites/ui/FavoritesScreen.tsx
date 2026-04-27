@@ -1,11 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  FlatList,
-  ListRenderItemInfo,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { FlatList, ListRenderItemInfo, ScrollView, StyleSheet, View } from "react-native";
 
 import type { Pokemon } from "../../../shared/data/entities";
 import {
@@ -18,7 +12,16 @@ import {
   ThemeText,
 } from "../../../shared/ui";
 import { pokemonTypes, tokens, type PokemonType as ThemePokemonType } from "../../../theme";
-import { usePokemonListStore } from "../domain";
+import { useFavoritesStore } from "../domain";
+
+type FavoritesScreenProps = {
+  favoritePokemonIds: number[];
+  favoritePokemonIdsLoading: boolean;
+  favoritePokemonIdsError: Error | null;
+  onRetryFavoritePokemonIdsLoad: () => void;
+  onPokemonPress?: (pokemon: Pokemon) => void;
+  onHomePress?: () => void;
+};
 
 function formatPokemonLabel(value: string) {
   return value
@@ -31,47 +34,31 @@ function isThemePokemonType(value: string): value is ThemePokemonType {
   return pokemonTypes.includes(value as ThemePokemonType);
 }
 
-type PokemonListScreenProps = {
-  onPokemonPress?: (pokemon: Pokemon) => void;
-  onFavoritesPress?: () => void;
-};
-
-export function PokemonListScreen({
+export function FavoritesScreen({
+  favoritePokemonIds,
+  favoritePokemonIdsLoading,
+  favoritePokemonIdsError,
+  onRetryFavoritePokemonIdsLoad,
   onPokemonPress,
-  onFavoritesPress,
-}: PokemonListScreenProps) {
-  const filteredPokemon = usePokemonListStore((state) => state.filteredPokemon);
-  const typeOptions = usePokemonListStore((state) => state.typeOptions);
-  const query = usePokemonListStore((state) => state.query);
-  const selectedType = usePokemonListStore((state) => state.selectedType);
-  const listLoading = usePokemonListStore((state) => state.listLoading);
-  const nextBatchLoading = usePokemonListStore((state) => state.nextBatchLoading);
-  const typeOptionsLoading = usePokemonListStore(
-    (state) => state.typeOptionsLoading,
-  );
-  const error = usePokemonListStore((state) => state.error);
-  const setQuery = usePokemonListStore((state) => state.setQuery);
-  const setSelectedType = usePokemonListStore(
-    (state) => state.setSelectedType,
-  );
-  const loadPokemonList = usePokemonListStore((state) => state.loadPokemonList);
-  const loadNextPokemonBatch = usePokemonListStore(
-    (state) => state.loadNextPokemonBatch,
-  );
-  const loadPokemonTypes = usePokemonListStore((state) => state.loadPokemonTypes);
+  onHomePress,
+}: FavoritesScreenProps) {
+  const filteredPokemon = useFavoritesStore((state) => state.filteredPokemon);
+  const typeOptions = useFavoritesStore((state) => state.typeOptions);
+  const query = useFavoritesStore((state) => state.query);
+  const selectedType = useFavoritesStore((state) => state.selectedType);
+  const loading = useFavoritesStore((state) => state.loading);
+  const error = useFavoritesStore((state) => state.error);
+  const setQuery = useFavoritesStore((state) => state.setQuery);
+  const setSelectedType = useFavoritesStore((state) => state.setSelectedType);
+  const syncFavoritePokemonIds = useFavoritesStore((state) => state.syncFavoritePokemonIds);
 
   useEffect(() => {
-    void loadPokemonList();
-    void loadPokemonTypes();
-  }, [loadPokemonList, loadPokemonTypes]);
-
-  function handleTypePress(type: string) {
-    setSelectedType(selectedType === type ? null : type);
-  }
+    void syncFavoritePokemonIds(favoritePokemonIds);
+  }, [favoritePokemonIds, syncFavoritePokemonIds]);
 
   function renderPokemonCard({ item }: ListRenderItemInfo<Pokemon>) {
     return (
-      <PokemonCard
+      <PokemonSummaryCard
         pokemon={item}
         onPress={() => {
           onPokemonPress?.(item);
@@ -80,21 +67,26 @@ export function PokemonListScreen({
     );
   }
 
-  const showInitialLoading = listLoading && filteredPokemon.length === 0;
-  const showEmptyState =
-    !showInitialLoading && !error && filteredPokemon.length === 0;
+  function handleTypePress(type: string) {
+    setSelectedType(selectedType === type ? null : type);
+  }
+
+  const showInitialLoading =
+    (favoritePokemonIdsLoading || loading) && filteredPokemon.length === 0;
+  const resolvedError = favoritePokemonIdsError ?? error;
+  const showEmptyState = !showInitialLoading && !resolvedError && filteredPokemon.length === 0;
 
   return (
     <View style={styles.screen}>
       <View style={styles.header}>
-        <ThemeText style={styles.headerTitle}>PokedexRN</ThemeText>
+        <ThemeText style={styles.headerTitle}>Favorites</ThemeText>
       </View>
 
       <View style={styles.filtersSection}>
         <SearchInput
           value={query}
           onChangeText={setQuery}
-          placeholder="Search by name"
+          placeholder="Search favorites by name"
         />
         <View style={styles.typeFilterSection}>
           <ScrollView
@@ -108,22 +100,17 @@ export function PokemonListScreen({
                 label={formatPokemonLabel(type.name)}
                 selected={selectedType === type.name}
                 onPress={() => handleTypePress(type.name)}
-                pokemonType={
-                  isThemePokemonType(type.name) ? type.name : undefined
-                }
+                pokemonType={isThemePokemonType(type.name) ? type.name : undefined}
               />
             ))}
           </ScrollView>
-          {typeOptionsLoading ? (
-            <LoadingSpinner label="Loading types" />
-          ) : null}
         </View>
       </View>
 
       <View style={styles.listSection}>
         {showInitialLoading ? (
           <View style={styles.centerContent}>
-            <LoadingSpinner label="Loading pokemon" size="large" />
+            <LoadingSpinner label="Loading favorites" size="large" />
           </View>
         ) : (
           <FlatList
@@ -131,51 +118,42 @@ export function PokemonListScreen({
             renderItem={renderPokemonCard}
             keyExtractor={(item) => String(item.id)}
             contentContainerStyle={styles.listContent}
-            onEndReached={() => {
-              void loadNextPokemonBatch();
-            }}
-            onEndReachedThreshold={0.5}
             ListEmptyComponent={
               showEmptyState ? (
                 <View style={styles.centerContent}>
                   <ThemeText style={styles.emptyStateText}>
-                    There&apos;s no pokemon meeting your criteria.
+                    You haven&apos;t favorited any pokemon yet.
                   </ThemeText>
                 </View>
               ) : null
             }
             ListFooterComponent={
-              <View style={styles.footerFeedback}>
-                {nextBatchLoading ? (
-                  <LoadingSpinner label="Loading more pokemon" />
-                ) : null}
-                {error ? (
+              resolvedError ? (
+                <View style={styles.footerFeedback}>
                   <ErrorMessage
-                    message={error.message}
-                    onRetry={filteredPokemon.length === 0 ? () => void loadPokemonList() : undefined}
+                    message={resolvedError.message}
+                    onRetry={() => {
+                      if (favoritePokemonIdsError) {
+                        onRetryFavoritePokemonIdsLoad();
+                        return;
+                      }
+
+                      void syncFavoritePokemonIds(favoritePokemonIds);
+                    }}
                   />
-                ) : null}
-              </View>
+                </View>
+              ) : null
             }
           />
         )}
       </View>
 
       <View style={styles.bottomSection}>
-        <Button label="Home" variant="primary" />
-        <Button
-          label="Favorites"
-          variant="secondary"
-          disabled={!onFavoritesPress}
-          onPress={onFavoritesPress}
-        />
+        <Button label="Home" variant="secondary" onPress={onHomePress} />
+        <Button label="Favorites" variant="primary" disabled />
       </View>
     </View>
   );
-}
-
-function PokemonCard({ pokemon, onPress }: { pokemon: Pokemon; onPress: () => void }) {
-  return <PokemonSummaryCard pokemon={pokemon} onPress={onPress} />;
 }
 
 const styles = StyleSheet.create({
@@ -218,11 +196,6 @@ const styles = StyleSheet.create({
     gap: tokens.spacing.md,
     flexGrow: 1,
   },
-  footerFeedback: {
-    gap: tokens.spacing.md,
-    paddingTop: tokens.spacing.md,
-    paddingBottom: tokens.spacing.xl,
-  },
   centerContent: {
     flex: 1,
     alignItems: "center",
@@ -232,6 +205,11 @@ const styles = StyleSheet.create({
   emptyStateText: {
     color: tokens.colors.textSecondary,
     textAlign: "center",
+  },
+  footerFeedback: {
+    gap: tokens.spacing.md,
+    paddingTop: tokens.spacing.md,
+    paddingBottom: tokens.spacing.xl,
   },
   bottomSection: {
     flexDirection: "row",

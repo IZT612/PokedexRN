@@ -43,6 +43,8 @@ function createDependencies(
   return {
     fetchPokemonDetail: async (identifier) =>
       createPokemon(Number(identifier), String(identifier)),
+    loadFavoritePokemonIds: async () => [],
+    saveFavoritePokemonIds: async () => undefined,
     ...overrides,
   };
 }
@@ -58,6 +60,10 @@ test("createPokemonDetailStore starts from the expected initial state", () => {
     store.getState().favoritePokemonIds,
     initialPokemonDetailState.favoritePokemonIds,
   );
+  assert.equal(store.getState().favoritePokemonIdsLoading, false);
+  assert.equal(store.getState().favoritePokemonIdsSaving, false);
+  assert.equal(store.getState().favoritePokemonIdsHydrated, false);
+  assert.equal(store.getState().favoritePokemonIdsError, null);
 });
 
 test("loadPokemonDetail loads the selected pokemon by id", async () => {
@@ -153,19 +159,94 @@ test("loadPokemonDetail clears previous errors before a new request", async () =
   await request;
 });
 
-test("toggleFavorite adds and removes pokemon ids without clearing on reload", async () => {
+test("loadFavoritePokemonIds hydrates persisted favorites", async () => {
+  const store = createPokemonDetailStore(
+    createDependencies({
+      loadFavoritePokemonIds: async () => [25, 6],
+    }),
+  );
+
+  await store.getState().loadFavoritePokemonIds();
+
+  assert.deepEqual(store.getState().favoritePokemonIds, [25, 6]);
+  assert.equal(store.getState().favoritePokemonIdsHydrated, true);
+  assert.equal(store.getState().favoritePokemonIdsLoading, false);
+  assert.equal(store.getState().favoritePokemonIdsError, null);
+});
+
+test("loadFavoritePokemonIds clears previous errors before a new request", async () => {
+  const deferred = createDeferred<number[]>();
+  const store = createPokemonDetailStore(
+    createDependencies({
+      loadFavoritePokemonIds: () => deferred.promise,
+    }),
+  );
+
+  store.setState({ favoritePokemonIdsError: new Error("Storage failed") });
+
+  const request = store.getState().loadFavoritePokemonIds();
+
+  assert.equal(store.getState().favoritePokemonIdsError, null);
+  assert.equal(store.getState().favoritePokemonIdsLoading, true);
+
+  deferred.resolve([25]);
+  await request;
+});
+
+test("toggleFavorite saves and removes pokemon ids without clearing on reload", async () => {
   const store = createPokemonDetailStore(
     createDependencies({
       fetchPokemonDetail: async () => createPokemon(25, "pikachu", ["electric"]),
     }),
   );
 
-  store.getState().toggleFavorite(25);
+  store.setState({ favoritePokemonIdsHydrated: true });
+
+  await store.getState().toggleFavorite(25);
   assert.deepEqual(store.getState().favoritePokemonIds, [25]);
 
   await store.getState().loadPokemonDetail(25);
   assert.deepEqual(store.getState().favoritePokemonIds, [25]);
 
-  store.getState().toggleFavorite(25);
+  await store.getState().toggleFavorite(25);
   assert.deepEqual(store.getState().favoritePokemonIds, []);
+});
+
+test("toggleFavorite persists favorite id changes", async () => {
+  let savedFavoritePokemonIds: number[] = [];
+  const store = createPokemonDetailStore(
+    createDependencies({
+      saveFavoritePokemonIds: async (favoritePokemonIds) => {
+        savedFavoritePokemonIds = favoritePokemonIds;
+      },
+    }),
+  );
+
+  store.setState({ favoritePokemonIdsHydrated: true });
+
+  await store.getState().toggleFavorite(150);
+
+  assert.deepEqual(savedFavoritePokemonIds, [150]);
+  assert.equal(store.getState().favoritePokemonIdsSaving, false);
+});
+
+test("toggleFavorite reverts favorite ids and stores error when persistence fails", async () => {
+  const store = createPokemonDetailStore(
+    createDependencies({
+      saveFavoritePokemonIds: async () => {
+        throw new Error("Disk full");
+      },
+    }),
+  );
+
+  store.setState({
+    favoritePokemonIdsHydrated: true,
+    favoritePokemonIds: [25],
+  });
+
+  await store.getState().toggleFavorite(25);
+
+  assert.deepEqual(store.getState().favoritePokemonIds, [25]);
+  assert.equal(store.getState().favoritePokemonIdsSaving, false);
+  assert.equal(store.getState().favoritePokemonIdsError?.message, "Disk full");
 });
