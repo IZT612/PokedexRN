@@ -35,6 +35,12 @@ The screen should use the existing `SearchInput`, `Chip`, `Card`, `Button`, `Loa
 Alternative considered: create list-screen-specific versions of inputs, chips, cards, or footer buttons.
 This was rejected because the repo already has reusable components that cover the requested layout.
 
+### Extend the shared chip for Pokemon type styling
+The screen should reuse the shared `Chip` component for both filter chips and Pokemon type chips, but the shared chip needs a token-driven way to render Pokemon type visuals. That extension should stay inside the shared UI component instead of being reimplemented in the list-screen so screens can keep using one shared chip primitive.
+
+Alternative considered: wrap the existing chip in a screen-local type-tag component with its own colors.
+This was rejected because the type-color behavior is still a shared chip concern and should not create a parallel visual primitive inside the feature.
+
 <!-- Had to tell the AI to add this, should add it into a ruleset. -->
 ### Make design-token brand colors mandatory
 The list screen should use the existing color tokens from `src/theme/tokens.ts` for all brand, surface, border, and text color decisions. Type-specific visuals should use the existing Pokemon type color tokens rather than ad hoc values. This keeps the screen visually consistent with the current theme contract and avoids one-off colors creeping into the first real app screen.
@@ -75,8 +81,20 @@ The screen should present Pokemon results in a scrollable list and request the n
 Alternative considered: expose a `Load more` button below the list.
 This was rejected because the screen already has a dedicated footer section for Home and Favorites, and list-end loading keeps pagination closer to the content flow.
 
+### Show an explicit empty state for filter results
+When `filteredPokemon` is empty, the screen should render the message `There's no pokemon meeting your criteria.` in the results area. This gives the user a clear explanation when active filters or query text eliminate all visible Pokemon instead of leaving the list area blank.
+
+Alternative considered: leave the results area empty when no Pokemon match.
+This was rejected because an empty list without explanation makes it harder to distinguish between a loading problem, a rendering bug, and a valid no-results state.
+
+### Use official artwork for Pokemon card images
+Pokemon cards should render the `official_artwork` image from the shared `Pokemon` entity for the list-screen artwork treatment. This keeps the list visually polished and consistent across cards instead of mixing in lower-fidelity sprite assets by default.
+
+Alternative considered: use `front_default` as the primary card image.
+This was rejected because the list cards are meant to present a cleaner showcase treatment and the shared entity already exposes `official_artwork` for that purpose.
+
 ### Keep footer actions visually ready but behavior-light
-The footer should show `Home` and `Favorites` using the shared button component. `Home` should appear as the current active/default action, while `Favorites` should be present but inert for now. This prepares the screen structure for future expansion without pretending that navigation already exists.
+The footer should show `Home` and `Favorites` using the shared button component. `Home` should appear as the current active/default action, while `Favorites` should be rendered as a pressable-looking button that is currently disabled. This prepares the screen structure for future expansion without pretending that navigation already exists.
 
 Alternative considered: omit Favorites until the feature exists.
 This was rejected because the requested screen explicitly needs the placeholder footer section now.
@@ -87,4 +105,4 @@ This was rejected because the requested screen explicitly needs the placeholder 
 - [Risk] Reusing general shared components may produce a UI that needs small layout overrides. -> Mitigation: prefer local screen layout styling around the shared components instead of changing the components themselves unless a reusable gap is proven.
 - [Risk] The screen could drift from the current visual language if implementation adds one-off colors. -> Mitigation: require brand, surface, text, border, and type styling to come from the existing theme tokens.
 - [Risk] The single shared error field may let the most recent request failure replace an earlier one. -> Mitigation: keep the first screen simple and surface the latest actionable error state through the existing shared error component.
-- [Risk] The footer placeholder may imply real navigation. -> Mitigation: style `Home` as the active action and keep `Favorites` visibly present but non-interactive.
+- [Risk] The footer placeholder may imply real navigation. -> Mitigation: style `Home` as the active action and keep `Favorites` visibly present but disabled.

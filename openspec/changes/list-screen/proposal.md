@@ -16,7 +16,7 @@ The app has the shared UI pieces, repository layer, and Zustand store needed for
 - `list-screen`: Defines the default Pokedex list screen layout, store wiring, filtering behavior, list rendering, and footer navigation placeholder.
 
 ### Modified Capabilities
-<!-- None. Existing shared UI and state capabilities are reused as-is. -->
+- `ui-components`: Extend the shared chip/tag component so it can render Pokemon type visuals using the existing type color tokens.
 
 ## Impact
 

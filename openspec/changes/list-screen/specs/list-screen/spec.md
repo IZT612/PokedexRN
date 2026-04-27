@@ -52,6 +52,10 @@ The list screen MUST render the Pokemon results as cards that show the Pokemon i
 - **WHEN** a Pokemon is shown in the list
 - **THEN** its card SHALL display the Pokemon image, id, name, and all of its types
 
+#### Scenario: Pokemon card uses official artwork
+- **WHEN** a Pokemon card renders its image
+- **THEN** it SHALL use the Pokemon's `official_artwork` image from the shared `Pokemon` entity
+
 ### Requirement: Screen loads and uses list-screen store data
 The list screen MUST consume the `pokemon-list` store for result data, type options, active filters, and store-driven loading and error states.
 
@@ -100,6 +104,10 @@ The list screen MUST display loading and error states using the existing shared 
 - **WHEN** the list screen has a current store error state
 - **THEN** it SHALL display that failure using the shared error-message component
 
+#### Scenario: Empty filter results show a clear message
+- **WHEN** `filteredPokemon` is empty
+- **THEN** the screen SHALL display `There's no pokemon meeting your criteria.` in the results area
+
 ### Requirement: Footer prepares future Favorites navigation
 The list screen MUST prepare the future Favorites destination without treating it as a completed feature yet.
 
@@ -109,5 +117,4 @@ The list screen MUST prepare the future Favorites destination without treating i
 
 #### Scenario: Favorites appears as a placeholder action
 - **WHEN** the footer is rendered before the Favorites feature exists
-- **THEN** the `Favorites` action SHALL be visible as a placeholder without requiring real navigation behavior yet
-
+- **THEN** the `Favorites` action SHALL be visible as a disabled placeholder button without requiring real navigation behavior yet
