@@ -112,12 +112,12 @@ The list screen MUST display loading and error states using the existing shared 
 - **THEN** the screen SHALL display `There's no pokemon meeting your criteria.` in the results area
 
 ### Requirement: Footer prepares future Favorites navigation
-The list screen MUST prepare the future Favorites destination without treating it as a completed feature yet.
+The list screen MUST provide footer navigation for the current Home screen and the Favorites destination.
 
 #### Scenario: Home appears as the active default action
 - **WHEN** the footer is rendered on the default list screen
 - **THEN** the `Home` action SHALL appear as the current active/default action
 
-#### Scenario: Favorites appears as a placeholder action
-- **WHEN** the footer is rendered before the Favorites feature exists
-- **THEN** the `Favorites` action SHALL be visible as a disabled placeholder button without requiring real navigation behavior yet
+#### Scenario: Favorites opens the Favorites screen
+- **WHEN** the user activates the `Favorites` footer action from the list screen
+- **THEN** the application SHALL navigate to the Favorites screen

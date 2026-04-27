@@ -79,20 +79,20 @@ The detail screen MUST provide a back action that returns the user to the list s
 - **THEN** the previously loaded list results and active filters SHALL remain intact
 
 ### Requirement: Detail screen supports favorite toggling
-The detail screen MUST provide a heart action that toggles whether the selected Pokemon is in the current session's favorites set.
+The detail screen MUST provide a heart action that toggles whether the selected Pokemon is in the persisted favorites set.
 
-#### Scenario: Heart action adds the Pokemon to favorites
+#### Scenario: Heart action adds the Pokemon to persisted favorites
 - **WHEN** the selected Pokemon is not currently a favorite and the user presses the heart action
-- **THEN** the application SHALL add that Pokemon to the current session's favorites set
+- **THEN** the application SHALL add that Pokemon to the persisted favorites set
 
-#### Scenario: Heart action removes the Pokemon from favorites
+#### Scenario: Heart action removes the Pokemon from persisted favorites
 - **WHEN** the selected Pokemon is already a favorite and the user presses the heart action
-- **THEN** the application SHALL remove that Pokemon from the current session's favorites set
+- **THEN** the application SHALL remove that Pokemon from the persisted favorites set
 
 #### Scenario: Favorite state remains stable during detail reload
-- **WHEN** the detail screen reloads data for a Pokemon that is already in the current session's favorites set
+- **WHEN** the detail screen reloads data for a Pokemon that is already in the persisted favorites set
 - **THEN** the heart action SHALL continue to reflect that Pokemon as favorited
 
-#### Scenario: Favorite state is not persisted yet
+#### Scenario: Favorite state survives app reload
 - **WHEN** the current app session ends and a new session starts later
-- **THEN** the system SHALL not require prior favorite state to be restored by this change
+- **THEN** the system SHALL restore previously persisted favorite state for the detail heart action
