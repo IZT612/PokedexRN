@@ -33,11 +33,14 @@ export async function fetchPokemonList(
     offset: options.offset ?? DEFAULT_POKEMON_LIST_OFFSET,
     requestConfig: options.requestConfig,
   });
+  const detailRequestConfig = { ...options.requestConfig };
+
+  delete detailRequestConfig.params;
 
   const results = await Promise.all(
     response.results.map((pokemon) =>
       fetchPokemon(pokemon.url, {
-        requestConfig: options.requestConfig,
+        requestConfig: detailRequestConfig,
       }),
     ),
   );
