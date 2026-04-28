@@ -9,6 +9,8 @@
 ## When Editing
 
 - Check whether a similar helper, entity, or UI primitive already exists before adding a new one.
+- For UI work, prefer Tamagui components and props over custom React Native `StyleSheet` or inline view styling whenever Tamagui can express the same behavior.
 - Keep components token-driven so visual updates stay centralized.
+- Never leave hardcoded UI colors in component code when the color is intended to be reused or is part of the design system; define it in `src/theme/tokens.ts` and reference the token instead.
 - When adding exports, make sure import paths stay clean and consistent with the current barrel-file pattern.
 - Avoid touching unrelated files just to reshape the project.
