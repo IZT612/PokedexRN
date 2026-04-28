@@ -25,7 +25,7 @@ export function Chip({ label, selected = false, onPress }: ChipProps) {
       <Text
         fontSize={uiTokens.typography.sizes.sm}
         fontWeight={uiTokens.typography.weights.semibold}
-        color={selected ? "#FFFFFF" : uiTokens.colors.textPrimary}
+        color={selected ? uiTokens.colors.white : uiTokens.colors.textPrimary}
       >
         {label}
       </Text>

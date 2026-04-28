@@ -35,7 +35,7 @@ const variantBorderColors: Record<ButtonVariant, string> = {
 };
 
 const variantLabelColors: Record<ButtonVariant, string> = {
-  primary: "#FFFFFF",
+  primary: uiTokens.colors.white,
   secondary: uiTokens.colors.textPrimary,
   ghost: uiTokens.colors.primary,
 };
@@ -72,7 +72,11 @@ export function Button({
     >
       {loading ? (
         <Spinner
-          color={variant === "primary" ? "#FFFFFF" : uiTokens.colors.primary}
+          color={
+            variant === "primary"
+              ? uiTokens.colors.white
+              : uiTokens.colors.primary
+          }
         />
       ) : (
         <Text

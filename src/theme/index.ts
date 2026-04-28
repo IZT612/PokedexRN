@@ -3,6 +3,7 @@ export {
   getPokemonTypeColor,
   pokemonTypeColors,
   pokemonTypes,
+  semanticColors,
   spacing,
   tokens,
   typography,
