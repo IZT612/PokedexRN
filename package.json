@@ -12,6 +12,7 @@
     "axios": "^1.9.0",
     "react": "^19.2.5",
     "react-native": "^0.85.1",
+    "tamagui": "^2.0.0-rc.41",
     "zustand": "^5.0.8"
   },
   "devDependencies": {
