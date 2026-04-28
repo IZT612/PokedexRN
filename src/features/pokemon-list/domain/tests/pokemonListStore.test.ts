@@ -103,7 +103,7 @@ test("setQuery and setSelectedType recalculate filteredPokemon from current filt
   assert.deepEqual(store.getState().filteredPokemon, [bulbasaur]);
 });
 
-test("loadPokemonList replaces the current list and updates pagination state", async (t) => {
+test("loadPokemonList replaces the current list and updates pagination state", async () => {
   const previousPokemon = createPokemon(4, "charmander", "fire");
   const bulbasaur = createPokemon(1, "bulbasaur", "grass");
   const ivysaur = createPokemon(2, "ivysaur", "grass");
