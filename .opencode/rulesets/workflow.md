@@ -7,7 +7,7 @@
 
 ## Push Requirements
 
-- Before any push, make sure the CI checks defined in `.github/workflows/ci.yml` pass locally or have otherwise been verified to pass.
-- The current CI workflow runs these checks: `npm test`, `npm run lint`, `npm run prettier:check`, and `npm run typecheck`.
-- If a user asks for a push and these checks have not been run after the relevant changes, run them first and fix any failures before pushing.
+- Before any push or pull request creation, make sure every CI check defined in `.github/workflows/ci.yml` passes locally after the relevant changes.
+- The required verification commands are `npm test`, `npm run prettier:check`, `npx tsc --noEmit`, and the ESLint check used by the repo (`npm run lint`, which currently runs `eslint App.tsx tamagui.config.ts src --ext .ts,.tsx`).
+- If a user asks for a push or pull request and these checks have not been run after the relevant changes, run them first and fix any failures before pushing or opening the pull request.
         
