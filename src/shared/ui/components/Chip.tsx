@@ -1,6 +1,5 @@
-// @ts-nocheck
 import React from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { Button, Text, View } from "tamagui";
 
 import { uiTokens } from "./tokens";
 
@@ -12,8 +11,22 @@ export type ChipProps = {
 
 export function Chip({ label, selected = false, onPress }: ChipProps) {
   const content = (
-    <View style={[styles.base, selected && styles.selected]}>
-      <Text style={[styles.label, selected && styles.selectedLabel]}>
+    <View
+      minHeight={32}
+      paddingHorizontal={uiTokens.spacing.md}
+      borderRadius={uiTokens.radius.pill}
+      backgroundColor={
+        selected ? uiTokens.colors.chipSelected : uiTokens.colors.chipBackground
+      }
+      alignItems="center"
+      justifyContent="center"
+      alignSelf="flex-start"
+    >
+      <Text
+        fontSize={uiTokens.typography.sizes.sm}
+        fontWeight={uiTokens.typography.weights.semibold}
+        color={selected ? "#FFFFFF" : uiTokens.colors.textPrimary}
+      >
         {label}
       </Text>
     </View>
@@ -23,28 +36,9 @@ export function Chip({ label, selected = false, onPress }: ChipProps) {
     return content;
   }
 
-  return <Pressable onPress={onPress}>{content}</Pressable>;
+  return (
+    <Button unstyled onPress={onPress} pressStyle={{ opacity: 0.9 }}>
+      {content}
+    </Button>
+  );
 }
-
-const styles = StyleSheet.create({
-  base: {
-    minHeight: 32,
-    paddingHorizontal: uiTokens.spacing.md,
-    borderRadius: uiTokens.radius.pill,
-    backgroundColor: uiTokens.colors.chipBackground,
-    alignItems: "center",
-    justifyContent: "center",
-    alignSelf: "flex-start",
-  },
-  selected: {
-    backgroundColor: uiTokens.colors.chipSelected,
-  },
-  label: {
-    fontSize: uiTokens.typography.sizes.sm,
-    fontWeight: uiTokens.typography.weights.semibold,
-    color: uiTokens.colors.textPrimary,
-  },
-  selectedLabel: {
-    color: "#FFFFFF",
-  },
-});

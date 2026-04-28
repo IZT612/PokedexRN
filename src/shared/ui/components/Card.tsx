@@ -1,19 +1,11 @@
-// @ts-nocheck
 import React, { PropsWithChildren } from "react";
-import {
-  StyleProp,
-  StyleSheet,
-  View,
-  ViewProps,
-  ViewStyle,
-} from "react-native";
+import { View, type GetProps } from "tamagui";
 
 import { uiTokens } from "./tokens";
 
-export type CardProps = PropsWithChildren<ViewProps> & {
+export type CardProps = PropsWithChildren<GetProps<typeof View>> & {
   elevated?: boolean;
   padded?: boolean;
-  style?: StyleProp<ViewStyle>;
 };
 
 export function Card({
@@ -25,10 +17,21 @@ export function Card({
 }: CardProps) {
   return (
     <View
+      backgroundColor={uiTokens.colors.surface}
+      borderColor={uiTokens.colors.border}
+      borderWidth={1}
+      borderRadius={uiTokens.radius.lg}
+      padding={padded ? uiTokens.spacing.lg : undefined}
       style={[
-        styles.base,
-        padded && styles.padded,
-        elevated && styles.elevated,
+        elevated
+          ? {
+              shadowColor: "#000000",
+              shadowOpacity: 0.08,
+              shadowRadius: 10,
+              shadowOffset: { width: 0, height: 4 },
+              elevation: 2,
+            }
+          : null,
         style,
       ]}
       {...props}
@@ -37,22 +40,3 @@ export function Card({
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  base: {
-    backgroundColor: uiTokens.colors.surface,
-    borderColor: uiTokens.colors.border,
-    borderWidth: 1,
-    borderRadius: uiTokens.radius.lg,
-  },
-  padded: {
-    padding: uiTokens.spacing.lg,
-  },
-  elevated: {
-    shadowColor: "#000000",
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
-  },
-});

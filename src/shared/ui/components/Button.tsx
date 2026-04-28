@@ -1,48 +1,43 @@
-// @ts-nocheck
 import React from "react";
 import {
-  ActivityIndicator,
-  Pressable,
-  PressableProps,
-  StyleProp,
-  StyleSheet,
+  Button as TamaguiButton,
+  Spinner,
   Text,
-  TextStyle,
-  ViewStyle,
-} from "react-native";
+  type GetProps,
+  type TextProps,
+} from "tamagui";
 
 import { uiTokens } from "./tokens";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 
-export type ButtonProps = Omit<PressableProps, "style"> & {
+export type ButtonProps = Omit<
+  GetProps<typeof TamaguiButton>,
+  "children" | "variant"
+> & {
   label: string;
   variant?: ButtonVariant;
   loading?: boolean;
   disabled?: boolean;
-  style?: StyleProp<ViewStyle>;
-  labelStyle?: StyleProp<TextStyle>;
+  labelStyle?: TextProps["style"];
 };
 
-const variantStyles: Record<ButtonVariant, ViewStyle> = {
-  primary: {
-    backgroundColor: uiTokens.colors.primary,
-    borderColor: uiTokens.colors.primary,
-  },
-  secondary: {
-    backgroundColor: uiTokens.colors.surface,
-    borderColor: uiTokens.colors.border,
-  },
-  ghost: {
-    backgroundColor: "transparent",
-    borderColor: "transparent",
-  },
+const variantBackgroundColors: Record<ButtonVariant, string> = {
+  primary: uiTokens.colors.primary,
+  secondary: uiTokens.colors.surface,
+  ghost: "transparent",
 };
 
-const variantLabelStyles: Record<ButtonVariant, TextStyle> = {
-  primary: { color: "#FFFFFF" },
-  secondary: { color: uiTokens.colors.textPrimary },
-  ghost: { color: uiTokens.colors.primary },
+const variantBorderColors: Record<ButtonVariant, string> = {
+  primary: uiTokens.colors.primary,
+  secondary: uiTokens.colors.border,
+  ghost: "transparent",
+};
+
+const variantLabelColors: Record<ButtonVariant, string> = {
+  primary: "#FFFFFF",
+  secondary: uiTokens.colors.textPrimary,
+  ghost: uiTokens.colors.primary,
 };
 
 export function Button({
@@ -57,49 +52,38 @@ export function Button({
   const isDisabled = disabled || loading;
 
   return (
-    <Pressable
+    <TamaguiButton
+      unstyled
       accessibilityRole="button"
       disabled={isDisabled}
-      style={({ pressed }) => [
-        styles.base,
-        variantStyles[variant],
-        pressed && !isDisabled && styles.pressed,
-        isDisabled && styles.disabled,
-        style,
-      ]}
+      minHeight={48}
+      paddingHorizontal={uiTokens.spacing.md}
+      borderRadius={uiTokens.radius.md}
+      alignItems="center"
+      justifyContent="center"
+      flexDirection="row"
+      borderWidth={1}
+      backgroundColor={variantBackgroundColors[variant]}
+      borderColor={variantBorderColors[variant]}
+      opacity={isDisabled ? 0.5 : 1}
+      pressStyle={!isDisabled ? { opacity: 0.9 } : undefined}
+      style={style}
       {...props}
     >
       {loading ? (
-        <ActivityIndicator
+        <Spinner
           color={variant === "primary" ? "#FFFFFF" : uiTokens.colors.primary}
         />
       ) : (
-        <Text style={[styles.label, variantLabelStyles[variant], labelStyle]}>
+        <Text
+          fontSize={16}
+          fontWeight={uiTokens.typography.weights.semibold}
+          color={variantLabelColors[variant]}
+          style={labelStyle}
+        >
           {label}
         </Text>
       )}
-    </Pressable>
+    </TamaguiButton>
   );
 }
-
-const styles = StyleSheet.create({
-  base: {
-    minHeight: 48,
-    paddingHorizontal: uiTokens.spacing.md,
-    borderRadius: uiTokens.radius.md,
-    alignItems: "center",
-    justifyContent: "center",
-    flexDirection: "row",
-    borderWidth: 1,
-  },
-  pressed: {
-    opacity: 0.9,
-  },
-  disabled: {
-    opacity: 0.5,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-});
