@@ -109,7 +109,10 @@ test("fetchPokemonList maps service responses into repository results", async ()
   assert.equal(response.count, 1302);
   assert.equal(response.limit, 30);
   assert.equal(response.offset, 0);
-  assert.equal(response.next, "https://pokeapi.co/api/v2/pokemon?offset=30&limit=30");
+  assert.equal(
+    response.next,
+    "https://pokeapi.co/api/v2/pokemon?offset=30&limit=30",
+  );
   assert.equal(response.results.length, 2);
   assert.deepEqual(response.results[0], {
     id: 1,
