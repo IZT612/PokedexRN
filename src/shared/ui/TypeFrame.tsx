@@ -1,13 +1,18 @@
-import React, { PropsWithChildren } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import React, { PropsWithChildren } from "react";
+import { StyleSheet, View, ViewProps } from "react-native";
 
-import { getPokemonTypeColor, type PokemonType, tokens } from '../../theme';
+import { getPokemonTypeColor, type PokemonType, tokens } from "../../theme";
 
 type TypeFrameProps = ViewProps & {
   type: PokemonType;
 };
 
-export function TypeFrame({ type, style, children, ...props }: PropsWithChildren<TypeFrameProps>) {
+export function TypeFrame({
+  type,
+  style,
+  children,
+  ...props
+}: PropsWithChildren<TypeFrameProps>) {
   return (
     <View
       {...props}

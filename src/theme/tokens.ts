@@ -1,51 +1,63 @@
 export const brandColors = {
-  primary: '#EF5350',
-  secondary: '#3761A8',
-  background: '#F5F5F5',
-  surface: '#FFFFFF',
-  textPrimary: '#1F1F1F',
-  textSecondary: '#666666',
-  border: '#E0E0E0',
+  primary: "#EF5350",
+  secondary: "#3761A8",
+  background: "#F5F5F5",
+  white: "#FFFFFF",
+  surface: "#FFFFFF",
+  textPrimary: "#1F1F1F",
+  textSecondary: "#666666",
+  border: "#E0E0E0",
+} as const;
+
+export const semanticColors = {
+  success: "#16A34A",
+  successSoft: "#DCFCE7",
+  danger: "#DC2626",
+  dangerSoft: "#FEE2E2",
+  chipBackground: "#E5E7EB",
+  mutedSurface: "#F3F4F6",
 } as const;
 
 export const pokemonTypeColors = {
-  normal: '#A8A77A',
-  fire: '#EE8130',
-  water: '#6390F0',
-  electric: '#F7D02C',
-  grass: '#7AC74C',
-  ice: '#96D9D6',
-  fighting: '#C22E28',
-  poison: '#A33EA1',
-  ground: '#E2BF65',
-  flying: '#A98FF3',
-  psychic: '#F95587',
-  bug: '#A6B91A',
-  rock: '#B6A136',
-  ghost: '#735797',
-  dragon: '#6F35FC',
-  dark: '#736C75',
-  steel: '#B7B7CE',
-  fairy: '#D685AD',
+  normal: "#A8A77A",
+  fire: "#EE8130",
+  water: "#6390F0",
+  electric: "#F7D02C",
+  grass: "#7AC74C",
+  ice: "#96D9D6",
+  fighting: "#C22E28",
+  poison: "#A33EA1",
+  ground: "#E2BF65",
+  flying: "#A98FF3",
+  psychic: "#F95587",
+  bug: "#A6B91A",
+  rock: "#B6A136",
+  ghost: "#735797",
+  dragon: "#6F35FC",
+  dark: "#736C75",
+  steel: "#B7B7CE",
+  fairy: "#D685AD",
 } as const;
 
-export const pokemonTypes = Object.keys(pokemonTypeColors) as Array<keyof typeof pokemonTypeColors>;
+export const pokemonTypes = Object.keys(pokemonTypeColors) as Array<
+  keyof typeof pokemonTypeColors
+>;
 
 export const typography = {
-  fontFamily: 'Inter, system-ui',
+  fontFamily: "Inter, system-ui",
   sizes: {
     xs: 12,
     sm: 14,
     md: 16,
     lg: 20,
     xl: 24,
-    '2xl': 32,
+    "2xl": 32,
   },
   weights: {
-    regular: '400',
-    medium: '500',
-    semibold: '600',
-    bold: '700',
+    regular: "400",
+    medium: "500",
+    semibold: "600",
+    bold: "700",
   },
   lineHeights: {
     tight: 1.2,
@@ -61,13 +73,14 @@ export const spacing = {
   md: 12,
   lg: 16,
   xl: 24,
-  '2xl': 32,
-  '3xl': 40,
+  "2xl": 32,
+  "3xl": 40,
 } as const;
 
 export const tokens = {
   colors: {
     ...brandColors,
+    ...semanticColors,
     types: pokemonTypeColors,
   },
   typography,

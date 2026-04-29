@@ -1,16 +1,13 @@
-import React, { PropsWithChildren } from 'react';
-import { StyleSheet, View, ViewProps } from 'react-native';
+import React, { PropsWithChildren } from "react";
+import { StyleSheet, View, ViewProps } from "react-native";
 
-import { tokens } from '../../theme';
+import { tokens } from "../../theme";
 
 type ThemeSurfaceProps = PropsWithChildren<ViewProps>;
 
 export function ThemeSurface({ style, children, ...props }: ThemeSurfaceProps) {
   return (
-    <View
-      {...props}
-      style={[styles.surface, style]}
-    >
+    <View {...props} style={[styles.surface, style]}>
       {children}
     </View>
   );

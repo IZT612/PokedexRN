@@ -1,0 +1,28 @@
+{
+  "name": "pokedexrn",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --import tsx --test src/**/*.test.ts",
+    "lint": "eslint App.tsx tamagui.config.ts src --ext .ts,.tsx",
+    "prettier:check": "prettier --check .",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "axios": "^1.9.0",
+    "react": "^19.2.5",
+    "react-native": "^0.85.1",
+    "tamagui": "^2.0.0-rc.41",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^22.15.21",
+    "@types/react": "^19.2.14",
+    "eslint": "^10.2.0",
+    "prettier": "^3.8.3",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.58.2"
+  }
+}

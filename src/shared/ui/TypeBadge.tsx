@@ -1,7 +1,7 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 
-import { getPokemonTypeColor, type PokemonType, tokens } from '../../theme';
+import { getPokemonTypeColor, type PokemonType, tokens } from "../../theme";
 
 type TypeBadgeProps = {
   type: PokemonType;
@@ -9,7 +9,9 @@ type TypeBadgeProps = {
 
 export function TypeBadge({ type }: TypeBadgeProps) {
   return (
-    <View style={[styles.badge, { backgroundColor: getPokemonTypeColor(type) }]}>
+    <View
+      style={[styles.badge, { backgroundColor: getPokemonTypeColor(type) }]}
+    >
       <Text style={styles.text}>{type}</Text>
     </View>
   );
@@ -26,6 +28,6 @@ const styles = StyleSheet.create({
     fontFamily: tokens.typography.fontFamily,
     fontSize: tokens.typography.sizes.sm,
     fontWeight: tokens.typography.weights.semibold,
-    textTransform: 'capitalize',
+    textTransform: "capitalize",
   },
 });
