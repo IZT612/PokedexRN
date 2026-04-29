@@ -1,24 +1,15 @@
-// @ts-nocheck
 import React from "react";
-import {
-  StyleProp,
-  StyleSheet,
-  TextInput,
-  TextInputProps,
-  View,
-  ViewStyle,
-} from "react-native";
+import { Input, View, type GetProps } from "tamagui";
 
 import { uiTokens } from "./tokens";
 
 export type SearchInputProps = Omit<
-  TextInputProps,
-  "value" | "onChangeText" | "style"
+  GetProps<typeof Input>,
+  "value" | "onChangeText"
 > & {
   value: string;
   onChangeText: (value: string) => void;
   onSubmitQuery?: (value: string) => void;
-  style?: StyleProp<ViewStyle>;
 };
 
 export function SearchInput({
@@ -29,33 +20,28 @@ export function SearchInput({
   ...props
 }: SearchInputProps) {
   return (
-    <View style={[styles.container, style]}>
-      <TextInput
+    <View
+      minHeight={48}
+      borderRadius={uiTokens.radius.md}
+      borderWidth={1}
+      borderColor={uiTokens.colors.border}
+      backgroundColor={uiTokens.colors.surface}
+      justifyContent="center"
+      paddingHorizontal={uiTokens.spacing.md}
+      style={style}
+    >
+      <Input
+        unstyled
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={() => onSubmitQuery?.(value)}
-        placeholderTextColor={uiTokens.colors.textSecondary}
+        placeholderTextColor="$textSecondary"
         returnKeyType="search"
-        style={styles.input}
+        color={uiTokens.colors.textPrimary}
+        fontSize={uiTokens.typography.sizes.md}
+        paddingVertical={0}
         {...props}
       />
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    minHeight: 48,
-    borderRadius: uiTokens.radius.md,
-    borderWidth: 1,
-    borderColor: uiTokens.colors.border,
-    backgroundColor: uiTokens.colors.surface,
-    justifyContent: "center",
-    paddingHorizontal: uiTokens.spacing.md,
-  },
-  input: {
-    color: uiTokens.colors.textPrimary,
-    fontSize: uiTokens.typography.sizes.md,
-    paddingVertical: 0,
-  },
-});

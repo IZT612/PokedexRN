@@ -62,7 +62,11 @@ test("fetchPokemonList maps service responses into repository results", async ()
     requestConfig: {
       adapter: async (config) => {
         if (config.url === "/pokemon") {
-          assert.deepEqual(config.params, { limit: 30, offset: 0 });
+          assert.deepEqual(config.params, {
+            locale: "en",
+            limit: 30,
+            offset: 0,
+          });
 
           return {
             data: {
@@ -82,6 +86,8 @@ test("fetchPokemonList maps service responses into repository results", async ()
         }
 
         if (config.url === bulbasaurUrl) {
+          assert.equal(config.params, undefined);
+
           return {
             data: createPokemonDetailApiResponse(1, "bulbasaur"),
             status: 200,
@@ -92,6 +98,8 @@ test("fetchPokemonList maps service responses into repository results", async ()
         }
 
         if (config.url === ivysaurUrl) {
+          assert.equal(config.params, undefined);
+
           return {
             data: createPokemonDetailApiResponse(2, "ivysaur"),
             status: 200,
@@ -103,13 +111,19 @@ test("fetchPokemonList maps service responses into repository results", async ()
 
         throw new Error(`Unexpected request: ${config.url}`);
       },
+      params: {
+        locale: "en",
+      },
     },
   });
 
   assert.equal(response.count, 1302);
   assert.equal(response.limit, 30);
   assert.equal(response.offset, 0);
-  assert.equal(response.next, "https://pokeapi.co/api/v2/pokemon?offset=30&limit=30");
+  assert.equal(
+    response.next,
+    "https://pokeapi.co/api/v2/pokemon?offset=30&limit=30",
+  );
   assert.equal(response.results.length, 2);
   assert.deepEqual(response.results[0], {
     id: 1,

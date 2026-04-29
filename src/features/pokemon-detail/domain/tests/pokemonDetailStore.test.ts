@@ -196,7 +196,8 @@ test("loadFavoritePokemonIds clears previous errors before a new request", async
 test("toggleFavorite saves and removes pokemon ids without clearing on reload", async () => {
   const store = createPokemonDetailStore(
     createDependencies({
-      fetchPokemonDetail: async () => createPokemon(25, "pikachu", ["electric"]),
+      fetchPokemonDetail: async () =>
+        createPokemon(25, "pikachu", ["electric"]),
     }),
   );
 

@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { FlatList, ListRenderItemInfo, ScrollView, StyleSheet, View } from "react-native";
+import {
+  FlatList,
+  ListRenderItemInfo,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 
 import type { Pokemon } from "../../../shared/data/entities";
 import {
@@ -11,7 +17,11 @@ import {
   SearchInput,
   ThemeText,
 } from "../../../shared/ui";
-import { pokemonTypes, tokens, type PokemonType as ThemePokemonType } from "../../../theme";
+import {
+  pokemonTypes,
+  tokens,
+  type PokemonType as ThemePokemonType,
+} from "../../../theme";
 import { useFavoritesStore } from "../domain";
 
 type FavoritesScreenProps = {
@@ -50,7 +60,9 @@ export function FavoritesScreen({
   const error = useFavoritesStore((state) => state.error);
   const setQuery = useFavoritesStore((state) => state.setQuery);
   const setSelectedType = useFavoritesStore((state) => state.setSelectedType);
-  const syncFavoritePokemonIds = useFavoritesStore((state) => state.syncFavoritePokemonIds);
+  const syncFavoritePokemonIds = useFavoritesStore(
+    (state) => state.syncFavoritePokemonIds,
+  );
 
   useEffect(() => {
     void syncFavoritePokemonIds(favoritePokemonIds);
@@ -74,7 +86,8 @@ export function FavoritesScreen({
   const showInitialLoading =
     (favoritePokemonIdsLoading || loading) && filteredPokemon.length === 0;
   const resolvedError = favoritePokemonIdsError ?? error;
-  const showEmptyState = !showInitialLoading && !resolvedError && filteredPokemon.length === 0;
+  const showEmptyState =
+    !showInitialLoading && !resolvedError && filteredPokemon.length === 0;
 
   return (
     <View style={styles.screen}>
@@ -100,7 +113,9 @@ export function FavoritesScreen({
                 label={formatPokemonLabel(type.name)}
                 selected={selectedType === type.name}
                 onPress={() => handleTypePress(type.name)}
-                pokemonType={isThemePokemonType(type.name) ? type.name : undefined}
+                pokemonType={
+                  isThemePokemonType(type.name) ? type.name : undefined
+                }
               />
             ))}
           </ScrollView>

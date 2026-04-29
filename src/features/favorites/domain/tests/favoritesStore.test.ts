@@ -45,7 +45,11 @@ function createDependencies(
       favoritePokemonIds.map((favoritePokemonId) =>
         createPokemon(favoritePokemonId, `pokemon-${favoritePokemonId}`),
       ),
-    fetchPokemonTypes: async () => [{ name: "electric" }, { name: "fire" }, { name: "grass" }],
+    fetchPokemonTypes: async () => [
+      { name: "electric" },
+      { name: "fire" },
+      { name: "grass" },
+    ],
     ...overrides,
   };
 }
@@ -53,13 +57,19 @@ function createDependencies(
 test("createFavoritesStore starts from the expected initial state", () => {
   const store = createFavoritesStore();
 
-  assert.deepEqual(store.getState().favoritePokemonIds, initialFavoritesState.favoritePokemonIds);
+  assert.deepEqual(
+    store.getState().favoritePokemonIds,
+    initialFavoritesState.favoritePokemonIds,
+  );
   assert.deepEqual(store.getState().pokemon, initialFavoritesState.pokemon);
   assert.deepEqual(
     store.getState().filteredPokemon,
     initialFavoritesState.filteredPokemon,
   );
-  assert.deepEqual(store.getState().typeOptions, initialFavoritesState.typeOptions);
+  assert.deepEqual(
+    store.getState().typeOptions,
+    initialFavoritesState.typeOptions,
+  );
   assert.equal(store.getState().loading, false);
   assert.equal(store.getState().error, null);
   assert.equal(store.getState().query, "");
@@ -100,7 +110,9 @@ test("syncFavoritePokemonIds loads missing favorites and preserves requested ord
 test("syncFavoritePokemonIds keeps the full type catalog when favorites use fewer types", async () => {
   const store = createFavoritesStore(
     createDependencies({
-      fetchFavoritePokemonByIds: async () => [createPokemon(25, "pikachu", ["electric"])],
+      fetchFavoritePokemonByIds: async () => [
+        createPokemon(25, "pikachu", ["electric"]),
+      ],
       fetchPokemonTypes: async () => [
         { name: "electric" },
         { name: "bug" },
@@ -121,7 +133,9 @@ test("syncFavoritePokemonIds keeps the full type catalog when favorites use fewe
 test("syncFavoritePokemonIds keeps fetched type order while pushing stellar and unknown last", async () => {
   const store = createFavoritesStore(
     createDependencies({
-      fetchFavoritePokemonByIds: async () => [createPokemon(25, "pikachu", ["electric"])],
+      fetchFavoritePokemonByIds: async () => [
+        createPokemon(25, "pikachu", ["electric"]),
+      ],
       fetchPokemonTypes: async () => [
         { name: "normal" },
         { name: "fighting" },

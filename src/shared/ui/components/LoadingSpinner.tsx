@@ -1,6 +1,5 @@
-// @ts-nocheck
 import React from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { Spinner, Text, XStack } from "tamagui";
 
 import { uiTokens } from "./tokens";
 
@@ -11,26 +10,22 @@ export type LoadingSpinnerProps = {
 
 export function LoadingSpinner({ label, size = "small" }: LoadingSpinnerProps) {
   return (
-    <View
-      style={styles.container}
+    <XStack
+      alignItems="center"
+      justifyContent="center"
+      gap={uiTokens.spacing.xs}
       accessibilityRole="progressbar"
       accessibilityLabel={label ?? "Loading"}
     >
-      <ActivityIndicator size={size} color={uiTokens.colors.primary} />
-      {label ? <Text style={styles.label}>{label}</Text> : null}
-    </View>
+      <Spinner size={size} color={uiTokens.colors.primary} />
+      {label ? (
+        <Text
+          color={uiTokens.colors.textSecondary}
+          fontSize={uiTokens.typography.sizes.sm}
+        >
+          {label}
+        </Text>
+      ) : null}
+    </XStack>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  label: {
-    marginLeft: uiTokens.spacing.xs,
-    color: uiTokens.colors.textSecondary,
-    fontSize: uiTokens.typography.sizes.sm,
-  },
-});

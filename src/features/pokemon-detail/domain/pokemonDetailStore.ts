@@ -30,7 +30,10 @@ export type PokemonDetailStoreDependencies = Pick<
   typeof pokemonDetailRepository,
   "fetchPokemonDetail"
 > &
-  Pick<typeof favoritePokemonStorage, "loadFavoritePokemonIds" | "saveFavoritePokemonIds">;
+  Pick<
+    typeof favoritePokemonStorage,
+    "loadFavoritePokemonIds" | "saveFavoritePokemonIds"
+  >;
 
 export const initialPokemonDetailState: PokemonDetailState = {
   pokemon: null,

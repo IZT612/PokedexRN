@@ -10,7 +10,11 @@ import {
   LoadingSpinner,
   ThemeText,
 } from "../../../shared/ui";
-import { pokemonTypes, tokens, type PokemonType as ThemePokemonType } from "../../../theme";
+import {
+  pokemonTypes,
+  tokens,
+  type PokemonType as ThemePokemonType,
+} from "../../../theme";
 import { usePokemonDetailStore } from "../domain";
 import { getStatFillRatio } from "./statUtils";
 
@@ -82,7 +86,9 @@ function StatRow({
   return (
     <View style={styles.statRow}>
       <View style={styles.statHeader}>
-        <ThemeText style={styles.statName}>{formatPokemonLabel(name)}</ThemeText>
+        <ThemeText style={styles.statName}>
+          {formatPokemonLabel(name)}
+        </ThemeText>
         <ThemeText style={styles.statValue}>{value}</ThemeText>
       </View>
       <View style={styles.statTrack}>
@@ -101,7 +107,8 @@ function StatRow({
 }
 
 function PokemonHero({ pokemon }: { pokemon: Pokemon }) {
-  const imageUri = pokemon.sprites.official_artwork ?? pokemon.sprites.front_default;
+  const imageUri =
+    pokemon.sprites.official_artwork ?? pokemon.sprites.front_default;
   const heroColors = getHeroColors(pokemon);
 
   return (
@@ -115,21 +122,32 @@ function PokemonHero({ pokemon }: { pokemon: Pokemon }) {
       ]}
     >
       {imageUri ? (
-        <Image source={{ uri: imageUri }} style={styles.heroImage} resizeMode="contain" />
+        <Image
+          source={{ uri: imageUri }}
+          style={styles.heroImage}
+          resizeMode="contain"
+        />
       ) : (
         <View style={styles.heroFallback}>
-          <ThemeText style={styles.heroFallbackText}>No image available</ThemeText>
+          <ThemeText style={styles.heroFallbackText}>
+            No image available
+          </ThemeText>
         </View>
       )}
     </View>
   );
 }
 
-export function PokemonDetailScreen({ pokemonId, onBack }: PokemonDetailScreenProps) {
+export function PokemonDetailScreen({
+  pokemonId,
+  onBack,
+}: PokemonDetailScreenProps) {
   const pokemon = usePokemonDetailStore((state) => state.pokemon);
   const loading = usePokemonDetailStore((state) => state.loading);
   const error = usePokemonDetailStore((state) => state.error);
-  const favoritePokemonIds = usePokemonDetailStore((state) => state.favoritePokemonIds);
+  const favoritePokemonIds = usePokemonDetailStore(
+    (state) => state.favoritePokemonIds,
+  );
   const favoritePokemonIdsLoading = usePokemonDetailStore(
     (state) => state.favoritePokemonIdsLoading,
   );
@@ -139,8 +157,12 @@ export function PokemonDetailScreen({ pokemonId, onBack }: PokemonDetailScreenPr
   const favoritePokemonIdsError = usePokemonDetailStore(
     (state) => state.favoritePokemonIdsError,
   );
-  const loadPokemonDetail = usePokemonDetailStore((state) => state.loadPokemonDetail);
-  const loadFavoritePokemonIds = usePokemonDetailStore((state) => state.loadFavoritePokemonIds);
+  const loadPokemonDetail = usePokemonDetailStore(
+    (state) => state.loadPokemonDetail,
+  );
+  const loadFavoritePokemonIds = usePokemonDetailStore(
+    (state) => state.loadFavoritePokemonIds,
+  );
   const toggleFavorite = usePokemonDetailStore((state) => state.toggleFavorite);
 
   useEffect(() => {
@@ -205,7 +227,9 @@ export function PokemonDetailScreen({ pokemonId, onBack }: PokemonDetailScreenPr
             <ThemeText style={styles.pokemonName}>
               {formatPokemonLabel(pokemon.name)}
             </ThemeText>
-            <ThemeText style={styles.pokemonId}>{formatPokemonId(pokemon.id)}</ThemeText>
+            <ThemeText style={styles.pokemonId}>
+              {formatPokemonId(pokemon.id)}
+            </ThemeText>
           </View>
 
           <View style={styles.typeRow}>
@@ -213,7 +237,9 @@ export function PokemonDetailScreen({ pokemonId, onBack }: PokemonDetailScreenPr
               <Chip
                 key={`${pokemon.id}-${type.name}`}
                 label={formatPokemonLabel(type.name)}
-                pokemonType={isThemePokemonType(type.name) ? type.name : undefined}
+                pokemonType={
+                  isThemePokemonType(type.name) ? type.name : undefined
+                }
               />
             ))}
           </View>
@@ -223,11 +249,15 @@ export function PokemonDetailScreen({ pokemonId, onBack }: PokemonDetailScreenPr
             <View style={styles.overviewGrid}>
               <View style={styles.overviewItem}>
                 <ThemeText style={styles.overviewLabel}>Height</ThemeText>
-                <ThemeText style={styles.overviewValue}>{formatHeight(pokemon.height)}</ThemeText>
+                <ThemeText style={styles.overviewValue}>
+                  {formatHeight(pokemon.height)}
+                </ThemeText>
               </View>
               <View style={styles.overviewItem}>
                 <ThemeText style={styles.overviewLabel}>Weight</ThemeText>
-                <ThemeText style={styles.overviewValue}>{formatWeight(pokemon.weight)}</ThemeText>
+                <ThemeText style={styles.overviewValue}>
+                  {formatWeight(pokemon.weight)}
+                </ThemeText>
               </View>
             </View>
           </Card>
@@ -238,9 +268,11 @@ export function PokemonDetailScreen({ pokemonId, onBack }: PokemonDetailScreenPr
               {pokemon.abilities.map((ability) => (
                 <Chip
                   key={`${pokemon.id}-${ability.name}`}
-                  label={ability.is_hidden
-                    ? `${formatPokemonLabel(ability.name)} (Hidden)`
-                    : formatPokemonLabel(ability.name)}
+                  label={
+                    ability.is_hidden
+                      ? `${formatPokemonLabel(ability.name)} (Hidden)`
+                      : formatPokemonLabel(ability.name)
+                  }
                 />
               ))}
             </View>

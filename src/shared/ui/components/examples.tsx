@@ -1,6 +1,5 @@
-// @ts-nocheck
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { YStack } from "tamagui";
 
 import { Button } from "./Button";
 import { Card } from "./Card";
@@ -12,21 +11,16 @@ import { uiTokens } from "./tokens";
 
 export function SharedUiExamples() {
   return (
-    <View style={styles.container}>
+    <YStack padding={uiTokens.spacing.lg} gap={uiTokens.spacing.md}>
       <SearchInput
         value=""
         onChangeText={() => undefined}
         onSubmitQuery={() => undefined}
         placeholder="Search Pokemon"
-        style={styles.item}
       />
-      <Button
-        label="Primary action"
-        onPress={() => undefined}
-        style={styles.item}
-      />
-      <Button label="Loading" loading style={styles.item} />
-      <Card style={styles.item}>
+      <Button label="Primary action" onPress={() => undefined} />
+      <Button label="Loading" loading />
+      <Card>
         <Chip label="Electric" selected />
       </Card>
       <LoadingSpinner label="Loading data" />
@@ -34,15 +28,6 @@ export function SharedUiExamples() {
         message="Failed to load Pokemon details."
         onRetry={() => undefined}
       />
-    </View>
+    </YStack>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    padding: uiTokens.spacing.lg,
-  },
-  item: {
-    marginBottom: uiTokens.spacing.md,
-  },
-});

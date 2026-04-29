@@ -18,7 +18,7 @@ export function getChipColors({
       return {
         backgroundColor: typeColor,
         borderColor: typeColor,
-        textColor: "#FFFFFF",
+        textColor: uiTokens.colors.white,
       };
     }
 
@@ -33,7 +33,7 @@ export function getChipColors({
     return {
       backgroundColor: uiTokens.colors.chipSelected,
       borderColor: uiTokens.colors.chipSelected,
-      textColor: "#FFFFFF",
+      textColor: uiTokens.colors.white,
     };
   }
 

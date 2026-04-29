@@ -2,10 +2,20 @@ export const brandColors = {
   primary: "#EF5350",
   secondary: "#3761A8",
   background: "#F5F5F5",
+  white: "#FFFFFF",
   surface: "#FFFFFF",
   textPrimary: "#1F1F1F",
   textSecondary: "#666666",
   border: "#E0E0E0",
+} as const;
+
+export const semanticColors = {
+  success: "#16A34A",
+  successSoft: "#DCFCE7",
+  danger: "#DC2626",
+  dangerSoft: "#FEE2E2",
+  chipBackground: "#E5E7EB",
+  mutedSurface: "#F3F4F6",
 } as const;
 
 export const pokemonTypeColors = {
@@ -70,6 +80,7 @@ export const spacing = {
 export const tokens = {
   colors: {
     ...brandColors,
+    ...semanticColors,
     types: pokemonTypeColors,
   },
   typography,

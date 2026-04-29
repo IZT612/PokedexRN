@@ -46,7 +46,11 @@ export const initialFavoritesState: FavoritesState = {
 };
 
 function normalizeFavoritePokemonIds(favoritePokemonIds: number[]) {
-  return [...new Set(favoritePokemonIds.filter((id) => Number.isInteger(id) && id > 0))];
+  return [
+    ...new Set(
+      favoritePokemonIds.filter((id) => Number.isInteger(id) && id > 0),
+    ),
+  ];
 }
 
 function getFilteredPokemon(
@@ -84,7 +88,10 @@ function sortTypeOptions(typeOptions: PokemonType[]) {
   return [...leadingTypeOptions, ...trailingTypeOptions];
 }
 
-function sortPokemonByFavoriteIds(pokemon: Pokemon[], favoritePokemonIds: number[]) {
+function sortPokemonByFavoriteIds(
+  pokemon: Pokemon[],
+  favoritePokemonIds: number[],
+) {
   const pokemonById = new Map(pokemon.map((entry) => [entry.id, entry]));
 
   return favoritePokemonIds
@@ -117,7 +124,8 @@ export function createFavoritesStore(
       });
     },
     syncFavoritePokemonIds: async (favoritePokemonIds) => {
-      const normalizedFavoritePokemonIds = normalizeFavoritePokemonIds(favoritePokemonIds);
+      const normalizedFavoritePokemonIds =
+        normalizeFavoritePokemonIds(favoritePokemonIds);
       const requestKey = normalizedFavoritePokemonIds.join(",");
       const state = get();
 
@@ -126,23 +134,32 @@ export function createFavoritesStore(
       }
 
       const retainedPokemon = sortPokemonByFavoriteIds(
-        state.pokemon.filter((entry) => normalizedFavoritePokemonIds.includes(entry.id)),
+        state.pokemon.filter((entry) =>
+          normalizedFavoritePokemonIds.includes(entry.id),
+        ),
         normalizedFavoritePokemonIds,
       );
-      const retainedPokemonIds = new Set(retainedPokemon.map((entry) => entry.id));
+      const retainedPokemonIds = new Set(
+        retainedPokemon.map((entry) => entry.id),
+      );
       const missingFavoritePokemonIds = normalizedFavoritePokemonIds.filter(
         (favoritePokemonId) => !retainedPokemonIds.has(favoritePokemonId),
       );
       const typeOptions = state.typeOptions;
       const selectedType =
-        state.selectedType && typeOptions.some((type) => type.name === state.selectedType)
+        state.selectedType &&
+        typeOptions.some((type) => type.name === state.selectedType)
           ? state.selectedType
           : null;
 
       set({
         favoritePokemonIds: normalizedFavoritePokemonIds,
         pokemon: retainedPokemon,
-        filteredPokemon: getFilteredPokemon(retainedPokemon, state.query, selectedType),
+        filteredPokemon: getFilteredPokemon(
+          retainedPokemon,
+          state.query,
+          selectedType,
+        ),
         typeOptions,
         selectedType,
         loading: missingFavoritePokemonIds.length > 0,
@@ -170,13 +187,18 @@ export function createFavoritesStore(
         );
         const nextTypeOptions = sortTypeOptions(fetchedTypeOptions);
         const nextSelectedType =
-          selectedType && nextTypeOptions.some((type) => type.name === selectedType)
+          selectedType &&
+          nextTypeOptions.some((type) => type.name === selectedType)
             ? selectedType
             : null;
 
         set({
           pokemon,
-          filteredPokemon: getFilteredPokemon(pokemon, get().query, nextSelectedType),
+          filteredPokemon: getFilteredPokemon(
+            pokemon,
+            get().query,
+            nextSelectedType,
+          ),
           typeOptions: nextTypeOptions,
           selectedType: nextSelectedType,
           loading: false,

@@ -17,7 +17,11 @@ import {
   SearchInput,
   ThemeText,
 } from "../../../shared/ui";
-import { pokemonTypes, tokens, type PokemonType as ThemePokemonType } from "../../../theme";
+import {
+  pokemonTypes,
+  tokens,
+  type PokemonType as ThemePokemonType,
+} from "../../../theme";
 import { usePokemonListStore } from "../domain";
 
 function formatPokemonLabel(value: string) {
@@ -45,20 +49,22 @@ export function PokemonListScreen({
   const query = usePokemonListStore((state) => state.query);
   const selectedType = usePokemonListStore((state) => state.selectedType);
   const listLoading = usePokemonListStore((state) => state.listLoading);
-  const nextBatchLoading = usePokemonListStore((state) => state.nextBatchLoading);
+  const nextBatchLoading = usePokemonListStore(
+    (state) => state.nextBatchLoading,
+  );
   const typeOptionsLoading = usePokemonListStore(
     (state) => state.typeOptionsLoading,
   );
   const error = usePokemonListStore((state) => state.error);
   const setQuery = usePokemonListStore((state) => state.setQuery);
-  const setSelectedType = usePokemonListStore(
-    (state) => state.setSelectedType,
-  );
+  const setSelectedType = usePokemonListStore((state) => state.setSelectedType);
   const loadPokemonList = usePokemonListStore((state) => state.loadPokemonList);
   const loadNextPokemonBatch = usePokemonListStore(
     (state) => state.loadNextPokemonBatch,
   );
-  const loadPokemonTypes = usePokemonListStore((state) => state.loadPokemonTypes);
+  const loadPokemonTypes = usePokemonListStore(
+    (state) => state.loadPokemonTypes,
+  );
 
   useEffect(() => {
     void loadPokemonList();
@@ -114,9 +120,7 @@ export function PokemonListScreen({
               />
             ))}
           </ScrollView>
-          {typeOptionsLoading ? (
-            <LoadingSpinner label="Loading types" />
-          ) : null}
+          {typeOptionsLoading ? <LoadingSpinner label="Loading types" /> : null}
         </View>
       </View>
 
@@ -152,7 +156,11 @@ export function PokemonListScreen({
                 {error ? (
                   <ErrorMessage
                     message={error.message}
-                    onRetry={filteredPokemon.length === 0 ? () => void loadPokemonList() : undefined}
+                    onRetry={
+                      filteredPokemon.length === 0
+                        ? () => void loadPokemonList()
+                        : undefined
+                    }
                   />
                 ) : null}
               </View>
@@ -174,7 +182,13 @@ export function PokemonListScreen({
   );
 }
 
-function PokemonCard({ pokemon, onPress }: { pokemon: Pokemon; onPress: () => void }) {
+function PokemonCard({
+  pokemon,
+  onPress,
+}: {
+  pokemon: Pokemon;
+  onPress: () => void;
+}) {
   return <PokemonSummaryCard pokemon={pokemon} onPress={onPress} />;
 }
 

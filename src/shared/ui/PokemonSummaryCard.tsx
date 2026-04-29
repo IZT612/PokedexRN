@@ -2,7 +2,11 @@ import React from "react";
 import { Image, StyleSheet, View } from "react-native";
 
 import type { Pokemon } from "../data/entities";
-import { pokemonTypes, tokens, type PokemonType as ThemePokemonType } from "../../theme";
+import {
+  pokemonTypes,
+  tokens,
+  type PokemonType as ThemePokemonType,
+} from "../../theme";
 import { Card } from "./components/Card";
 import { Chip } from "./components/Chip";
 import { ThemeText } from "./ThemeText";
@@ -27,11 +31,16 @@ function isThemePokemonType(value: string): value is ThemePokemonType {
   return pokemonTypes.includes(value as ThemePokemonType);
 }
 
-export function PokemonSummaryCard({ pokemon, onPress }: PokemonSummaryCardProps) {
+export function PokemonSummaryCard({
+  pokemon,
+  onPress,
+}: PokemonSummaryCardProps) {
   return (
     <Card elevated style={styles.card} onPress={onPress}>
       <View style={styles.cardHeader}>
-        <ThemeText style={styles.pokemonId}>{formatPokemonId(pokemon.id)}</ThemeText>
+        <ThemeText style={styles.pokemonId}>
+          {formatPokemonId(pokemon.id)}
+        </ThemeText>
       </View>
       {pokemon.sprites.official_artwork ? (
         <Image
@@ -44,7 +53,9 @@ export function PokemonSummaryCard({ pokemon, onPress }: PokemonSummaryCardProps
           <ThemeText style={styles.imagePlaceholderText}>No image</ThemeText>
         </View>
       )}
-      <ThemeText style={styles.pokemonName}>{formatPokemonLabel(pokemon.name)}</ThemeText>
+      <ThemeText style={styles.pokemonName}>
+        {formatPokemonLabel(pokemon.name)}
+      </ThemeText>
       <View style={styles.typeRow}>
         {pokemon.types.map((type) => (
           <Chip

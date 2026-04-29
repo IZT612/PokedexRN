@@ -9,11 +9,7 @@ import {
   type PokemonListStoreDependencies,
 } from "../pokemonListStore";
 
-function createPokemon(
-  id: number,
-  name: string,
-  type = "grass",
-): Pokemon {
+function createPokemon(id: number, name: string, type = "grass"): Pokemon {
   return {
     id,
     name,
@@ -173,10 +169,11 @@ test("loadNextPokemonBatch appends results and advances offset by one batch", as
   await store.getState().loadNextPokemonBatch();
 
   assert.deepEqual(store.getState().pokemon, [bulbasaur, ivysaur, venusaur]);
-  assert.deepEqual(
-    store.getState().filteredPokemon,
-    [bulbasaur, ivysaur, venusaur],
-  );
+  assert.deepEqual(store.getState().filteredPokemon, [
+    bulbasaur,
+    ivysaur,
+    venusaur,
+  ]);
   assert.equal(store.getState().offset, 30);
   assert.equal(store.getState().next, "after-next-page");
   assert.equal(store.getState().previous, "previous-page");

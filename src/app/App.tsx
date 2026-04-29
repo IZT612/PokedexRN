@@ -22,7 +22,9 @@ type AppScreen =
     };
 
 export function App() {
-  const favoritePokemonIds = usePokemonDetailStore((state) => state.favoritePokemonIds);
+  const favoritePokemonIds = usePokemonDetailStore(
+    (state) => state.favoritePokemonIds,
+  );
   const favoritePokemonIdsLoading = usePokemonDetailStore(
     (state) => state.favoritePokemonIdsLoading,
   );

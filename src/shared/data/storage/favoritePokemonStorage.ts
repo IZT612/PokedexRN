@@ -9,7 +9,9 @@ export type FavoritePokemonStorageEngine = {
 
 function toStorageError(action: string, error: unknown) {
   if (error instanceof Error) {
-    return new Error(`Failed to ${action} favorite pokemon ids: ${error.message}`);
+    return new Error(
+      `Failed to ${action} favorite pokemon ids: ${error.message}`,
+    );
   }
 
   return new Error(`Failed to ${action} favorite pokemon ids`);
@@ -41,7 +43,9 @@ export function createFavoritePokemonStorage(
   return {
     async loadFavoritePokemonIds() {
       try {
-        const rawValue = await storage.getItem(FAVORITE_POKEMON_IDS_STORAGE_KEY);
+        const rawValue = await storage.getItem(
+          FAVORITE_POKEMON_IDS_STORAGE_KEY,
+        );
 
         if (!rawValue) {
           return [];
@@ -65,4 +69,5 @@ export function createFavoritePokemonStorage(
   };
 }
 
-export const favoritePokemonStorage = createFavoritePokemonStorage(AsyncStorage);
+export const favoritePokemonStorage =
+  createFavoritePokemonStorage(AsyncStorage);
