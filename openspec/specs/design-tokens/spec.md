@@ -1,11 +1,15 @@
 ## ADDED Requirements
 
 ### Requirement: Shared brand tokens
-The application MUST define shared brand tokens for primary, secondary, background, surface, text, and border colors so UI components can use a consistent visual foundation.
+The application MUST define shared brand tokens for light and dark themes, covering primary, secondary, background, surface, text, and border colors so UI components can use a consistent visual foundation across device appearance modes.
 
-#### Scenario: Components consume brand tokens
-- **WHEN** a screen or component requests base UI colors
-- **THEN** it receives the same shared token values across the app
+#### Scenario: Components consume light-theme brand tokens
+- **WHEN** a screen or component requests base UI colors while the active theme is light
+- **THEN** it receives the shared light-theme token values across the app
+
+#### Scenario: Components consume dark-theme brand tokens
+- **WHEN** a screen or component requests base UI colors while the active theme is dark
+- **THEN** it receives the shared dark-theme token values across the app
 
 ### Requirement: Semantic type tokens
 The application MUST define a semantic color token for each supported Pokemon type so badges, borders, and filters can represent types consistently.
