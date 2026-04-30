@@ -8,7 +8,7 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { uiTokens } from "./tokens";
+import { uiTokens, useUiTokens } from "./tokens";
 
 export type SearchInputProps = Omit<
   TextInputProps,
@@ -27,15 +27,26 @@ export function SearchInput({
   style,
   ...props
 }: SearchInputProps) {
+  const themedTokens = useUiTokens();
+
   return (
-    <View style={[styles.container, style]}>
+    <View
+      style={[
+        styles.container,
+        {
+          borderColor: themedTokens.colors.border,
+          backgroundColor: themedTokens.colors.surface,
+        },
+        style,
+      ]}
+    >
       <TextInput
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={() => onSubmitQuery?.(value)}
-        placeholderTextColor={uiTokens.colors.textSecondary}
+        placeholderTextColor={themedTokens.colors.textSecondary}
         returnKeyType="search"
-        style={styles.input}
+        style={[styles.input, { color: themedTokens.colors.textPrimary }]}
         {...props}
       />
     </View>
@@ -47,13 +58,10 @@ const styles = StyleSheet.create({
     minHeight: 48,
     borderRadius: uiTokens.radius.md,
     borderWidth: 1,
-    borderColor: uiTokens.colors.border,
-    backgroundColor: uiTokens.colors.surface,
     justifyContent: "center",
     paddingHorizontal: uiTokens.spacing.md,
   },
   input: {
-    color: uiTokens.colors.textPrimary,
     fontSize: uiTokens.typography.sizes.md,
     paddingVertical: 0,
   },

@@ -16,6 +16,7 @@ import {
   PokemonSummaryCard,
   SearchInput,
   ThemeText,
+  useAppTheme,
 } from "../../../shared/ui";
 import {
   pokemonTypes,
@@ -44,6 +45,7 @@ export function PokemonListScreen({
   onPokemonPress,
   onFavoritesPress,
 }: PokemonListScreenProps) {
+  const { colors } = useAppTheme();
   const filteredPokemon = usePokemonListStore((state) => state.filteredPokemon);
   const typeOptions = usePokemonListStore((state) => state.typeOptions);
   const query = usePokemonListStore((state) => state.query);
@@ -91,12 +93,24 @@ export function PokemonListScreen({
     !showInitialLoading && !error && filteredPokemon.length === 0;
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.header}>
-        <ThemeText style={styles.headerTitle}>PokedexRN</ThemeText>
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <View
+        style={[
+          styles.header,
+          {
+            backgroundColor: colors.surface,
+            borderBottomColor: colors.border,
+          },
+        ]}
+      >
+        <ThemeText style={[styles.headerTitle, { color: colors.primary }]}>
+          PokedexRN
+        </ThemeText>
       </View>
 
-      <View style={styles.filtersSection}>
+      <View
+        style={[styles.filtersSection, { backgroundColor: colors.surface }]}
+      >
         <SearchInput
           value={query}
           onChangeText={setQuery}
@@ -142,7 +156,12 @@ export function PokemonListScreen({
             ListEmptyComponent={
               showEmptyState ? (
                 <View style={styles.centerContent}>
-                  <ThemeText style={styles.emptyStateText}>
+                  <ThemeText
+                    style={[
+                      styles.emptyStateText,
+                      { color: colors.textSecondary },
+                    ]}
+                  >
                     There&apos;s no pokemon meeting your criteria.
                   </ThemeText>
                 </View>
@@ -169,7 +188,15 @@ export function PokemonListScreen({
         )}
       </View>
 
-      <View style={styles.bottomSection}>
+      <View
+        style={[
+          styles.bottomSection,
+          {
+            backgroundColor: colors.surface,
+            borderTopColor: colors.border,
+          },
+        ]}
+      >
         <Button label="Home" variant="primary" />
         <Button
           label="Favorites"
@@ -195,26 +222,21 @@ function PokemonCard({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: tokens.colors.background,
   },
   header: {
     paddingTop: tokens.spacing.xl,
     paddingHorizontal: tokens.spacing.lg,
     paddingBottom: tokens.spacing.md,
-    backgroundColor: tokens.colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: tokens.colors.border,
   },
   headerTitle: {
     fontSize: tokens.typography.sizes["2xl"],
     fontWeight: tokens.typography.weights.bold,
-    color: tokens.colors.primary,
   },
   filtersSection: {
     paddingHorizontal: tokens.spacing.lg,
     paddingTop: tokens.spacing.lg,
     paddingBottom: tokens.spacing.md,
-    backgroundColor: tokens.colors.surface,
     gap: tokens.spacing.md,
   },
   typeFilterSection: {
@@ -244,7 +266,6 @@ const styles = StyleSheet.create({
     padding: tokens.spacing.xl,
   },
   emptyStateText: {
-    color: tokens.colors.textSecondary,
     textAlign: "center",
   },
   bottomSection: {
@@ -253,8 +274,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: tokens.spacing.md,
     padding: tokens.spacing.lg,
-    backgroundColor: tokens.colors.surface,
     borderTopWidth: 1,
-    borderTopColor: tokens.colors.border,
   },
 });

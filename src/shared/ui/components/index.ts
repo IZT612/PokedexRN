@@ -11,4 +11,5 @@ export type { LoadingSpinnerProps } from "./LoadingSpinner";
 export { SearchInput } from "./SearchInput";
 export type { SearchInputProps } from "./SearchInput";
 export { uiTokens } from "./tokens";
+export { useUiTokens } from "./tokens";
 export type { UiTokens } from "./tokens";

@@ -9,7 +9,7 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { uiTokens } from "./tokens";
+import { uiTokens, useUiTokens } from "./tokens";
 
 export type CardProps = PropsWithChildren<ViewProps> & {
   elevated?: boolean;
@@ -26,6 +26,8 @@ export function Card({
   children,
   ...props
 }: CardProps) {
+  const themedTokens = useUiTokens();
+
   if (onPress) {
     return (
       <Pressable
@@ -33,8 +35,18 @@ export function Card({
         onPress={onPress}
         style={({ pressed }) => [
           styles.base,
+          {
+            backgroundColor: themedTokens.colors.surface,
+            borderColor: themedTokens.colors.border,
+          },
           padded && styles.padded,
-          elevated && styles.elevated,
+          elevated && {
+            shadowColor: themedTokens.colors.textPrimary,
+            shadowOpacity: 0.08,
+            shadowRadius: 10,
+            shadowOffset: { width: 0, height: 4 },
+            elevation: 2,
+          },
           pressed && styles.pressed,
           style,
         ]}
@@ -49,8 +61,18 @@ export function Card({
     <View
       style={[
         styles.base,
+        {
+          backgroundColor: themedTokens.colors.surface,
+          borderColor: themedTokens.colors.border,
+        },
         padded && styles.padded,
-        elevated && styles.elevated,
+        elevated && {
+          shadowColor: themedTokens.colors.textPrimary,
+          shadowOpacity: 0.08,
+          shadowRadius: 10,
+          shadowOffset: { width: 0, height: 4 },
+          elevation: 2,
+        },
         style,
       ]}
       {...props}
@@ -62,20 +84,11 @@ export function Card({
 
 const styles = StyleSheet.create({
   base: {
-    backgroundColor: uiTokens.colors.surface,
-    borderColor: uiTokens.colors.border,
     borderWidth: 1,
     borderRadius: uiTokens.radius.lg,
   },
   padded: {
     padding: uiTokens.spacing.lg,
-  },
-  elevated: {
-    shadowColor: uiTokens.colors.textPrimary,
-    shadowOpacity: 0.08,
-    shadowRadius: 10,
-    shadowOffset: { width: 0, height: 4 },
-    elevation: 2,
   },
   pressed: {
     opacity: 0.92,

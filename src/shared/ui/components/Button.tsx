@@ -10,7 +10,7 @@ import {
   ViewStyle,
 } from "react-native";
 
-import { uiTokens } from "./tokens";
+import { uiTokens, useUiTokens } from "./tokens";
 
 type ButtonVariant = "primary" | "secondary" | "ghost";
 
@@ -23,27 +23,6 @@ export type ButtonProps = Omit<PressableProps, "style"> & {
   labelStyle?: StyleProp<TextStyle>;
 };
 
-const variantStyles: Record<ButtonVariant, ViewStyle> = {
-  primary: {
-    backgroundColor: uiTokens.colors.primary,
-    borderColor: uiTokens.colors.primary,
-  },
-  secondary: {
-    backgroundColor: uiTokens.colors.surface,
-    borderColor: uiTokens.colors.border,
-  },
-  ghost: {
-    backgroundColor: "transparent",
-    borderColor: "transparent",
-  },
-};
-
-const variantLabelStyles: Record<ButtonVariant, TextStyle> = {
-  primary: { color: uiTokens.colors.white },
-  secondary: { color: uiTokens.colors.textPrimary },
-  ghost: { color: uiTokens.colors.primary },
-};
-
 export function Button({
   label,
   variant = "primary",
@@ -53,7 +32,29 @@ export function Button({
   labelStyle,
   ...props
 }: ButtonProps) {
+  const themedTokens = useUiTokens();
   const isDisabled = disabled || loading;
+
+  const variantStyles: Record<ButtonVariant, ViewStyle> = {
+    primary: {
+      backgroundColor: themedTokens.colors.primary,
+      borderColor: themedTokens.colors.primary,
+    },
+    secondary: {
+      backgroundColor: themedTokens.colors.surface,
+      borderColor: themedTokens.colors.border,
+    },
+    ghost: {
+      backgroundColor: "transparent",
+      borderColor: "transparent",
+    },
+  };
+
+  const variantLabelStyles: Record<ButtonVariant, TextStyle> = {
+    primary: { color: themedTokens.colors.white },
+    secondary: { color: themedTokens.colors.textPrimary },
+    ghost: { color: themedTokens.colors.primary },
+  };
 
   return (
     <Pressable
@@ -72,8 +73,8 @@ export function Button({
         <ActivityIndicator
           color={
             variant === "primary"
-              ? uiTokens.colors.white
-              : uiTokens.colors.primary
+              ? themedTokens.colors.white
+              : themedTokens.colors.primary
           }
         />
       ) : (

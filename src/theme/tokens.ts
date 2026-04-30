@@ -1,4 +1,4 @@
-export const brandColors = {
+export const lightBrandColors = {
   primary: "#EF5350",
   secondary: "#3761A8",
   background: "#F5F5F5",
@@ -9,13 +9,35 @@ export const brandColors = {
   border: "#E0E0E0",
 } as const;
 
-export const semanticColors = {
+export const darkBrandColors = {
+  primary: "#F9706D",
+  secondary: "#7CA8F5",
+  background: "#111827",
+  white: "#FFFFFF",
+  surface: "#1F2937",
+  textPrimary: "#F9FAFB",
+  textSecondary: "#CBD5E1",
+  border: "#374151",
+} as const;
+
+export const lightSemanticColors = {
   success: "#16A34A",
   successSoft: "#DCFCE7",
   danger: "#DC2626",
   dangerSoft: "#FEE2E2",
   chipBackground: "#E5E7EB",
+  chipSelected: lightBrandColors.textPrimary,
   mutedSurface: "#F3F4F6",
+} as const;
+
+export const darkSemanticColors = {
+  success: "#22C55E",
+  successSoft: "#14532D",
+  danger: "#F87171",
+  dangerSoft: "#7F1D1D",
+  chipBackground: "#334155",
+  chipSelected: darkBrandColors.textPrimary,
+  mutedSurface: "#273449",
 } as const;
 
 export const pokemonTypeColors = {
@@ -37,6 +59,19 @@ export const pokemonTypeColors = {
   dark: "#736C75",
   steel: "#B7B7CE",
   fairy: "#D685AD",
+} as const;
+
+export const themeColors = {
+  light: {
+    ...lightBrandColors,
+    ...lightSemanticColors,
+    types: pokemonTypeColors,
+  },
+  dark: {
+    ...darkBrandColors,
+    ...darkSemanticColors,
+    types: pokemonTypeColors,
+  },
 } as const;
 
 export const pokemonTypes = Object.keys(pokemonTypeColors) as Array<
@@ -77,15 +112,36 @@ export const spacing = {
   "3xl": 40,
 } as const;
 
-export const tokens = {
-  colors: {
-    ...brandColors,
-    ...semanticColors,
-    types: pokemonTypeColors,
-  },
-  typography,
-  spacing,
-} as const;
+export type AppThemeName = keyof typeof themeColors;
+export type AppThemeColors = (typeof themeColors)[AppThemeName];
+export type DeviceColorScheme =
+  | "light"
+  | "dark"
+  | "unspecified"
+  | null
+  | undefined;
+
+export function getThemeColors(themeName: AppThemeName) {
+  return themeColors[themeName];
+}
+
+export function resolveAppThemeName(
+  colorScheme: DeviceColorScheme,
+): AppThemeName {
+  return colorScheme === "dark" ? "dark" : "light";
+}
+
+export function createThemeTokens(themeName: AppThemeName) {
+  return {
+    colors: getThemeColors(themeName),
+    typography,
+    spacing,
+  } as const;
+}
+
+export const brandColors = lightBrandColors;
+export const semanticColors = lightSemanticColors;
+export const tokens = createThemeTokens("light");
 
 export type PokemonType = keyof typeof pokemonTypeColors;
 export type ThemeTokens = typeof tokens;

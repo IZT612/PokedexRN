@@ -9,10 +9,13 @@ import {
   ErrorMessage,
   LoadingSpinner,
   ThemeText,
+  useAppTheme,
 } from "../../../shared/ui";
 import {
+  getThemeColors,
   pokemonTypes,
   tokens,
+  type AppThemeColors,
   type PokemonType as ThemePokemonType,
 } from "../../../theme";
 import { usePokemonDetailStore } from "../domain";
@@ -55,7 +58,7 @@ function getOrderedTypes(pokemon: Pokemon) {
   });
 }
 
-function getHeroColors(pokemon: Pokemon) {
+function getHeroColors(pokemon: Pokemon, colors: AppThemeColors) {
   const orderedTypes = getOrderedTypes(pokemon);
   const primaryType = orderedTypes[0]?.name;
   const secondaryType = orderedTypes[1]?.name;
@@ -64,11 +67,11 @@ function getHeroColors(pokemon: Pokemon) {
     backgroundColor:
       primaryType && isThemePokemonType(primaryType)
         ? tokens.colors.types[primaryType]
-        : tokens.colors.surface,
+        : colors.surface,
     borderColor:
       secondaryType && isThemePokemonType(secondaryType)
         ? tokens.colors.types[secondaryType]
-        : tokens.colors.border,
+        : colors.border,
   };
 }
 
@@ -76,22 +79,26 @@ function StatRow({
   name,
   value,
   fillColor,
+  labelColor,
+  trackColor,
 }: {
   name: string;
   value: number;
   fillColor: string;
+  labelColor: string;
+  trackColor: string;
 }) {
   const ratio = getStatFillRatio(value);
 
   return (
     <View style={styles.statRow}>
       <View style={styles.statHeader}>
-        <ThemeText style={styles.statName}>
+        <ThemeText style={[styles.statName, { color: labelColor }]}>
           {formatPokemonLabel(name)}
         </ThemeText>
         <ThemeText style={styles.statValue}>{value}</ThemeText>
       </View>
-      <View style={styles.statTrack}>
+      <View style={[styles.statTrack, { backgroundColor: trackColor }]}>
         <View
           style={[
             styles.statFill,
@@ -107,9 +114,10 @@ function StatRow({
 }
 
 function PokemonHero({ pokemon }: { pokemon: Pokemon }) {
+  const { colors } = useAppTheme();
   const imageUri =
     pokemon.sprites.official_artwork ?? pokemon.sprites.front_default;
-  const heroColors = getHeroColors(pokemon);
+  const heroColors = getHeroColors(pokemon, colors);
 
   return (
     <View
@@ -142,6 +150,7 @@ export function PokemonDetailScreen({
   pokemonId,
   onBack,
 }: PokemonDetailScreenProps) {
+  const { colors } = useAppTheme();
   const pokemon = usePokemonDetailStore((state) => state.pokemon);
   const loading = usePokemonDetailStore((state) => state.loading);
   const error = usePokemonDetailStore((state) => state.error);
@@ -175,11 +184,19 @@ export function PokemonDetailScreen({
   const fillColor =
     primaryType && isThemePokemonType(primaryType)
       ? tokens.colors.types[primaryType]
-      : tokens.colors.primary;
+      : colors.primary;
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.header}>
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <View
+        style={[
+          styles.header,
+          {
+            backgroundColor: colors.surface,
+            borderBottomColor: colors.border,
+          },
+        ]}
+      >
         <Button label="← Back" variant="ghost" onPress={onBack} />
         <Button
           label={isFavorite ? "♥ Favorited" : "♡ Favorite"}
@@ -227,7 +244,9 @@ export function PokemonDetailScreen({
             <ThemeText style={styles.pokemonName}>
               {formatPokemonLabel(pokemon.name)}
             </ThemeText>
-            <ThemeText style={styles.pokemonId}>
+            <ThemeText
+              style={[styles.pokemonId, { color: colors.textSecondary }]}
+            >
               {formatPokemonId(pokemon.id)}
             </ThemeText>
           </View>
@@ -247,14 +266,44 @@ export function PokemonDetailScreen({
           <Card elevated style={styles.infoCard}>
             <ThemeText style={styles.sectionTitle}>Overview</ThemeText>
             <View style={styles.overviewGrid}>
-              <View style={styles.overviewItem}>
-                <ThemeText style={styles.overviewLabel}>Height</ThemeText>
+              <View
+                style={[
+                  styles.overviewItem,
+                  {
+                    backgroundColor: colors.background,
+                    borderColor: colors.border,
+                  },
+                ]}
+              >
+                <ThemeText
+                  style={[
+                    styles.overviewLabel,
+                    { color: colors.textSecondary },
+                  ]}
+                >
+                  Height
+                </ThemeText>
                 <ThemeText style={styles.overviewValue}>
                   {formatHeight(pokemon.height)}
                 </ThemeText>
               </View>
-              <View style={styles.overviewItem}>
-                <ThemeText style={styles.overviewLabel}>Weight</ThemeText>
+              <View
+                style={[
+                  styles.overviewItem,
+                  {
+                    backgroundColor: colors.background,
+                    borderColor: colors.border,
+                  },
+                ]}
+              >
+                <ThemeText
+                  style={[
+                    styles.overviewLabel,
+                    { color: colors.textSecondary },
+                  ]}
+                >
+                  Weight
+                </ThemeText>
                 <ThemeText style={styles.overviewValue}>
                   {formatWeight(pokemon.weight)}
                 </ThemeText>
@@ -287,6 +336,8 @@ export function PokemonDetailScreen({
                   name={stat.name}
                   value={stat.base_stat}
                   fillColor={fillColor}
+                  labelColor={colors.textSecondary}
+                  trackColor={colors.border}
                 />
               ))}
             </View>
@@ -300,7 +351,6 @@ export function PokemonDetailScreen({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: tokens.colors.background,
   },
   header: {
     flexDirection: "row",
@@ -309,9 +359,7 @@ const styles = StyleSheet.create({
     paddingTop: tokens.spacing.xl,
     paddingHorizontal: tokens.spacing.lg,
     paddingBottom: tokens.spacing.md,
-    backgroundColor: tokens.colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: tokens.colors.border,
   },
   content: {
     padding: tokens.spacing.lg,
@@ -346,7 +394,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   heroFallbackText: {
-    color: tokens.colors.surface,
+    color: getThemeColors("light").white,
     fontWeight: tokens.typography.weights.semibold,
   },
   titleRow: {
@@ -361,7 +409,6 @@ const styles = StyleSheet.create({
     fontWeight: tokens.typography.weights.bold,
   },
   pokemonId: {
-    color: tokens.colors.textSecondary,
     fontWeight: tokens.typography.weights.semibold,
   },
   typeRow: {
@@ -384,13 +431,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: tokens.spacing.md,
     borderRadius: 16,
-    backgroundColor: tokens.colors.background,
     borderWidth: 1,
-    borderColor: tokens.colors.border,
     gap: tokens.spacing.xs,
   },
   overviewLabel: {
-    color: tokens.colors.textSecondary,
     fontSize: tokens.typography.sizes.sm,
   },
   overviewValue: {
@@ -415,7 +459,6 @@ const styles = StyleSheet.create({
     gap: tokens.spacing.md,
   },
   statName: {
-    color: tokens.colors.textSecondary,
     fontSize: tokens.typography.sizes.sm,
   },
   statValue: {
@@ -425,7 +468,6 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 999,
     overflow: "hidden",
-    backgroundColor: tokens.colors.border,
   },
   statFill: {
     height: "100%",

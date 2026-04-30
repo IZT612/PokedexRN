@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 import { Button } from "./Button";
-import { uiTokens } from "./tokens";
+import { uiTokens, useUiTokens } from "./tokens";
 
 export type ErrorMessageProps = {
   message: string;
@@ -17,10 +17,27 @@ export function ErrorMessage({
   retryLabel = "Try again",
   onRetry,
 }: ErrorMessageProps) {
+  const themedTokens = useUiTokens();
+
   return (
-    <View style={styles.container} accessibilityRole="alert">
-      <Text style={styles.title}>{title}</Text>
-      <Text style={styles.message}>{message}</Text>
+    <View
+      style={[
+        styles.container,
+        {
+          borderColor: themedTokens.colors.danger,
+          backgroundColor: themedTokens.colors.dangerSoft,
+        },
+      ]}
+      accessibilityRole="alert"
+    >
+      <Text style={[styles.title, { color: themedTokens.colors.danger }]}>
+        {title}
+      </Text>
+      <Text
+        style={[styles.message, { color: themedTokens.colors.textPrimary }]}
+      >
+        {message}
+      </Text>
       {onRetry ? (
         <Button label={retryLabel} variant="secondary" onPress={onRetry} />
       ) : null}
@@ -33,17 +50,13 @@ const styles = StyleSheet.create({
     padding: uiTokens.spacing.lg,
     borderRadius: uiTokens.radius.lg,
     borderWidth: 1,
-    borderColor: uiTokens.colors.danger,
-    backgroundColor: uiTokens.colors.dangerSoft,
   },
   title: {
-    color: uiTokens.colors.danger,
     fontSize: uiTokens.typography.sizes.md,
     fontWeight: uiTokens.typography.weights.bold,
     marginBottom: uiTokens.spacing.xs,
   },
   message: {
-    color: uiTokens.colors.textPrimary,
     fontSize: uiTokens.typography.sizes.sm,
     lineHeight:
       uiTokens.typography.lineHeights.normal * uiTokens.typography.sizes.sm,

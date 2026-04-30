@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
-import { uiTokens } from "./tokens";
+import { uiTokens, useUiTokens } from "./tokens";
 
 export type LoadingSpinnerProps = {
   label?: string;
@@ -9,14 +9,22 @@ export type LoadingSpinnerProps = {
 };
 
 export function LoadingSpinner({ label, size = "small" }: LoadingSpinnerProps) {
+  const themedTokens = useUiTokens();
+
   return (
     <View
       style={styles.container}
       accessibilityRole="progressbar"
       accessibilityLabel={label ?? "Loading"}
     >
-      <ActivityIndicator size={size} color={uiTokens.colors.primary} />
-      {label ? <Text style={styles.label}>{label}</Text> : null}
+      <ActivityIndicator size={size} color={themedTokens.colors.primary} />
+      {label ? (
+        <Text
+          style={[styles.label, { color: themedTokens.colors.textSecondary }]}
+        >
+          {label}
+        </Text>
+      ) : null}
     </View>
   );
 }
@@ -29,7 +37,6 @@ const styles = StyleSheet.create({
   },
   label: {
     marginLeft: uiTokens.spacing.xs,
-    color: uiTokens.colors.textSecondary,
     fontSize: uiTokens.typography.sizes.sm,
   },
 });

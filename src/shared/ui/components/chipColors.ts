@@ -1,15 +1,20 @@
-import { getPokemonTypeColor, type PokemonType } from "../../../theme";
-
-import { uiTokens } from "./tokens";
+import {
+  getThemeColors,
+  getPokemonTypeColor,
+  type AppThemeColors,
+  type PokemonType,
+} from "../../../theme";
 
 export type ChipColorOptions = {
   selected?: boolean;
   pokemonType?: PokemonType;
+  colors?: AppThemeColors;
 };
 
 export function getChipColors({
   selected = false,
   pokemonType,
+  colors = getThemeColors("light"),
 }: ChipColorOptions) {
   if (pokemonType) {
     const typeColor = getPokemonTypeColor(pokemonType);
@@ -18,12 +23,12 @@ export function getChipColors({
       return {
         backgroundColor: typeColor,
         borderColor: typeColor,
-        textColor: uiTokens.colors.white,
+        textColor: colors.white,
       };
     }
 
     return {
-      backgroundColor: uiTokens.colors.surface,
+      backgroundColor: colors.surface,
       borderColor: typeColor,
       textColor: typeColor,
     };
@@ -31,15 +36,15 @@ export function getChipColors({
 
   if (selected) {
     return {
-      backgroundColor: uiTokens.colors.chipSelected,
-      borderColor: uiTokens.colors.chipSelected,
-      textColor: uiTokens.colors.white,
+      backgroundColor: colors.chipSelected,
+      borderColor: colors.chipSelected,
+      textColor: colors.white,
     };
   }
 
   return {
-    backgroundColor: uiTokens.colors.chipBackground,
+    backgroundColor: colors.chipBackground,
     borderColor: "transparent",
-    textColor: uiTokens.colors.textPrimary,
+    textColor: colors.textPrimary,
   };
 }

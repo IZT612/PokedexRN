@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import type { PokemonType } from "../../../theme";
 import { getChipColors } from "./chipColors";
-import { uiTokens } from "./tokens";
+import { uiTokens, useUiTokens } from "./tokens";
 
 export type ChipProps = {
   label: string;
@@ -18,7 +18,12 @@ export function Chip({
   onPress,
   pokemonType,
 }: ChipProps) {
-  const colors = getChipColors({ selected, pokemonType });
+  const themedTokens = useUiTokens();
+  const colors = getChipColors({
+    selected,
+    pokemonType,
+    colors: themedTokens.colors,
+  });
 
   const content = (
     <View

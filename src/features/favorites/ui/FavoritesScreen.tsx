@@ -16,6 +16,7 @@ import {
   PokemonSummaryCard,
   SearchInput,
   ThemeText,
+  useAppTheme,
 } from "../../../shared/ui";
 import {
   pokemonTypes,
@@ -52,6 +53,7 @@ export function FavoritesScreen({
   onPokemonPress,
   onHomePress,
 }: FavoritesScreenProps) {
+  const { colors } = useAppTheme();
   const filteredPokemon = useFavoritesStore((state) => state.filteredPokemon);
   const typeOptions = useFavoritesStore((state) => state.typeOptions);
   const query = useFavoritesStore((state) => state.query);
@@ -90,12 +92,24 @@ export function FavoritesScreen({
     !showInitialLoading && !resolvedError && filteredPokemon.length === 0;
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.header}>
-        <ThemeText style={styles.headerTitle}>Favorites</ThemeText>
+    <View style={[styles.screen, { backgroundColor: colors.background }]}>
+      <View
+        style={[
+          styles.header,
+          {
+            backgroundColor: colors.surface,
+            borderBottomColor: colors.border,
+          },
+        ]}
+      >
+        <ThemeText style={[styles.headerTitle, { color: colors.primary }]}>
+          Favorites
+        </ThemeText>
       </View>
 
-      <View style={styles.filtersSection}>
+      <View
+        style={[styles.filtersSection, { backgroundColor: colors.surface }]}
+      >
         <SearchInput
           value={query}
           onChangeText={setQuery}
@@ -136,7 +150,12 @@ export function FavoritesScreen({
             ListEmptyComponent={
               showEmptyState ? (
                 <View style={styles.centerContent}>
-                  <ThemeText style={styles.emptyStateText}>
+                  <ThemeText
+                    style={[
+                      styles.emptyStateText,
+                      { color: colors.textSecondary },
+                    ]}
+                  >
                     You haven&apos;t favorited any pokemon yet.
                   </ThemeText>
                 </View>
@@ -163,7 +182,15 @@ export function FavoritesScreen({
         )}
       </View>
 
-      <View style={styles.bottomSection}>
+      <View
+        style={[
+          styles.bottomSection,
+          {
+            backgroundColor: colors.surface,
+            borderTopColor: colors.border,
+          },
+        ]}
+      >
         <Button label="Home" variant="secondary" onPress={onHomePress} />
         <Button label="Favorites" variant="primary" disabled />
       </View>
@@ -174,26 +201,21 @@ export function FavoritesScreen({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: tokens.colors.background,
   },
   header: {
     paddingTop: tokens.spacing.xl,
     paddingHorizontal: tokens.spacing.lg,
     paddingBottom: tokens.spacing.md,
-    backgroundColor: tokens.colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: tokens.colors.border,
   },
   headerTitle: {
     fontSize: tokens.typography.sizes["2xl"],
     fontWeight: tokens.typography.weights.bold,
-    color: tokens.colors.primary,
   },
   filtersSection: {
     paddingHorizontal: tokens.spacing.lg,
     paddingTop: tokens.spacing.lg,
     paddingBottom: tokens.spacing.md,
-    backgroundColor: tokens.colors.surface,
     gap: tokens.spacing.md,
   },
   typeFilterSection: {
@@ -218,7 +240,6 @@ const styles = StyleSheet.create({
     padding: tokens.spacing.xl,
   },
   emptyStateText: {
-    color: tokens.colors.textSecondary,
     textAlign: "center",
   },
   footerFeedback: {
@@ -232,8 +253,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     gap: tokens.spacing.md,
     padding: tokens.spacing.lg,
-    backgroundColor: tokens.colors.surface,
     borderTopWidth: 1,
-    borderTopColor: tokens.colors.border,
   },
 });

@@ -9,6 +9,7 @@ import {
 } from "../../theme";
 import { Card } from "./components/Card";
 import { Chip } from "./components/Chip";
+import { useAppTheme } from "./TamaguiAppProvider";
 import { ThemeText } from "./ThemeText";
 
 export type PokemonSummaryCardProps = {
@@ -35,10 +36,12 @@ export function PokemonSummaryCard({
   pokemon,
   onPress,
 }: PokemonSummaryCardProps) {
+  const { colors } = useAppTheme();
+
   return (
     <Card elevated style={styles.card} onPress={onPress}>
       <View style={styles.cardHeader}>
-        <ThemeText style={styles.pokemonId}>
+        <ThemeText style={[styles.pokemonId, { color: colors.textSecondary }]}>
           {formatPokemonId(pokemon.id)}
         </ThemeText>
       </View>
@@ -49,8 +52,23 @@ export function PokemonSummaryCard({
           resizeMode="contain"
         />
       ) : (
-        <View style={styles.imagePlaceholder}>
-          <ThemeText style={styles.imagePlaceholderText}>No image</ThemeText>
+        <View
+          style={[
+            styles.imagePlaceholder,
+            {
+              backgroundColor: colors.background,
+              borderColor: colors.border,
+            },
+          ]}
+        >
+          <ThemeText
+            style={[
+              styles.imagePlaceholderText,
+              { color: colors.textSecondary },
+            ]}
+          >
+            No image
+          </ThemeText>
         </View>
       )}
       <ThemeText style={styles.pokemonName}>
@@ -77,7 +95,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   pokemonId: {
-    color: tokens.colors.textSecondary,
     fontWeight: tokens.typography.weights.semibold,
   },
   pokemonImage: {
@@ -87,15 +104,11 @@ const styles = StyleSheet.create({
   imagePlaceholder: {
     height: 160,
     borderRadius: 16,
-    backgroundColor: tokens.colors.background,
     borderWidth: 1,
-    borderColor: tokens.colors.border,
     alignItems: "center",
     justifyContent: "center",
   },
-  imagePlaceholderText: {
-    color: tokens.colors.textSecondary,
-  },
+  imagePlaceholderText: {},
   pokemonName: {
     fontSize: tokens.typography.sizes.xl,
     fontWeight: tokens.typography.weights.bold,

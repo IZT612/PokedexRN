@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+import { getThemeColors } from "../../../theme";
 import { getChipColors } from "./chipColors";
 
 test("getChipColors uses the default shared chip colors when no type is provided", () => {
@@ -33,4 +34,19 @@ test("getChipColors uses Pokemon type token colors for selected type chips", () 
     borderColor: "#6390F0",
     textColor: "#FFFFFF",
   });
+});
+
+test("getChipColors keeps Pokemon type semantics while adapting the surrounding dark theme surface", () => {
+  assert.deepEqual(
+    getChipColors({
+      pokemonType: "fire",
+      selected: false,
+      colors: getThemeColors("dark"),
+    }),
+    {
+      backgroundColor: "#1F2937",
+      borderColor: "#EE8130",
+      textColor: "#EE8130",
+    },
+  );
 });
