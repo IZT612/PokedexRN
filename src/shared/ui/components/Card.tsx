@@ -1,12 +1,21 @@
 import React, { PropsWithChildren } from "react";
-import { Button, View, type GetProps } from "tamagui";
+import {
+  Pressable,
+  PressableProps,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewProps,
+  ViewStyle,
+} from "react-native";
 
 import { uiTokens } from "./tokens";
 
-export type CardProps = PropsWithChildren<GetProps<typeof View>> & {
+export type CardProps = PropsWithChildren<ViewProps> & {
   elevated?: boolean;
   padded?: boolean;
-  onPress?: () => void;
+  style?: StyleProp<ViewStyle>;
+  onPress?: PressableProps["onPress"];
 };
 
 export function Card({
@@ -19,52 +28,29 @@ export function Card({
 }: CardProps) {
   if (onPress) {
     return (
-      <Button
-        unstyled
+      <Pressable
         accessibilityRole="button"
         onPress={onPress}
-        backgroundColor={uiTokens.colors.surface}
-        borderColor={uiTokens.colors.border}
-        borderWidth={1}
-        borderRadius={uiTokens.radius.lg}
-        padding={padded ? uiTokens.spacing.lg : undefined}
-        pressStyle={{ opacity: 0.92 }}
-        style={[
-          elevated
-            ? {
-                shadowColor: uiTokens.colors.textPrimary,
-                shadowOpacity: 0.08,
-                shadowRadius: 10,
-                shadowOffset: { width: 0, height: 4 },
-                elevation: 2,
-              }
-            : null,
+        style={({ pressed }) => [
+          styles.base,
+          padded && styles.padded,
+          elevated && styles.elevated,
+          pressed && styles.pressed,
           style,
         ]}
         {...props}
       >
         {children}
-      </Button>
+      </Pressable>
     );
   }
 
   return (
     <View
-      backgroundColor={uiTokens.colors.surface}
-      borderColor={uiTokens.colors.border}
-      borderWidth={1}
-      borderRadius={uiTokens.radius.lg}
-      padding={padded ? uiTokens.spacing.lg : undefined}
       style={[
-        elevated
-          ? {
-              shadowColor: uiTokens.colors.textPrimary,
-              shadowOpacity: 0.08,
-              shadowRadius: 10,
-              shadowOffset: { width: 0, height: 4 },
-              elevation: 2,
-            }
-          : null,
+        styles.base,
+        padded && styles.padded,
+        elevated && styles.elevated,
         style,
       ]}
       {...props}
@@ -73,3 +59,25 @@ export function Card({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  base: {
+    backgroundColor: uiTokens.colors.surface,
+    borderColor: uiTokens.colors.border,
+    borderWidth: 1,
+    borderRadius: uiTokens.radius.lg,
+  },
+  padded: {
+    padding: uiTokens.spacing.lg,
+  },
+  elevated: {
+    shadowColor: uiTokens.colors.textPrimary,
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 2,
+  },
+  pressed: {
+    opacity: 0.92,
+  },
+});

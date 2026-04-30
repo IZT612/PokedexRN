@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Text, View } from "tamagui";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
 import type { PokemonType } from "../../../theme";
 import { getChipColors } from "./chipColors";
@@ -22,23 +22,15 @@ export function Chip({
 
   const content = (
     <View
-      minHeight={32}
-      paddingHorizontal={uiTokens.spacing.md}
-      borderRadius={uiTokens.radius.pill}
-      borderWidth={1}
-      backgroundColor={colors.backgroundColor}
-      borderColor={colors.borderColor}
-      alignItems="center"
-      justifyContent="center"
-      alignSelf="flex-start"
+      style={[
+        styles.base,
+        {
+          backgroundColor: colors.backgroundColor,
+          borderColor: colors.borderColor,
+        },
+      ]}
     >
-      <Text
-        fontSize={uiTokens.typography.sizes.sm}
-        fontWeight={uiTokens.typography.weights.semibold}
-        color={colors.textColor}
-      >
-        {label}
-      </Text>
+      <Text style={[styles.label, { color: colors.textColor }]}>{label}</Text>
     </View>
   );
 
@@ -46,9 +38,21 @@ export function Chip({
     return content;
   }
 
-  return (
-    <Button unstyled onPress={onPress} pressStyle={{ opacity: 0.9 }}>
-      {content}
-    </Button>
-  );
+  return <Pressable onPress={onPress}>{content}</Pressable>;
 }
+
+const styles = StyleSheet.create({
+  base: {
+    minHeight: 32,
+    paddingHorizontal: uiTokens.spacing.md,
+    borderRadius: uiTokens.radius.pill,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "flex-start",
+  },
+  label: {
+    fontSize: uiTokens.typography.sizes.sm,
+    fontWeight: uiTokens.typography.weights.semibold,
+  },
+});

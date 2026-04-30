@@ -2,6 +2,7 @@
   "name": "pokedexrn",
   "private": true,
   "type": "module",
+  "main": "./index.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",

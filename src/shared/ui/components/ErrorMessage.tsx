@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, YStack } from "tamagui";
+import { StyleSheet, Text, View } from "react-native";
 
 import { Button } from "./Button";
 import { uiTokens } from "./tokens";
@@ -17,38 +17,36 @@ export function ErrorMessage({
   retryLabel = "Try again",
   onRetry,
 }: ErrorMessageProps) {
-  const actionLabel = retryLabel;
-
   return (
-    <YStack
-      padding={uiTokens.spacing.lg}
-      borderRadius={uiTokens.radius.lg}
-      borderWidth={1}
-      borderColor={uiTokens.colors.danger}
-      backgroundColor={uiTokens.colors.dangerSoft}
-      gap={uiTokens.spacing.xs}
-      accessibilityRole="alert"
-    >
-      <Text
-        color={uiTokens.colors.danger}
-        fontSize={uiTokens.typography.sizes.md}
-        fontWeight={uiTokens.typography.weights.bold}
-      >
-        {title}
-      </Text>
-      <Text
-        color={uiTokens.colors.textPrimary}
-        fontSize={uiTokens.typography.sizes.sm}
-        lineHeight={
-          uiTokens.typography.lineHeights.normal * uiTokens.typography.sizes.sm
-        }
-        marginBottom={onRetry ? uiTokens.spacing.sm : 0}
-      >
-        {message}
-      </Text>
+    <View style={styles.container} accessibilityRole="alert">
+      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.message}>{message}</Text>
       {onRetry ? (
-        <Button label={actionLabel} variant="secondary" onPress={onRetry} />
+        <Button label={retryLabel} variant="secondary" onPress={onRetry} />
       ) : null}
-    </YStack>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: uiTokens.spacing.lg,
+    borderRadius: uiTokens.radius.lg,
+    borderWidth: 1,
+    borderColor: uiTokens.colors.danger,
+    backgroundColor: uiTokens.colors.dangerSoft,
+  },
+  title: {
+    color: uiTokens.colors.danger,
+    fontSize: uiTokens.typography.sizes.md,
+    fontWeight: uiTokens.typography.weights.bold,
+    marginBottom: uiTokens.spacing.xs,
+  },
+  message: {
+    color: uiTokens.colors.textPrimary,
+    fontSize: uiTokens.typography.sizes.sm,
+    lineHeight:
+      uiTokens.typography.lineHeights.normal * uiTokens.typography.sizes.sm,
+    marginBottom: uiTokens.spacing.sm,
+  },
+});
