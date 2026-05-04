@@ -1,8 +1,8 @@
 import React from "react";
-import { Text, YStack } from "tamagui";
+import { StyleSheet, Text, View } from "react-native";
 
 import { Button } from "./Button";
-import { uiTokens } from "./tokens";
+import { uiTokens, useUiTokens } from "./tokens";
 
 export type ErrorMessageProps = {
   message: string;
@@ -17,38 +17,49 @@ export function ErrorMessage({
   retryLabel = "Try again",
   onRetry,
 }: ErrorMessageProps) {
-  const actionLabel = retryLabel;
+  const themedTokens = useUiTokens();
 
   return (
-    <YStack
-      padding={uiTokens.spacing.lg}
-      borderRadius={uiTokens.radius.lg}
-      borderWidth={1}
-      borderColor={uiTokens.colors.danger}
-      backgroundColor={uiTokens.colors.dangerSoft}
-      gap={uiTokens.spacing.xs}
+    <View
+      style={[
+        styles.container,
+        {
+          borderColor: themedTokens.colors.danger,
+          backgroundColor: themedTokens.colors.dangerSoft,
+        },
+      ]}
       accessibilityRole="alert"
     >
-      <Text
-        color={uiTokens.colors.danger}
-        fontSize={uiTokens.typography.sizes.md}
-        fontWeight={uiTokens.typography.weights.bold}
-      >
+      <Text style={[styles.title, { color: themedTokens.colors.danger }]}>
         {title}
       </Text>
       <Text
-        color={uiTokens.colors.textPrimary}
-        fontSize={uiTokens.typography.sizes.sm}
-        lineHeight={
-          uiTokens.typography.lineHeights.normal * uiTokens.typography.sizes.sm
-        }
-        marginBottom={onRetry ? uiTokens.spacing.sm : 0}
+        style={[styles.message, { color: themedTokens.colors.textPrimary }]}
       >
         {message}
       </Text>
       {onRetry ? (
-        <Button label={actionLabel} variant="secondary" onPress={onRetry} />
+        <Button label={retryLabel} variant="secondary" onPress={onRetry} />
       ) : null}
-    </YStack>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: uiTokens.spacing.lg,
+    borderRadius: uiTokens.radius.lg,
+    borderWidth: 1,
+  },
+  title: {
+    fontSize: uiTokens.typography.sizes.md,
+    fontWeight: uiTokens.typography.weights.bold,
+    marginBottom: uiTokens.spacing.xs,
+  },
+  message: {
+    fontSize: uiTokens.typography.sizes.sm,
+    lineHeight:
+      uiTokens.typography.lineHeights.normal * uiTokens.typography.sizes.sm,
+    marginBottom: uiTokens.spacing.sm,
+  },
+});

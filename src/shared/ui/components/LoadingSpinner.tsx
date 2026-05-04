@@ -1,7 +1,7 @@
 import React from "react";
-import { Spinner, Text, XStack } from "tamagui";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
-import { uiTokens } from "./tokens";
+import { uiTokens, useUiTokens } from "./tokens";
 
 export type LoadingSpinnerProps = {
   label?: string;
@@ -9,23 +9,34 @@ export type LoadingSpinnerProps = {
 };
 
 export function LoadingSpinner({ label, size = "small" }: LoadingSpinnerProps) {
+  const themedTokens = useUiTokens();
+
   return (
-    <XStack
-      alignItems="center"
-      justifyContent="center"
-      gap={uiTokens.spacing.xs}
+    <View
+      style={styles.container}
       accessibilityRole="progressbar"
       accessibilityLabel={label ?? "Loading"}
     >
-      <Spinner size={size} color={uiTokens.colors.primary} />
+      <ActivityIndicator size={size} color={themedTokens.colors.primary} />
       {label ? (
         <Text
-          color={uiTokens.colors.textSecondary}
-          fontSize={uiTokens.typography.sizes.sm}
+          style={[styles.label, { color: themedTokens.colors.textSecondary }]}
         >
           {label}
         </Text>
       ) : null}
-    </XStack>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  label: {
+    marginLeft: uiTokens.spacing.xs,
+    fontSize: uiTokens.typography.sizes.sm,
+  },
+});

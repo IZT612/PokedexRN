@@ -1,37 +1,78 @@
 import React, { PropsWithChildren } from "react";
-import { View, type GetProps } from "tamagui";
+import {
+  Pressable,
+  PressableProps,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewProps,
+  ViewStyle,
+} from "react-native";
 
-import { uiTokens } from "./tokens";
+import { uiTokens, useUiTokens } from "./tokens";
 
-export type CardProps = PropsWithChildren<GetProps<typeof View>> & {
+export type CardProps = PropsWithChildren<ViewProps> & {
   elevated?: boolean;
   padded?: boolean;
+  style?: StyleProp<ViewStyle>;
+  onPress?: PressableProps["onPress"];
 };
 
 export function Card({
   elevated = false,
   padded = true,
   style,
+  onPress,
   children,
   ...props
 }: CardProps) {
+  const themedTokens = useUiTokens();
+
+  if (onPress) {
+    return (
+      <Pressable
+        accessibilityRole="button"
+        onPress={onPress}
+        style={({ pressed }) => [
+          styles.base,
+          {
+            backgroundColor: themedTokens.colors.surface,
+            borderColor: themedTokens.colors.border,
+          },
+          padded && styles.padded,
+          elevated && {
+            shadowColor: themedTokens.colors.textPrimary,
+            shadowOpacity: 0.08,
+            shadowRadius: 10,
+            shadowOffset: { width: 0, height: 4 },
+            elevation: 2,
+          },
+          pressed && styles.pressed,
+          style,
+        ]}
+        {...props}
+      >
+        {children}
+      </Pressable>
+    );
+  }
+
   return (
     <View
-      backgroundColor={uiTokens.colors.surface}
-      borderColor={uiTokens.colors.border}
-      borderWidth={1}
-      borderRadius={uiTokens.radius.lg}
-      padding={padded ? uiTokens.spacing.lg : undefined}
       style={[
-        elevated
-          ? {
-              shadowColor: "#000000",
-              shadowOpacity: 0.08,
-              shadowRadius: 10,
-              shadowOffset: { width: 0, height: 4 },
-              elevation: 2,
-            }
-          : null,
+        styles.base,
+        {
+          backgroundColor: themedTokens.colors.surface,
+          borderColor: themedTokens.colors.border,
+        },
+        padded && styles.padded,
+        elevated && {
+          shadowColor: themedTokens.colors.textPrimary,
+          shadowOpacity: 0.08,
+          shadowRadius: 10,
+          shadowOffset: { width: 0, height: 4 },
+          elevation: 2,
+        },
         style,
       ]}
       {...props}
@@ -40,3 +81,16 @@ export function Card({
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  base: {
+    borderWidth: 1,
+    borderRadius: uiTokens.radius.lg,
+  },
+  padded: {
+    padding: uiTokens.spacing.lg,
+  },
+  pressed: {
+    opacity: 0.92,
+  },
+});

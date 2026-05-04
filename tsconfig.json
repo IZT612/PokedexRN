@@ -20,5 +20,6 @@
     "src/**/*.tsx",
     "src/**/*.d.ts"
   ],
-  "exclude": ["node_modules", "openspec", ".opencode"]
+  "exclude": ["node_modules", "openspec", ".opencode"],
+  "extends": "expo/tsconfig.base"
 }

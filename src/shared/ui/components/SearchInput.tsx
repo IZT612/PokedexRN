@@ -1,15 +1,23 @@
 import React from "react";
-import { Input, View, type GetProps } from "tamagui";
+import {
+  StyleProp,
+  StyleSheet,
+  TextInput,
+  TextInputProps,
+  View,
+  ViewStyle,
+} from "react-native";
 
-import { uiTokens } from "./tokens";
+import { uiTokens, useUiTokens } from "./tokens";
 
 export type SearchInputProps = Omit<
-  GetProps<typeof Input>,
-  "value" | "onChangeText"
+  TextInputProps,
+  "value" | "onChangeText" | "style"
 > & {
   value: string;
   onChangeText: (value: string) => void;
   onSubmitQuery?: (value: string) => void;
+  style?: StyleProp<ViewStyle>;
 };
 
 export function SearchInput({
@@ -19,29 +27,42 @@ export function SearchInput({
   style,
   ...props
 }: SearchInputProps) {
+  const themedTokens = useUiTokens();
+
   return (
     <View
-      minHeight={48}
-      borderRadius={uiTokens.radius.md}
-      borderWidth={1}
-      borderColor={uiTokens.colors.border}
-      backgroundColor={uiTokens.colors.surface}
-      justifyContent="center"
-      paddingHorizontal={uiTokens.spacing.md}
-      style={style}
+      style={[
+        styles.container,
+        {
+          borderColor: themedTokens.colors.border,
+          backgroundColor: themedTokens.colors.surface,
+        },
+        style,
+      ]}
     >
-      <Input
-        unstyled
+      <TextInput
         value={value}
         onChangeText={onChangeText}
         onSubmitEditing={() => onSubmitQuery?.(value)}
-        placeholderTextColor="$textSecondary"
+        placeholderTextColor={themedTokens.colors.textSecondary}
         returnKeyType="search"
-        color={uiTokens.colors.textPrimary}
-        fontSize={uiTokens.typography.sizes.md}
-        paddingVertical={0}
+        style={[styles.input, { color: themedTokens.colors.textPrimary }]}
         {...props}
       />
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    minHeight: 48,
+    borderRadius: uiTokens.radius.md,
+    borderWidth: 1,
+    justifyContent: "center",
+    paddingHorizontal: uiTokens.spacing.md,
+  },
+  input: {
+    fontSize: uiTokens.typography.sizes.md,
+    paddingVertical: 0,
+  },
+});

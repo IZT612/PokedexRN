@@ -1,34 +1,41 @@
 import React from "react";
-import { Button, Text, View } from "tamagui";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { uiTokens } from "./tokens";
+import type { PokemonType } from "../../../theme";
+import { getChipColors } from "./chipColors";
+import { uiTokens, useUiTokens } from "./tokens";
 
 export type ChipProps = {
   label: string;
   selected?: boolean;
   onPress?: () => void;
+  pokemonType?: PokemonType;
 };
 
-export function Chip({ label, selected = false, onPress }: ChipProps) {
+export function Chip({
+  label,
+  selected = false,
+  onPress,
+  pokemonType,
+}: ChipProps) {
+  const themedTokens = useUiTokens();
+  const colors = getChipColors({
+    selected,
+    pokemonType,
+    colors: themedTokens.colors,
+  });
+
   const content = (
     <View
-      minHeight={32}
-      paddingHorizontal={uiTokens.spacing.md}
-      borderRadius={uiTokens.radius.pill}
-      backgroundColor={
-        selected ? uiTokens.colors.chipSelected : uiTokens.colors.chipBackground
-      }
-      alignItems="center"
-      justifyContent="center"
-      alignSelf="flex-start"
+      style={[
+        styles.base,
+        {
+          backgroundColor: colors.backgroundColor,
+          borderColor: colors.borderColor,
+        },
+      ]}
     >
-      <Text
-        fontSize={uiTokens.typography.sizes.sm}
-        fontWeight={uiTokens.typography.weights.semibold}
-        color={selected ? uiTokens.colors.white : uiTokens.colors.textPrimary}
-      >
-        {label}
-      </Text>
+      <Text style={[styles.label, { color: colors.textColor }]}>{label}</Text>
     </View>
   );
 
@@ -36,9 +43,21 @@ export function Chip({ label, selected = false, onPress }: ChipProps) {
     return content;
   }
 
-  return (
-    <Button unstyled onPress={onPress} pressStyle={{ opacity: 0.9 }}>
-      {content}
-    </Button>
-  );
+  return <Pressable onPress={onPress}>{content}</Pressable>;
 }
+
+const styles = StyleSheet.create({
+  base: {
+    minHeight: 32,
+    paddingHorizontal: uiTokens.spacing.md,
+    borderRadius: uiTokens.radius.pill,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "flex-start",
+  },
+  label: {
+    fontSize: uiTokens.typography.sizes.sm,
+    fontWeight: uiTokens.typography.weights.semibold,
+  },
+});
