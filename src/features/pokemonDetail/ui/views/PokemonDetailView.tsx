@@ -7,6 +7,7 @@ import {
   Spacing,
   Typography,
 } from '@/constants/theme';
+import { FavoriteButton } from '@/src/features/pokemonDetail/ui/components/FavoriteButton';
 import { PokemonType } from '@/src/shared/domain/entities/PokemonType';
 import { Button } from '@/src/shared/ui/components/button';
 import { LoadingSpinner } from '@/src/shared/ui/components/loadingSpinner';
@@ -363,6 +364,7 @@ export const PokemonDetailView = ({
           <H1 color={themeColors.text} flex={1}>
             Details
           </H1>
+          {pokemonDetail && <FavoriteButton pokemonId={pokemonDetail.id} />}
         </XStack>
 
         <YStack flex={1}>{renderContent()}</YStack>

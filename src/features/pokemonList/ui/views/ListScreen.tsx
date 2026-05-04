@@ -4,6 +4,7 @@ import { SearchBar } from '@/src/features/pokemonList/ui/components/SearchBar';
 import { TypeFilter } from '@/src/features/pokemonList/ui/components/TypeFilter';
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
 import { LoadingSpinner } from '@/src/shared/ui/components/loadingSpinner';
+import { useFavoritesStore } from '@/src/shared/ui/store/FavoritesStore';
 import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 import {
@@ -16,12 +17,17 @@ import {
 import { H1, Paragraph, View, YStack } from 'tamagui';
 import { PokemonCard } from '../components/PokemonCard';
 
+interface ListScreenProps {
+  showFavorites?: boolean;
+}
+
 const keyExtractor = (item: Pokemon) => item.id.toString();
 const ItemSeparator = () => <View height={Spacing.md} />;
 
-export const ListScreen = () => {
+export const ListScreen = ({ showFavorites = false }: ListScreenProps) => {
   const { loadPokemons, loading, error, hasMore, filteredList, pokemonList } =
     usePokemonListStore();
+  const { favoriteIds } = useFavoritesStore();
 
   const colorScheme = useColorScheme() ?? 'light';
   const themeColors = Colors[colorScheme];
@@ -34,6 +40,10 @@ export const ListScreen = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const displayList = showFavorites
+    ? filteredList.filter((pokemon) => favoriteIds.includes(pokemon.id))
+    : filteredList;
 
   const renderItem = useCallback(
     ({ item }: { item: Pokemon }) => (
@@ -107,7 +117,7 @@ export const ListScreen = () => {
             overflow={Platform.OS === 'ios' ? 'visible' : 'hidden'}
           >
             <FlatList
-              data={filteredList}
+              data={displayList}
               showsVerticalScrollIndicator={false}
               contentContainerStyle={{ padding: Spacing.md }}
               onEndReachedThreshold={0.5}

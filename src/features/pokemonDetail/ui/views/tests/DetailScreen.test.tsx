@@ -1,4 +1,5 @@
 import { usePokemonDetailStore } from '@/app/store';
+import mockAsyncStorage from '@react-native-async-storage/async-storage/jest/async-storage-mock';
 import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 import PokemonDetailScreen from '../PokemonDetailScreen';
@@ -7,12 +8,15 @@ jest.mock('@/app/store', () => ({
   usePokemonDetailStore: jest.fn(),
 }));
 
+jest.mock('@react-native-async-storage/async-storage', () => mockAsyncStorage);
+
 jest.mock('@tamagui/lucide-icons-2', () => ({
   Activity: 'ActivityIcon',
   Ruler: 'RulerIcon',
   Scale: 'ScaleIcon',
   Sparkles: 'SparklesIcon',
   ChevronLeft: 'ChevronLeftIcon',
+  Heart: 'HeartIcon',
 }));
 
 jest.mock('tamagui', () => {
