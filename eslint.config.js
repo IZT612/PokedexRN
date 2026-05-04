@@ -1,10 +1,24 @@
-// https://docs.expo.dev/guides/using-eslint/
-const { defineConfig } = require('eslint/config');
-const expoConfig = require('eslint-config-expo/flat');
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
 
-module.exports = defineConfig([
-  expoConfig,
+export default tseslint.config(
   {
-    ignores: ['dist/*'],
+    ignores: ["node_modules/", ".opencode/", "openspec/", "dist/"],
   },
-]);
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    files: ["App.tsx", "tamagui.config.ts", "src/**/*.{ts,tsx}"],
+    languageOptions: {
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    rules: {
+      "@typescript-eslint/ban-ts-comment": "off",
+      "@typescript-eslint/no-empty-object-type": "off",
+    },
+  },
+);
