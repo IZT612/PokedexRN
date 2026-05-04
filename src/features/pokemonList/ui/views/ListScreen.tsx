@@ -4,6 +4,7 @@ import { SearchBar } from '@/src/features/pokemonList/ui/components/SearchBar';
 import { TypeFilter } from '@/src/features/pokemonList/ui/components/TypeFilter';
 import { Pokemon } from '@/src/shared/domain/entities/Pokemon';
 import { LoadingSpinner } from '@/src/shared/ui/components/loadingSpinner';
+import { useRouter } from 'expo-router';
 import React, { useCallback, useEffect } from 'react';
 import {
   FlatList,
@@ -25,6 +26,8 @@ export const ListScreen = () => {
   const colorScheme = useColorScheme() ?? 'light';
   const themeColors = Colors[colorScheme];
 
+  const router = useRouter();
+
   useEffect(() => {
     if (pokemonList.length === 0) {
       loadPokemons();
@@ -33,8 +36,18 @@ export const ListScreen = () => {
   }, []);
 
   const renderItem = useCallback(
-    ({ item }: { item: Pokemon }) => <PokemonCard pokemon={item} />,
-    [],
+    ({ item }: { item: Pokemon }) => (
+      <PokemonCard
+        pokemon={item}
+        onPress={() =>
+          router.push({
+            pathname: '/pokemon/[id]',
+            params: { id: item.id },
+          })
+        }
+      />
+    ),
+    [router],
   );
 
   const loadMore = useCallback(() => {
